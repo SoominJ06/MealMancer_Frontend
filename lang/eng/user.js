@@ -9,5 +9,10 @@ const messages = {
     emailPlaceholder: "Email",
     pwPlaceholder: "Password",
     loginBtn: "Log In",
-    signupDir: "Don't have an account? Sign up"
+    signupDir: "Don't have an account? Sign up",
+
+    signupTitle: "Signup",
+    pwConfirm: "Confirm Password",
+    signupBtn: "Sign Up",
+    loginDir: "Already have an account? Log in",
 }

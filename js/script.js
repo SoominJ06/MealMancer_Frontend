@@ -73,6 +73,8 @@ class UI {
             this.initIndex();
         } else if (currPage.includes("login")) {
             this.initLogin();
+        } else if (currPage.includes("signup")) {
+            this.initSignup();
         }
     }
 
@@ -89,6 +91,16 @@ class UI {
         document.getElementById("pwInput").placeholder = messages.pwPlaceholder;
         document.getElementById("loginBtn").innerHTML = messages.loginBtn;
         document.getElementById("signupDir").innerHTML = messages.signupDir;
+        this.navBar.initNavBar(false);
+    }
+
+    initSignup() {
+        document.getElementById("title").innerHTML = messages.signupTitle;
+        document.getElementById("emailInput").placeholder = messages.emailPlaceholder;
+        document.getElementById("pwInput").placeholder = messages.pwPlaceholder;
+        document.getElementById("pwConfirm").placeholder = messages.pwConfirm;
+        document.getElementById("signupBtn").innerHTML = messages.signupBtn;
+        document.getElementById("loginDir").innerHTML = messages.loginDir;
         this.navBar.initNavBar(false);
     }
 }
