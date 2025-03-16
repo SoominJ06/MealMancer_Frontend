@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MealMancer - Generate Recipe</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+
+    <div class="wrap">
+        <!-- Header -->
+        <header id="header"></header>
+
+        <!-- Body Content -->
+        <div class="main">
+            <div class="inputWrap">
+                <div class="title titleFont" id="title"></div>
+                <form id="ingredientForm" class="ingredientForm">
+                    <input type="text" id="ingredientInput"/>
+                    <button type="submit" id="conjureBtn">DO</button>
+                </form>
+            </div>
+            
+            <div class="outputWrap">
+                <div class="title" id="outputTitle"></div>
+                <div class="output">
+                    <div id="outputStatus"></div>
+                    <div id="outputMsg"></div>
+                    <div id="outputTable"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="js/script.js"></script>
+    <script src="lang/eng/user.js"></script>
+
+</body>
+</html>

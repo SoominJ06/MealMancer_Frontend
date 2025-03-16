@@ -1,7 +1,6 @@
 class NavBar {
     constructor() {
-        this.itmes = ["Menu 1", "Menu 2"];
-        this.itemNavs = ["#", "#"];
+        this.itemNavs = ["#", "cookingConjuration.html"];
     }
 
     initLogo() {
@@ -31,8 +30,8 @@ class NavBar {
         const menu = document.createElement("ul");
         menu.classList.add("navBar", "headerFont");
 
-        for (let i = 0; i < this.itmes.length; i++) {
-            const menuItem = `<li><a href=${this.itemNavs[i]}>${this.itmes[i]}</a></li>`;
+        for (let i = 0; i < this.itemNavs.length; i++) {
+            const menuItem = `<li><a href=${this.itemNavs[i]}>${navItems[i]}</a></li>`;
             menu.innerHTML+= menuItem;
         }
 
@@ -75,6 +74,8 @@ class UI {
             this.initLogin();
         } else if (currPage.includes("signup")) {
             this.initSignup();
+        } else if (currPage.includes("cooking")) {
+            this.initMagic();
         }
     }
 
@@ -82,6 +83,7 @@ class UI {
     initIndex() {
         document.getElementById("title").innerHTML = messages.indexTitle;
         document.getElementById("desc").innerHTML = messages.indexDesc;
+        document.getElementById("goCook").innerHTML = messages.startCooking;
         this.navBar.initNavBar(false);
     }
 
@@ -101,6 +103,13 @@ class UI {
         document.getElementById("pwConfirm").placeholder = messages.pwConfirm;
         document.getElementById("signupBtn").innerHTML = messages.signupBtn;
         document.getElementById("loginDir").innerHTML = messages.loginDir;
+        this.navBar.initNavBar(false);
+    }
+
+    initMagic() {
+        document.getElementById("title").innerHTML = messages.castTitle;
+        document.getElementById("ingredientInput").placeholder = messages.ingredientPlaceholder;
+        document.getElementById("conjureBtn").innerHTML = messages.castSpell;
         this.navBar.initNavBar(false);
     }
 }
