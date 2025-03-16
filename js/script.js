@@ -1,6 +1,64 @@
+class RecipeAPI {
+    constructor() {
+        this.xhttp = new XMLHttpRequest();
+        this.outputController = new OutputController();
+        this.baseUrl = "https://recipeapi.duckdns.org/generate/?prompt=";
+    }
+
+    searchWord(ingredients) {
+        this.xhttp.open("GET", this.baseUrl + ingredients, true);
+        this.xhttp.send();
+        this.xhttp.onreadystatechange = () => {
+            if (this.xhttp.readyState === 4) {
+                const response = JSON.parse(this.xhttp.responseText);
+                if (response.status === "success" && this.xhttp.status === 200) {
+                    //
+                } else {
+                    this.outputController.displayErrorPopup(messages.error);
+                }
+            }
+        };
+    }
+}
+
+class OutputController {
+
+    // Error popup
+    hideErrorPopup() {
+        document.getElementById("errorPopupWrap").style.opacity = "0";
+        document.getElementById("errorPopupWrap").style.visibility = "hidden";
+    }
+
+    displayErrorPopup(errorMsg) {
+        document.getElementById("closeErrorPopupBtn").innerHTML = messages.ok;
+        // document.getElementById("errNumOfReqs").innerHTML = reqNum ? messages.numOfReqs.replace("%1", reqNum) : "";
+        document.getElementById("errorMsg").textContent = messages.errorTitle;
+        document.getElementById("errorDesc").innerHTML = errorMsg
+        document.getElementById("errorPopupWrap").style.opacity = "1";
+        document.getElementById("errorPopupWrap").style.visibility = "visible";
+        document.getElementById("closeErrorPopupBtn").addEventListener("click", () => {
+            this.hideErrorPopup();
+        })
+    }
+
+    // Displaying searched word
+    displayRecipe(title, ingredients, instructions) {
+        document.getElementById("outputWrap").style.display = "block";
+        document.getElementById("recipeTitle").innerHTML = title;
+        document.getElementById("ingredientsTitle").innerHTML = messages.ingredientsTitle;
+        ingredients.array.forEach(element => {
+            document.getElementById("ingredientList").innerHTML += `<li>${element}</li>`;
+        });
+        document.getElementById("instructionsTitle").innerHTML = messages.instructionsTitle;
+        instructions.array.forEach(element => {
+            document.getElementById("instructionList").innerHTML += `<li>${element}</li>`;
+        });
+    }
+}
+
 class NavBar {
     constructor() {
-        this.itemNavs = ["#", "cookingConjuration.html"];
+        this.itemNavs = ["favorites.html", "cookingConjuration.html"];
     }
 
     initLogo() {
@@ -76,7 +134,10 @@ class UI {
             this.initSignup();
         } else if (currPage.includes("cooking")) {
             this.initMagic();
+        } else if (currPage.includes("favorites")) {
+            this.initFavs();
         }
+        this.navBar.initNavBar(false);
     }
 
     // Page initializations
@@ -84,7 +145,6 @@ class UI {
         document.getElementById("title").innerHTML = messages.indexTitle;
         document.getElementById("desc").innerHTML = messages.indexDesc;
         document.getElementById("goCook").innerHTML = messages.startCooking;
-        this.navBar.initNavBar(false);
     }
 
     initLogin() {
@@ -93,7 +153,6 @@ class UI {
         document.getElementById("pwInput").placeholder = messages.pwPlaceholder;
         document.getElementById("loginBtn").innerHTML = messages.loginBtn;
         document.getElementById("signupDir").innerHTML = messages.signupDir;
-        this.navBar.initNavBar(false);
     }
 
     initSignup() {
@@ -103,14 +162,16 @@ class UI {
         document.getElementById("pwConfirm").placeholder = messages.pwConfirm;
         document.getElementById("signupBtn").innerHTML = messages.signupBtn;
         document.getElementById("loginDir").innerHTML = messages.loginDir;
-        this.navBar.initNavBar(false);
     }
 
     initMagic() {
         document.getElementById("title").innerHTML = messages.castTitle;
         document.getElementById("ingredientInput").placeholder = messages.ingredientPlaceholder;
         document.getElementById("conjureBtn").innerHTML = messages.castSpell;
-        this.navBar.initNavBar(false);
+    }
+
+    initFavs() {
+        document.getElementById("title").innerHTML = messages.favTitle;
     }
 }
 
