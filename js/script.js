@@ -5,14 +5,15 @@ class RecipeAPI {
         this.baseUrl = "https://recipeapi.duckdns.org/generate/?prompt=";
     }
 
-    searchWord(ingredients) {
+    getRecipe(ingredients) {
+        console.log(ingredients)
         this.xhttp.open("GET", this.baseUrl + ingredients, true);
         this.xhttp.send();
         this.xhttp.onreadystatechange = () => {
             if (this.xhttp.readyState === 4) {
                 const response = JSON.parse(this.xhttp.responseText);
                 if (response.status === "success" && this.xhttp.status === 200) {
-                    //
+                    this.outputController.displayRecipe(response.title, response.ingredients, response.method)
                 } else {
                     this.outputController.displayErrorPopup(messages.error);
                 }
@@ -41,8 +42,18 @@ class OutputController {
         })
     }
 
-    // Displaying searched word
+    emptyRecipeOutput() {
+        document.getElementById("recipeTitle").innerHTML = "";
+        document.getElementById("ingredientsTitle").innerHTMLinnerHTML = "";
+        document.getElementById("ingredientList").innerHTML = "";
+        document.getElementById("instructionsTitle").innerHTML = "";
+        document.getElementById("instructionList").innerHTML = "";
+        document.getElementById("addToFav").display = "none";
+    }
+
+    // Displaying recipe
     displayRecipe(title, ingredients, instructions) {
+        this.emptyRecipeOutput();
         document.getElementById("outputWrap").style.display = "block";
         document.getElementById("recipeTitle").innerHTML = title;
         document.getElementById("ingredientsTitle").innerHTML = messages.ingredientsTitle;
@@ -53,12 +64,34 @@ class OutputController {
         instructions.array.forEach(element => {
             document.getElementById("instructionList").innerHTML += `<li>${element}</li>`;
         });
+        document.getElementById("addToFav").display = "block";
+    }
+}
+
+class ButtonController {
+    constructor() {
+        this.xhr = new RecipeAPI();
+    }
+
+    initConjureBtn() {
+        document.getElementById("conjureBtn").addEventListener("click", (e) => {
+            e.preventDefault();
+            this.xhr.getRecipe(document.getElementById("ingredientInput").value);
+        });
+    }
+
+    initFavBtn() {
+        document.getElementById("addToFav").addEventListener("click", (e) => {
+            e.preventDefault();
+            // Add to fav list
+        });
     }
 }
 
 class NavBar {
     constructor() {
         this.itemNavs = ["favorites.html", "cookingConjuration.html"];
+        this.adminNavs = ["userList.html", "favorites.html", "cookingConjuration.html"];
     }
 
     initLogo() {
@@ -120,6 +153,7 @@ class NavBar {
 class UI {
     constructor(currLocation) {
         this.navBar = new NavBar();
+        this.btnController = new ButtonController();
         this.init(currLocation);
     }
 
@@ -168,6 +202,7 @@ class UI {
         document.getElementById("title").innerHTML = messages.castTitle;
         document.getElementById("ingredientInput").placeholder = messages.ingredientPlaceholder;
         document.getElementById("conjureBtn").innerHTML = messages.castSpell;
+        this.btnController.initConjureBtn();
     }
 
     initFavs() {

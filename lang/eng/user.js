@@ -40,3 +40,9 @@ const navItems = [
     "Favorites",
     "Conjure Recipe"
 ];
+
+const adminNavItems = [
+    "Users-admin",
+    "Favorites",
+    "Conjure Recipe"
+]
