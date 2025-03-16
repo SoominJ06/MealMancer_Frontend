@@ -1,3 +1,19 @@
+/* Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Almendra:ital,wght@0,400;0,700;1,400;1,700&family=Martel:wght@200;300;400;600;700;800;900&family=Uncial+Antiqua&display=swap');
+
+.titleFont {
+    font-family: "Uncial Antiqua", system-ui;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.headerFont {
+    font-family: "Almendra", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+/* Global styling */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 ul { list-style: none; }
 img { width: 100%; height: 100%; }
@@ -5,7 +21,9 @@ a { text-decoration: none; color: #000; }
 
 body {
     overflow-x: hidden;
-
+    font-family: "Martel", serif;
+    font-weight: 400;
+    font-style: normal;
 }
 
 .wrap {
@@ -13,6 +31,7 @@ body {
     min-height: 100svh;
 }
 
+/* Header styling */
 header {
     width: 100%;
     padding: 10px 50px;
@@ -23,7 +42,7 @@ header {
 }
 
 .logo a {
-    font-size: 25px;
+    font-size: 40px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -32,18 +51,45 @@ header {
 }
 
 .headerLogo {
-    width: 100px;
+    width: 80px;
+    height: 80px;
+    padding: 5px;
+    background-color: #661FE1;
+    border-radius: 10000px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 .navBar {
-    font-size: 18px;
+    font-size: 30px;
     display: flex;
-    gap: 30px;
+    gap: 40px;
 }
 
 .navBar li {
     cursor: pointer;
+}
+
+/* Input field styling */
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    font-family: "Martel", serif;
+    font-weight: 400;
+    font-style: normal;    
+    opacity: 1; /* Firefox */
+}
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    font-family: "Martel", serif;
+    font-weight: 400;
+    font-style: normal;
+} 
+::-ms-input-placeholder { /* Microsoft Edge */
+    font-family: "Martel", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+input:focus {
+    background-color: rgba(190, 188, 228, 0.4) !important;
+    /* border: 2px solid #661FE1; */
 }

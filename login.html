@@ -11,35 +11,27 @@
 
     <div class="wrap">
         <!-- Header -->
-        <header>
-            <div class="logo">
-                <a href="index.html">
-                    <div class="headerLogo">
-                        <img src="public/images/logo.png" alt="Logo">
-                    </div>
-                    Meal Mancer
-                </a>
-            </div>
-            <ul class="navBar"></ul>
-        </header>
+        <header id="header"></header>
 
         <!-- Body Content -->
         <div class="main">
             <div class="login">
-                <div class="title">Login</div>
-                <form action="" class="loginForm">
-                    <input type="email" placeholder="Email">
-                    <input type="password" placeholder="Password">
-                    <button id="loginBtn">Log In</button>
+                <div id="title" class="title titleFont"></div>
+                <form class="loginForm">
+                    <input id="emailInput" type="email">
+                    <input id="pwInput" type="password">
+                    <button id="loginBtn"></button>
                 </form>
-                <a class="signupDir" href="#">Don't have an account? Sign up</a>
+                <a id="signupDir" href="#"></a>
             </div>
             <div class="mainLogo">
                 <img src="public/images/full_logo.png" alt="Full Logo">
             </div>
         </div>
-
     </div>
+
+    <script src="js/script.js"></script>
+    <script src="lang/eng/user.js"></script>
     
 </body>
 </html>
