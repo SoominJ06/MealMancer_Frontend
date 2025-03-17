@@ -327,7 +327,7 @@ class UI {
     // Initializes UI with corresponding page
     init(currLocation) {
         const currPage = currLocation.pathname;
-        if (currPage.includes("index") || currPage === "https://mealmancer.netlify.app/") {
+        if (currPage.includes("index") || currPage === "https://mealmancer.netlify.app" || currPage === "https://mealmancer.netlify.app/") {
             this.initIndex();
         } else if (currPage.includes("login")) {
             this.initLogin();
