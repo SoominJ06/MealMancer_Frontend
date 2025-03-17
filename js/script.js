@@ -348,13 +348,12 @@ class UI {
             document.getElementById("desc").innerHTML = "";
             document.getElementById("goCook").innerHTML = messages.goToUserList;
             document.getElementById("goCook").href = "userList.html";
+            return;
         }
-        else {
-            document.getElementById("title").innerHTML = messages.indexTitle;
-            document.getElementById("desc").innerHTML = messages.indexDesc;
-            document.getElementById("goCook").innerHTML = messages.startCooking;
-            document.getElementById("goCook").href = this.loggedIn? "cookingConjuration.html" : "login.html";
-        }
+        document.getElementById("title").innerHTML = messages.indexTitle;
+        document.getElementById("desc").innerHTML = messages.indexDesc;
+        document.getElementById("goCook").innerHTML = messages.startCooking;
+        document.getElementById("goCook").href = this.loggedIn ? "cookingConjuration.html" : "login.html";
     }
 
     initLogin() {
@@ -377,6 +376,10 @@ class UI {
     }
 
     initMagic() {
+        if (!this.loggedIn) {
+            window.location.href = "login.html";
+            return;
+        }
         document.getElementById("title").innerHTML = messages.castTitle;
         document.getElementById("ingredientInput").placeholder = messages.ingredientPlaceholder;
         document.getElementById("conjureBtn").innerHTML = messages.castSpell;
