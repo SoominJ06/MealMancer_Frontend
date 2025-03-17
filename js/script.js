@@ -327,9 +327,7 @@ class UI {
     // Initializes UI with corresponding page
     init(currLocation) {
         const currPage = currLocation.pathname;
-        if (currPage.includes("index") || currPage === "https://mealmancer.netlify.app" || currPage === "https://mealmancer.netlify.app/") {
-            this.initIndex();
-        } else if (currPage.includes("login")) {
+        if (currPage.includes("login")) {
             this.initLogin();
         } else if (currPage.includes("signup")) {
             this.initSignup();
@@ -337,6 +335,8 @@ class UI {
             this.initMagic();
         } else if (currPage.includes("favorites")) {
             this.initFavs();
+        } else {
+            this.initIndex();
         }
         this.navBar.initNavBar(this.loggedIn);
     }
