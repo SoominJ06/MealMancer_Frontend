@@ -54,7 +54,7 @@ class RecipeAPI {
         this.xhttp.onreadystatechange = () => {
             if (this.xhttp.readyState === 4) {
                 const response = JSON.parse(this.xhttp.responseText);
-                if (response.status === "success" && this.xhttp.status === 200) {
+                if (this.xhttp.status === 200) {
                     this.session.reduceToken();
                     this.outputController.displayRecipe(response.title, response.ingredients, response.method)
                 } else {
