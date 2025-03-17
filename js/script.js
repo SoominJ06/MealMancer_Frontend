@@ -217,7 +217,7 @@ class ButtonController {
                 this.xhr.outputController.displayErrorPopup(messages.pwMatchError);
                 return;
             }
-            this.xhr.login(email, pw);
+            this.xhr.signup(email, pw);
         });
     }
 
