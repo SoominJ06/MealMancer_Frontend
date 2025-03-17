@@ -2,12 +2,12 @@ class RecipeAPI {
     constructor() {
         this.xhttp = new XMLHttpRequest();
         this.outputController = new OutputController();
-        this.baseUrl = "https://recipeapi.duckdns.org/generate/?prompt=";
+        this.baseUrl = "https://recipeapi.duckdns.org/generate/";
     }
 
     getRecipe(ingredients) {
         console.log(ingredients)
-        this.xhttp.open("GET", this.baseUrl + ingredients, true);
+        this.xhttp.open("GET", this.baseUrl + "?items=" + ingredients, true);
         this.xhttp.send();
         this.xhttp.onreadystatechange = () => {
             if (this.xhttp.readyState === 4) {
@@ -18,8 +18,64 @@ class RecipeAPI {
                     this.outputController.displayErrorPopup(messages.error);
                 }
             }
+        }
+    }
+
+    login(email, pw) {
+        this.xhttp.withCredentials = true;
+        this.xhttp.open("POST", this.baseUrl, true);
+        this.xhttp.setRequestHeader("Content-Type", "application/json");
+        const requestData = JSON.stringify({ email: email, password: pw });
+        this.xhttp.send(requestData);   
+        this.xhttp.onreadystatechange = () => { 
+            if (this.xhttp.readyState === 4) {
+                const response = JSON.parse(this.xhttp.responseText);
+                if (response.status === "success" && this.xhttp.status === 201) {
+                    window.location.href = "index.html"
+                } else {
+                    this.outputController.displayErrorPopup(response.message);
+                }
+            }
         };
     }
+
+    signup(email, pw) {
+        this.xhttp.withCredentials = true;
+        this.xhttp.open("POST", this.baseUrl, true);
+        this.xhttp.setRequestHeader("Content-Type", "application/json");
+        const requestData = JSON.stringify({ email: email, password: pw });
+        this.xhttp.send(requestData);   
+        this.xhttp.onreadystatechange = () => { 
+            if (this.xhttp.readyState === 4) {
+                const response = JSON.parse(this.xhttp.responseText);
+                if (response.status === "success" && this.xhttp.status === 201) {
+                    window.location.href = "index.html"
+                } else {
+                    this.outputController.displayErrorPopup(response.message);
+                }
+            }
+        };
+    }
+}
+
+class InputValidator {
+
+    isEmpty(value) {
+        return !value || value.trim() === "";
+    }
+
+    confirmInput(value1, value2) {
+        return value1 === value2;
+    }
+
+    containsNumbers(value) {
+        return !/^[A-Za-z-,]+$/.test(value);
+    }
+
+    removeWhitespace(value) {
+        return input.replace(/\s+/g, ""); // Removes all spaces
+    }
+
 }
 
 class OutputController {
@@ -71,12 +127,41 @@ class OutputController {
 class ButtonController {
     constructor() {
         this.xhr = new RecipeAPI();
+        this.inputValidator = new InputValidator();
+    }
+
+    initLoginBtn() {
+        document.getElementById("loginBtn").addEventListener("click", (e) => {
+            e.preventDefault();
+            const email = document.getElementById("emailInput").value;
+            const pw = document.getElementById("pwInput").value;
+            this.xhr.login(email, pw);
+        });
+    }
+
+    initSignupBtn() {
+        document.getElementById("signupBtn").addEventListener("click", (e) => {
+            e.preventDefault();
+            const email = document.getElementById("emailInput").value;
+            const pw = document.getElementById("pwInput").value;
+            const pwConfirm = document.getElementById("pwConfirm").value;
+            if (!this.inputValidator.confirmInput(pw, pwConfirm)) {
+                this.xhr.outputController.displayErrorPopup(messages.pwMatchError);
+                return;
+            }
+            this.xhr.login(email, pw);
+        });
     }
 
     initConjureBtn() {
         document.getElementById("conjureBtn").addEventListener("click", (e) => {
             e.preventDefault();
-            this.xhr.getRecipe(document.getElementById("ingredientInput").value);
+            const input = document.getElementById("ingredientInput").value;
+            if (this.inputValidator.containsNumbers(input)) {
+                this.xhr.outputController.displayErrorPopup(messages.recipeInputError);
+                return;
+            }
+            this.xhr.getRecipe(this.inputValidator.removeWhitespace(input));
         });
     }
 
@@ -187,6 +272,7 @@ class UI {
         document.getElementById("pwInput").placeholder = messages.pwPlaceholder;
         document.getElementById("loginBtn").innerHTML = messages.loginBtn;
         document.getElementById("signupDir").innerHTML = messages.signupDir;
+        this.btnController.initLoginBtn();
     }
 
     initSignup() {
@@ -196,6 +282,7 @@ class UI {
         document.getElementById("pwConfirm").placeholder = messages.pwConfirm;
         document.getElementById("signupBtn").innerHTML = messages.signupBtn;
         document.getElementById("loginDir").innerHTML = messages.loginDir;
+        this.btnController.initSignupBtn();
     }
 
     initMagic() {

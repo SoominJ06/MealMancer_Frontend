@@ -33,6 +33,8 @@ const messages = {
     // Error popup
     errorTitle: "Error",
     error: "Oops! Something went wrong!",
+    recipeInputError: "Please remove numbers or special characters",
+    pwMatchError: "Password does not match",
     ok: "Ok",
 };
 
