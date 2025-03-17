@@ -6,7 +6,13 @@ class RecipeAPI {
     }
 
     getRecipe(ingredients) {
-        console.log(ingredients)
+        // testing with dummy data
+        // const title = "avocado and tomato breakfast toast";
+        // const ingredient = ["2 slices whole grain bread", "1 slice avocado", "1 medium tomato, sliced", "2 slices cooked bacon", "2 eggs", "salt and pepper to taste", "olive oil spray"];
+        // const method = ["toast the bread slices in a toaster or under the broiler until golden brown.", "lightly spray a frying pan with olive oil spray and heat over medium heat.", "add the sliced avocado, tomato, and cooked bacon to the pan.", "season with salt and pepper, and cook for 3-4 minutes, or until the avocado is soft.", "add the eggs to the pan and scramble until fully cooked.", "remove from heat and cover the pan with a lid.", "serve immediately."];
+        // this.outputController.displayRecipe(title, ingredient, method)
+
+        // actual fetch
         this.xhttp.open("GET", this.baseUrl + "?items=" + ingredients, true);
         this.xhttp.send();
         this.xhttp.onreadystatechange = () => {
@@ -69,11 +75,11 @@ class InputValidator {
     }
 
     containsNumbers(value) {
-        return !/^[A-Za-z-,]+$/.test(value);
+        return !/^[A-Za-z-, ]+$/.test(value);
     }
 
     removeWhitespace(value) {
-        return input.replace(/\s+/g, ""); // Removes all spaces
+        return value.replace(/\s+/g, ""); // Removes all spaces
     }
 
 }
@@ -88,7 +94,6 @@ class OutputController {
 
     displayErrorPopup(errorMsg) {
         document.getElementById("closeErrorPopupBtn").innerHTML = messages.ok;
-        // document.getElementById("errNumOfReqs").innerHTML = reqNum ? messages.numOfReqs.replace("%1", reqNum) : "";
         document.getElementById("errorMsg").textContent = messages.errorTitle;
         document.getElementById("errorDesc").innerHTML = errorMsg
         document.getElementById("errorPopupWrap").style.opacity = "1";
@@ -110,17 +115,21 @@ class OutputController {
     // Displaying recipe
     displayRecipe(title, ingredients, instructions) {
         this.emptyRecipeOutput();
-        document.getElementById("outputWrap").style.display = "block";
+
+        // document.getElementById("outputWrap").style.display = "block";
         document.getElementById("recipeTitle").innerHTML = title;
+
         document.getElementById("ingredientsTitle").innerHTML = messages.ingredientsTitle;
-        ingredients.array.forEach(element => {
+        ingredients.forEach(element => {
             document.getElementById("ingredientList").innerHTML += `<li>${element}</li>`;
         });
+
         document.getElementById("instructionsTitle").innerHTML = messages.instructionsTitle;
-        instructions.array.forEach(element => {
+        instructions.forEach(element => {
             document.getElementById("instructionList").innerHTML += `<li>${element}</li>`;
         });
-        document.getElementById("addToFav").display = "block";
+
+        document.getElementById("addToFav").style.display = "block";
     }
 }
 
@@ -289,7 +298,9 @@ class UI {
         document.getElementById("title").innerHTML = messages.castTitle;
         document.getElementById("ingredientInput").placeholder = messages.ingredientPlaceholder;
         document.getElementById("conjureBtn").innerHTML = messages.castSpell;
+        document.getElementById("addToFav").innerHTML = messages.addToFavBtn;
         this.btnController.initConjureBtn();
+        this.btnController.initFavBtn();
     }
 
     initFavs() {

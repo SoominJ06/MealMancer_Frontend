@@ -67,3 +67,25 @@
 #conjureBtn:hover {
     box-shadow: inset 3px 3px 10px rgba(0, 0, 0, 0.6);
 }
+
+#outputWrap {
+    margin-top: 50px;
+}
+
+.divide {
+    margin-top: 20px;
+}
+
+#addToFav {
+    margin-top: 20px;
+    padding: 15px 40px;
+    border: 0;
+    background-color: #661FE1;
+    color: #eee;
+    cursor: pointer;
+    display: none;
+}
+
+#addToFav:hover {
+    box-shadow: inset 3px 3px 10px rgba(0, 0, 0, 0.6);
+}

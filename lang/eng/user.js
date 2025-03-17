@@ -13,6 +13,7 @@ const messages = {
     castSpell: "Conjure Recipe",
     ingredientsTitle: "Ingredients",
     instructionsTitle: "Instructions",
+    addToFavBtn: "Add to Favorites",
 
     // login
     loginTitle: "Login",
