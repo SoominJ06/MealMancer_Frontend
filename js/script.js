@@ -48,7 +48,7 @@ class RecipeAPI {
         // this.outputController.displayRecipe(title, ingredient, method)
 
         // actual fetch
-        this.xhttp.open("GET", this.baseUrl + "?items=" + ingredients, true);
+        this.xhttp.open("GET", this.baseUrl + "generate/?ingredients=" + ingredients, true);
         this.xhttp.setRequestHeader("Authorization", `Bearer ${this.session.getJWTToken()}`);
         this.xhttp.send();
         this.xhttp.onreadystatechange = () => {
