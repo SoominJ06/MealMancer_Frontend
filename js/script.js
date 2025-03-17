@@ -166,6 +166,10 @@ class ButtonController {
         document.getElementById("conjureBtn").addEventListener("click", (e) => {
             e.preventDefault();
             const input = document.getElementById("ingredientInput").value;
+            if (this.inputValidator.isEmpty(input)) {
+                this.xhr.outputController.displayErrorPopup(messages.emptyInput);
+                return;
+            }
             if (this.inputValidator.containsNumbers(input)) {
                 this.xhr.outputController.displayErrorPopup(messages.recipeInputError);
                 return;
