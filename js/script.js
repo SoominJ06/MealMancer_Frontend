@@ -37,7 +37,7 @@ class RecipeAPI {
         this.xhttp = new XMLHttpRequest();
         this.outputController = new OutputController();
         this.session = new SessionController();
-        this.baseUrl = "https://recipeapi.duckdns.org/generate/";
+        this.baseUrl = "https://meal-mancer-api-q3zh9.ondigitalocean.app/";
     }
 
     getRecipe(ingredients) {
