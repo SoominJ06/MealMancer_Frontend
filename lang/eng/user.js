@@ -33,6 +33,9 @@ const messages = {
     // favorites
     favTitle: "Favorite Recipes",
 
+    // user list
+    userListTitle: "Users",
+
     // Error popup
     errorTitle: "Error",
     error: "Oops! Something went wrong!",
@@ -41,6 +44,9 @@ const messages = {
     pwMatchError: "Password does not match",
     tokenEmpty: "You used all your free trials",
     ok: "Ok",
+
+    // Non-admin msg
+    notAdmin: "Only admins can access this page!",
 };
 
 const genNavItems = [

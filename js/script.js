@@ -84,8 +84,8 @@ class RecipeAPI {
     // }
 
     login(email, pw) {
-        this.xhttp.withCredentials = true;
         this.xhttp.open("POST", this.baseUrl + "login", true);
+        this.xhttp.withCredentials = true;
         this.xhttp.setRequestHeader("Content-Type", "application/json");
         const requestData = JSON.stringify({ email: email, password: pw });
         this.xhttp.send(requestData);   
@@ -104,8 +104,8 @@ class RecipeAPI {
     }
 
     signup(email, pw) {
-        this.xhttp.withCredentials = true;
         this.xhttp.open("POST", this.baseUrl + "signup", true);
+        this.xhttp.withCredentials = true;
         this.xhttp.setRequestHeader("Content-Type", "application/json");
         const requestData = JSON.stringify({ email: email, password: pw });
         this.xhttp.send(requestData);   
@@ -335,6 +335,8 @@ class UI {
             this.initMagic();
         } else if (currPage.includes("favorites")) {
             this.initFavs();
+        } else if (currPage.includes("userList")) {
+            this.initUserList();
         } else {
             this.initIndex();
         }
@@ -389,7 +391,20 @@ class UI {
     }
 
     initFavs() {
+        if (!this.loggedIn) {
+            window.location.href = "login.html";
+            return;
+        }
         document.getElementById("title").innerHTML = messages.favTitle;
+    }
+
+    initUserList() {
+        if (this.userRole !== "admin") {
+            window.location.href = "index.html";
+            alert(messages.notAdmin)
+            return;
+        }
+        document.getElementById("title").innerHTML = messages.userListTitle;
     }
 }
 
