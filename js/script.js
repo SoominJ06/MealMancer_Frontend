@@ -64,25 +64,6 @@ class RecipeAPI {
         }
     }
 
-    // login(email, pw) {
-    //     this.xhttp.withCredentials = true;
-    //     this.xhttp.open("POST", this.baseUrl + "login", true);
-    //     this.xhttp.setRequestHeader("Content-Type", "application/json");
-    //     const requestData = JSON.stringify({ email: email, password: pw });
-    //     this.xhttp.send(requestData);   
-    //     this.xhttp.onreadystatechange = () => { 
-    //         if (this.xhttp.readyState === 4) {
-    //             const response = JSON.parse(this.xhttp.responseText);
-    //             if (this.xhttp.status === 200) {
-    //                 window.location.href = "index.html"
-
-    //             } else {
-    //                 this.outputController.displayErrorPopup(response.message);
-    //             }
-    //         }
-    //     };
-    // }
-
     login(email, pw) {
         this.xhttp.open("POST", this.baseUrl + "login", true);
         this.xhttp.withCredentials = true;

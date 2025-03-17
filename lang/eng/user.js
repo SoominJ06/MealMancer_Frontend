@@ -55,7 +55,7 @@ const genNavItems = [
 ];
 
 const adminNavItems = [
-    "Users-admin",
+    "Users",
     "Favorites",
     "Conjure Recipe"
 ]
