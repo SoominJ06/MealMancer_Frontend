@@ -1,7 +1,42 @@
+class SessionController {
+    constructor() {
+        this.session = JSON.parse(sessionStorage.getItem("userInfo")) || {};
+    }
+
+    setUserInfo(role, tokens, jwt) {
+        this.session = { role, tokens, jwt };
+        sessionStorage.setItem("userInfo", JSON.stringify(this.session));
+    }
+
+    reduceToken() {
+        if (this.session.tokens > 0) { // Prevent negative tokens
+            this.session.tokens--;
+            sessionStorage.setItem("userInfo", JSON.stringify(this.session)); // Save the update
+        }
+    }
+
+    getUserRole() {
+        return this.session.role || null;
+    }
+
+    getUserTokens() {
+        return this.session.tokens || null;
+    }
+
+    getJWTToken() {
+        return this.session.jwt || null;
+    }
+
+    clearSession() {
+        sessionStorage.removeItem("userInfo");
+    }
+}
+
 class RecipeAPI {
     constructor() {
         this.xhttp = new XMLHttpRequest();
         this.outputController = new OutputController();
+        this.session = new SessionController();
         this.baseUrl = "https://recipeapi.duckdns.org/generate/";
     }
 
@@ -14,11 +49,13 @@ class RecipeAPI {
 
         // actual fetch
         this.xhttp.open("GET", this.baseUrl + "?items=" + ingredients, true);
+        this.xhttp.setRequestHeader("Authorization", `Bearer ${this.session.getJWTToken()}`);
         this.xhttp.send();
         this.xhttp.onreadystatechange = () => {
             if (this.xhttp.readyState === 4) {
                 const response = JSON.parse(this.xhttp.responseText);
                 if (response.status === "success" && this.xhttp.status === 200) {
+                    this.session.reduceToken();
                     this.outputController.displayRecipe(response.title, response.ingredients, response.method)
                 } else {
                     this.outputController.displayErrorPopup(messages.error);
@@ -27,40 +64,62 @@ class RecipeAPI {
         }
     }
 
+    // login(email, pw) {
+    //     this.xhttp.withCredentials = true;
+    //     this.xhttp.open("POST", this.baseUrl + "login", true);
+    //     this.xhttp.setRequestHeader("Content-Type", "application/json");
+    //     const requestData = JSON.stringify({ email: email, password: pw });
+    //     this.xhttp.send(requestData);   
+    //     this.xhttp.onreadystatechange = () => { 
+    //         if (this.xhttp.readyState === 4) {
+    //             const response = JSON.parse(this.xhttp.responseText);
+    //             if (this.xhttp.status === 200) {
+    //                 window.location.href = "index.html"
+
+    //             } else {
+    //                 this.outputController.displayErrorPopup(response.message);
+    //             }
+    //         }
+    //     };
+    // }
+
     login(email, pw) {
         this.xhttp.withCredentials = true;
-        this.xhttp.open("POST", this.baseUrl, true);
+        this.xhttp.open("POST", this.baseUrl + "login", true);
         this.xhttp.setRequestHeader("Content-Type", "application/json");
         const requestData = JSON.stringify({ email: email, password: pw });
         this.xhttp.send(requestData);   
         this.xhttp.onreadystatechange = () => { 
             if (this.xhttp.readyState === 4) {
                 const response = JSON.parse(this.xhttp.responseText);
-                if (response.status === "success" && this.xhttp.status === 201) {
-                    window.location.href = "index.html"
+                if (this.xhttp.status === 200) {
+                    // Store user info in session storage
+                    this.session.setUserInfo(response.role, response.tokens, response.jwt);
+                    window.location.href = "index.html";
                 } else {
                     this.outputController.displayErrorPopup(response.message);
                 }
             }
-        };
+        }
     }
 
     signup(email, pw) {
         this.xhttp.withCredentials = true;
-        this.xhttp.open("POST", this.baseUrl, true);
+        this.xhttp.open("POST", this.baseUrl + "signup", true);
         this.xhttp.setRequestHeader("Content-Type", "application/json");
         const requestData = JSON.stringify({ email: email, password: pw });
         this.xhttp.send(requestData);   
         this.xhttp.onreadystatechange = () => { 
             if (this.xhttp.readyState === 4) {
                 const response = JSON.parse(this.xhttp.responseText);
-                if (response.status === "success" && this.xhttp.status === 201) {
+                if (this.xhttp.status === 200) {
+                    this.session.setUserInfo(response.role, response.tokens, response.jwt);
                     window.location.href = "index.html"
                 } else {
                     this.outputController.displayErrorPopup(response.message);
                 }
             }
-        };
+        }
     }
 }
 
@@ -162,7 +221,7 @@ class ButtonController {
         });
     }
 
-    initConjureBtn() {
+    initConjureBtn(tokensLeft) {
         document.getElementById("conjureBtn").addEventListener("click", (e) => {
             e.preventDefault();
             const input = document.getElementById("ingredientInput").value;
@@ -173,6 +232,9 @@ class ButtonController {
             if (this.inputValidator.containsNumbers(input)) {
                 this.xhr.outputController.displayErrorPopup(messages.recipeInputError);
                 return;
+            }
+            if (tokensLeft <= 0) {
+                this.xhr.outputController.displayErrorPopup(messages.tokenEmpty);
             }
             this.xhr.getRecipe(this.inputValidator.removeWhitespace(input));
         });
@@ -188,6 +250,8 @@ class ButtonController {
 
 class NavBar {
     constructor() {
+        this.session = new SessionController();
+        this.userRole = this.session.getUserRole();
         this.itemNavs = ["favorites.html", "cookingConjuration.html"];
         this.adminNavs = ["userList.html", "favorites.html", "cookingConjuration.html"];
     }
@@ -219,8 +283,10 @@ class NavBar {
         const menu = document.createElement("ul");
         menu.classList.add("navBar", "headerFont");
 
-        for (let i = 0; i < this.itemNavs.length; i++) {
-            const menuItem = `<li><a href=${this.itemNavs[i]}>${navItems[i]}</a></li>`;
+        const itemNav = this.userRole === "admin" ? this.adminNavs : this.itemNavs;
+        const item = this.userRole === "admin" ? adminNavItems : genNavItems;
+        for (let i = 0; i < item.length; i++) {
+            const menuItem = `<li><a href=${itemNav[i]}>${item[i]}</a></li>`;
             menu.innerHTML+= menuItem;
         }
 
@@ -252,6 +318,9 @@ class UI {
     constructor(currLocation) {
         this.navBar = new NavBar();
         this.btnController = new ButtonController();
+        this.session = new SessionController();
+        this.userRole = this.session.getUserRole();
+        this.loggedIn = this.userRole ? true : false;
         this.init(currLocation);
     }
 
@@ -269,14 +338,23 @@ class UI {
         } else if (currPage.includes("favorites")) {
             this.initFavs();
         }
-        this.navBar.initNavBar(false);
+        this.navBar.initNavBar(this.loggedIn);
     }
 
     // Page initializations
     initIndex() {
-        document.getElementById("title").innerHTML = messages.indexTitle;
-        document.getElementById("desc").innerHTML = messages.indexDesc;
-        document.getElementById("goCook").innerHTML = messages.startCooking;
+        if (this.userRole === "admin") {
+            document.getElementById("title").innerHTML = messages.adminIndexTitle;
+            document.getElementById("desc").innerHTML = "";
+            document.getElementById("goCook").innerHTML = messages.goToUserList;
+            document.getElementById("goCook").href = "userList.html";
+        }
+        else {
+            document.getElementById("title").innerHTML = messages.indexTitle;
+            document.getElementById("desc").innerHTML = messages.indexDesc;
+            document.getElementById("goCook").innerHTML = messages.startCooking;
+            document.getElementById("goCook").href = this.loggedIn? "cookingConjuration.html" : "login.html";
+        }
     }
 
     initLogin() {
@@ -303,7 +381,7 @@ class UI {
         document.getElementById("ingredientInput").placeholder = messages.ingredientPlaceholder;
         document.getElementById("conjureBtn").innerHTML = messages.castSpell;
         document.getElementById("addToFav").innerHTML = messages.addToFavBtn;
-        this.btnController.initConjureBtn();
+        this.btnController.initConjureBtn(this.session.getUserTokens);
         this.btnController.initFavBtn();
     }
 

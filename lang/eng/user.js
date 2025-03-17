@@ -4,8 +4,10 @@ const messages = {
 
     // index
     indexTitle: "Welcome to Meal Mancer!",
+    adminIndexTitle: "Welcome, admin",
     indexDesc: "Describe App here",
     startCooking: "Conjure Recipe →",
+    goToUserList: "See User list →",
 
     // cookingConjuration
     castTitle: "Start Conjuring Recipe",
@@ -37,10 +39,11 @@ const messages = {
     emptyInput: "Input is empty",
     recipeInputError: "Please remove numbers or special characters",
     pwMatchError: "Password does not match",
+    tokenEmpty: "You used all your free trials",
     ok: "Ok",
 };
 
-const navItems = [
+const genNavItems = [
     "Favorites",
     "Conjure Recipe"
 ];
