@@ -1,6 +1,7 @@
 /** String Constants */
 // Session Storage
 const userInfo = "userInfo";
+
 // Navitems
 const backendUrl = "https://meal-mancer-api-q3zh9.ondigitalocean.app/";
 const indexPage = "index.html";
@@ -21,6 +22,38 @@ const signupEndpoint = "signup";
 const favEndpoint = "favorites";
 const userListEndpoint = "userlist";
 const cookingEndpoint = "cooking";
+
+// ContentIDs
+const errorPopup = "errorPopupWrap";
+const closeErrorPopup = "closeErrorPopupBtn";
+const errorMsg = "errorMsg";
+const errorDesc = "errorDesc";
+const recipeTitle = "recipeTitle";
+const ingredientsTitle = "ingredientsTitle";
+const ingredientList = "ingredientList";
+const instructionsTitle = "instructionsTitle";
+const instructionList = "instructionList";
+const addToFav = "addToFav";
+const outputBg = "outputBg";
+const userList = "userList";
+const outputWrap = "outputWrap";
+const favoritesWrap = "favoritesWrap";
+const favoriteBg = "favoriteBg";
+const favorite = "favorite";
+const loginBtn = "loginBtn";
+const signupBtn = "signupBtn";
+const conjureBtn = "conjureBtn";
+const emailInput = "emailInput";
+const pwInput = "pwInput";
+const pwConfirm = "pwConfirm";
+const ingredientInput = "ingredientInput";
+const titleConst = "title";
+const goCook = "goCook";
+const descConst = "desc";
+const loginDir = "loginDir";
+const signupDir = "signupDir";
+const customCur = "customCur";
+const headerConst = "header";
 
 class SessionController {
     constructor() {
@@ -182,62 +215,62 @@ class OutputController {
 
     // Error popup
     hideErrorPopup() {
-        document.getElementById("errorPopupWrap").style.opacity = "0";
-        document.getElementById("errorPopupWrap").style.visibility = "hidden";
+        document.getElementById(errorPopup).style.opacity = "0";
+        document.getElementById(errorPopup).style.visibility = "hidden";
     }
 
     displayErrorPopup(errorMsg) {
-        document.getElementById("closeErrorPopupBtn").innerHTML = messages.ok;
-        document.getElementById("errorMsg").textContent = messages.errorTitle;
-        document.getElementById("errorDesc").innerHTML = errorMsg
-        document.getElementById("errorPopupWrap").style.opacity = "1";
-        document.getElementById("errorPopupWrap").style.visibility = "visible";
-        document.getElementById("closeErrorPopupBtn").addEventListener("click", () => {
+        document.getElementById(closeErrorPopup).innerHTML = messages.ok;
+        document.getElementById(errorMsg).textContent = messages.errorTitle;
+        document.getElementById(errorDesc).innerHTML = errorMsg
+        document.getElementById(errorPopup).style.opacity = "1";
+        document.getElementById(errorPopup).style.visibility = "visible";
+        document.getElementById(closeErrorPopup).addEventListener("click", () => {
             this.hideErrorPopup();
         })
     }
 
     emptyRecipeOutput() {
-        document.getElementById("recipeTitle").innerHTML = "";
-        document.getElementById("ingredientsTitle").innerHTMLinnerHTML = "";
-        document.getElementById("ingredientList").innerHTML = "";
-        document.getElementById("instructionsTitle").innerHTML = "";
-        document.getElementById("instructionList").innerHTML = "";
-        document.getElementById("addToFav").style.display = "none";
-        document.getElementById("outputBg").style.display = "none";
+        document.getElementById(recipeTitle).innerHTML = "";
+        document.getElementById(ingredientsTitle).innerHTMLinnerHTML = "";
+        document.getElementById(ingredientList).innerHTML = "";
+        document.getElementById(instructionsTitle).innerHTML = "";
+        document.getElementById(instructionList).innerHTML = "";
+        document.getElementById(addToFav).style.display = "none";
+        document.getElementById(outputBg).style.display = "none";
     }
 
     // Displaying recipe
     displayRecipe(title, ingredients, instructions) {
         this.emptyRecipeOutput();
 
-        document.getElementById("outputBg").style.display = "block";
+        document.getElementById(outputBg).style.display = "block";
 
         // document.getElementById("outputWrap").style.display = "block";
-        document.getElementById("recipeTitle").innerHTML = title;
+        document.getElementById(recipeTitle).innerHTML = title;
 
-        document.getElementById("ingredientsTitle").innerHTML = messages.ingredientsTitle;
+        document.getElementById(ingredientsTitle).innerHTML = messages.ingredientsTitle;
         ingredients.forEach(element => {
-            document.getElementById("ingredientList").innerHTML += `<li>${element}</li>`;
+            document.getElementById(ingredientList).innerHTML += `<li>${element}</li>`;
         });
 
-        document.getElementById("instructionsTitle").innerHTML = messages.instructionsTitle;
+        document.getElementById(instructionsTitle).innerHTML = messages.instructionsTitle;
         instructions.forEach(element => {
-            document.getElementById("instructionList").innerHTML += `<li>${element}</li>`;
+            document.getElementById(instructionList).innerHTML += `<li>${element}</li>`;
         });
 
-        document.getElementById("addToFav").style.display = "block";
+        document.getElementById(addToFav).style.display = "block";
 
-        this.formatPadding(document.getElementById("outputBg"), document.getElementById("outputWrap"));
+        this.formatPadding(document.getElementById(outputBg), document.getElementById(outputWrap));
     }
 
     displayUserList(users) {
-        const tableOutput = document.getElementById("userList");
+        const tableOutput = document.getElementById(userList);
 
         // Checks if tableData is empty
         if (users.length <= 0) {
             tableOutput.innerHTML = "";
-            document.getElementById("userList").innerHTML = messages.noUsersFound;
+            document.getElementById(userList).innerHTML = messages.noUsersFound;
             return;
         }
         
@@ -265,7 +298,7 @@ class OutputController {
         table += `</tbody></table>`;
 
         tableOutput.innerHTML = "";
-        document.getElementById("userList").innerHTML = table;
+        document.getElementById(userList).innerHTML = table;
 
         // Setting table as DataTable
         $('#userList').DataTable();
@@ -282,7 +315,7 @@ class OutputController {
     }
 
     displayFavorites(favorites) {
-        const favoritesContainer = document.getElementById("favorites");
+        const favoritesContainer = document.getElementById(favEndpoint);
     
         favoritesContainer.innerHTML = "";
     
@@ -293,10 +326,10 @@ class OutputController {
     
         favorites.forEach(recipe => {
             const favoriteDivWrap = document.createElement("div");
-            favoriteDivWrap.className = "favoriteBg";
+            favoriteDivWrap.className = favoriteBg;
     
             const favoriteDiv = document.createElement("div");
-            favoriteDiv.className = "favorite";
+            favoriteDiv.className = favorite;
     
             let content = `<div class="title titleFont" id="recipeTitle">${recipe.title}</div>
                             <div class="ingredients divide">
@@ -335,8 +368,8 @@ class OutputController {
     }
 
     displayNextFav(index) {
-        const offset = -index * (document.getElementById("favoritesWrap").clientWidth); // Calculate the offset
-        document.getElementById("favorites").style.transform = `translateX(${offset}px)`;
+        const offset = -index * (document.getElementById(favoritesWrap).clientWidth); // Calculate the offset
+        document.getElementById(favEndpoint).style.transform = `translateX(${offset}px)`;
     }
 }
 
@@ -347,20 +380,20 @@ class ButtonController {
     }
 
     initLoginBtn() {
-        document.getElementById("loginBtn").addEventListener("click", (e) => {
+        document.getElementById(loginBtn).addEventListener("click", (e) => {
             e.preventDefault();
-            const email = document.getElementById("emailInput").value;
-            const pw = document.getElementById("pwInput").value;
+            const email = document.getElementById(emailInput).value;
+            const pw = document.getElementById(pwInput).value;
             this.xhr.login(email, pw);
         });
     }
 
     initSignupBtn() {
-        document.getElementById("signupBtn").addEventListener("click", (e) => {
+        document.getElementById(signupBtn).addEventListener("click", (e) => {
             e.preventDefault();
-            const email = document.getElementById("emailInput").value;
-            const pw = document.getElementById("pwInput").value;
-            const pwConfirm = document.getElementById("pwConfirm").value;
+            const email = document.getElementById(emailInput).value;
+            const pw = document.getElementById(pwInput).value;
+            const pwConfirm = document.getElementById(pwConfirm).value;
             if (!this.inputValidator.confirmInput(pw, pwConfirm)) {
                 this.xhr.outputController.displayErrorPopup(messages.pwMatchError);
                 return;
@@ -370,9 +403,9 @@ class ButtonController {
     }
 
     initConjureBtn(tokensLeft) {
-        document.getElementById("conjureBtn").addEventListener("click", (e) => {
+        document.getElementById(conjureBtn).addEventListener("click", (e) => {
             e.preventDefault();
-            const input = document.getElementById("ingredientInput").value;
+            const input = document.getElementById(ingredientInput).value;
             if (this.inputValidator.isEmpty(input)) {
                 this.xhr.outputController.displayErrorPopup(messages.emptyInput);
                 return;
@@ -389,7 +422,7 @@ class ButtonController {
     }
 
     initFavBtn() {
-        document.getElementById("addToFav").addEventListener("click", (e) => {
+        document.getElementById(addToFav).addEventListener("click", (e) => {
             e.preventDefault();
             // Add to fav list
         });
@@ -477,15 +510,15 @@ class NavBar {
     }
 
     initNavBar(loggedIn) {
-        document.getElementById("header").innerHTML += this.initLogo();
-        document.getElementById("header").append(this.initMenu(loggedIn));      
+        document.getElementById(headerConst).innerHTML += this.initLogo();
+        document.getElementById(headerConst).append(this.initMenu(loggedIn));      
     }
 }
 
 class CustomCursor {
     constructor() {
         this.insertCustomCur();
-        this.cursor = document.getElementById("customCur");
+        this.cursor = document.getElementById(customCur);
         this.initMouseMove();
         this.initHoverable();
     }
@@ -514,7 +547,7 @@ class CustomCursor {
 
     insertCustomCur() {
         const customCur = document.createElement('div');
-        customCur.id = "customCur";
+        customCur.id = customCur;
         document.body.appendChild(customCur);
     }
 }
@@ -552,34 +585,34 @@ class UI {
     // Page initializations
     initIndex() {
         if (this.userRole === "admin") {
-            document.getElementById("title").innerHTML = messages.adminIndexTitle;
-            document.getElementById("desc").innerHTML = "";
-            document.getElementById("goCook").innerHTML = messages.goToUserList;
-            document.getElementById("goCook").href = userListPage;
+            document.getElementById(titleConst).innerHTML = messages.adminIndexTitle;
+            document.getElementById(descConst).innerHTML = "";
+            document.getElementById(goCook).innerHTML = messages.goToUserList;
+            document.getElementById(goCook).href = userListPage;
             return;
         }
-        document.getElementById("title").innerHTML = messages.indexTitle;
-        document.getElementById("desc").innerHTML = messages.indexDesc;
-        document.getElementById("goCook").innerHTML = messages.startCooking;
-        document.getElementById("goCook").href = this.loggedIn ? cookingPage : loginPage;
+        document.getElementById(titleConst).innerHTML = messages.indexTitle;
+        document.getElementById(descConst).innerHTML = messages.indexDesc;
+        document.getElementById(goCook).innerHTML = messages.startCooking;
+        document.getElementById(goCook).href = this.loggedIn ? cookingPage : loginPage;
     }
 
     initLogin() {
-        document.getElementById("title").innerHTML = messages.loginTitle;
-        document.getElementById("emailInput").placeholder = messages.emailPlaceholder;
-        document.getElementById("pwInput").placeholder = messages.pwPlaceholder;
-        document.getElementById("loginBtn").innerHTML = messages.loginBtn;
-        document.getElementById("signupDir").innerHTML = messages.signupDir;
+        document.getElementById(titleConst).innerHTML = messages.loginTitle;
+        document.getElementById(emailInput).placeholder = messages.emailPlaceholder;
+        document.getElementById(pwInput).placeholder = messages.pwPlaceholder;
+        document.getElementById(loginBtn).innerHTML = messages.loginBtn;
+        document.getElementById(signupDir).innerHTML = messages.signupDir;
         this.btnController.initLoginBtn();
     }
 
     initSignup() {
-        document.getElementById("title").innerHTML = messages.signupTitle;
-        document.getElementById("emailInput").placeholder = messages.emailPlaceholder;
-        document.getElementById("pwInput").placeholder = messages.pwPlaceholder;
-        document.getElementById("pwConfirm").placeholder = messages.pwConfirm;
-        document.getElementById("signupBtn").innerHTML = messages.signupBtn;
-        document.getElementById("loginDir").innerHTML = messages.loginDir;
+        document.getElementById(titleConst).innerHTML = messages.signupTitle;
+        document.getElementById(emailInput).placeholder = messages.emailPlaceholder;
+        document.getElementById(pwInput).placeholder = messages.pwPlaceholder;
+        document.getElementById(pwConfirm).placeholder = messages.pwConfirm;
+        document.getElementById(signupBtn).innerHTML = messages.signupBtn;
+        document.getElementById(loginDir).innerHTML = messages.loginDir;
         this.btnController.initSignupBtn();
     }
 
@@ -588,10 +621,10 @@ class UI {
             window.location.href = loginPage;
             return;
         }
-        document.getElementById("title").innerHTML = messages.castTitle;
-        document.getElementById("ingredientInput").placeholder = messages.ingredientPlaceholder;
-        document.getElementById("conjureBtn").innerHTML = messages.castSpell;
-        document.getElementById("addToFav").innerHTML = messages.addToFavBtn;
+        document.getElementById(titleConst).innerHTML = messages.castTitle;
+        document.getElementById(ingredientInput).placeholder = messages.ingredientPlaceholder;
+        document.getElementById(conjureBtn).innerHTML = messages.castSpell;
+        document.getElementById(addToFav).innerHTML = messages.addToFavBtn;
         this.btnController.initConjureBtn(this.session.getUserTokens);
         this.btnController.initFavBtn();
     }
@@ -601,7 +634,7 @@ class UI {
             window.location.href = loginPage;
             return;
         }
-        document.getElementById("title").innerHTML = messages.favTitle;
+        document.getElementById(titleConst).innerHTML = messages.favTitle;
         this.btnController.xhr.getFavorites();
     }
 
@@ -611,7 +644,7 @@ class UI {
             alert(messages.notAdmin)
             return;
         }
-        document.getElementById("title").innerHTML = messages.userListTitle;
+        document.getElementById(titleConst).innerHTML = messages.userListTitle;
         this.btnController.xhr.getUserList();
     }
 }
