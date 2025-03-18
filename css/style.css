@@ -19,14 +19,6 @@
     gap: 20px;
 }
 
-.title {
-    font-size: 55px;
-}
-
-.desc {
-    font-size: 40px;
-}
-
 /* Login and Signup Styling */
 .login,
 .signup {

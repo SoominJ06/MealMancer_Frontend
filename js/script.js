@@ -65,23 +65,27 @@ class RecipeAPI {
     }
 
     login(email, pw) {
-        this.xhttp.open("POST", this.baseUrl + "login", true);
-        this.xhttp.withCredentials = true;
-        this.xhttp.setRequestHeader("Content-Type", "application/json");
-        const requestData = JSON.stringify({ email: email, password: pw });
-        this.xhttp.send(requestData);   
-        this.xhttp.onreadystatechange = () => { 
-            if (this.xhttp.readyState === 4) {
-                const response = JSON.parse(this.xhttp.responseText);
-                if (this.xhttp.status === 200) {
-                    // Store user info in session storage
-                    this.session.setUserInfo(response.role, response.tokens, response.jwt);
-                    window.location.href = "index.html";
-                } else {
-                    this.outputController.displayErrorPopup(response.message);
-                }
-            }
-        }
+        // this.xhttp.open("POST", this.baseUrl + "login", true);
+        // this.xhttp.withCredentials = true;
+        // this.xhttp.setRequestHeader("Content-Type", "application/json");
+        // const requestData = JSON.stringify({ email: email, password: pw });
+        // this.xhttp.send(requestData);   
+        // this.xhttp.onreadystatechange = () => { 
+        //     if (this.xhttp.readyState === 4) {
+        //         const response = JSON.parse(this.xhttp.responseText);
+        //         if (this.xhttp.status === 200) {
+        //             // Store user info in session storage
+        //             this.session.setUserInfo(response.role, response.tokens, response.jwt);
+        //             window.location.href = "index.html";
+        //         } else {
+        //             this.outputController.displayErrorPopup(response.message);
+        //         }
+        //     }
+        // }
+        
+        // For testing admin
+        this.session.setUserInfo("admin", 20, "jwt");
+        window.location.href = "index.html";
     }
 
     signup(email, pw) {
@@ -101,6 +105,17 @@ class RecipeAPI {
                 }
             }
         }
+    }
+
+    getUserList() {
+        // Testing DataTable
+        let dummy = [
+            {"id": 0, "name" : "Test1", "dob": "2000-01-01"}, 
+            {"id": 1, "name" : "Test2", "dob": "2000-02-02"}, 
+            {"id": 2, "name" : "Test3", "dob": "2000-03-03"}, 
+        ];
+
+        this.outputController.displayUserList(dummy);
     }
 }
 
@@ -170,6 +185,46 @@ class OutputController {
         });
 
         document.getElementById("addToFav").style.display = "block";
+    }
+
+    displayUserList(users) {
+        const tableOutput = document.getElementById("userList");
+
+        // Checks if tableData is empty
+        if (users.length <= 0) {
+            tableOutput.innerHTML = "";
+            document.getElementById("userList").innerHTML = messages.noUsersFound;
+            return;
+        }
+        
+        // Extract the column names dynamically from the first object
+        const columnNames = Object.keys(users[0]);
+    
+        let table = `<table><thead><tr>`;
+        
+        // Dynamically create table headers
+        columnNames.forEach(column => {
+            table += `<th>${column}</th>`;
+        });
+
+        table += `</tr></thead><tbody>`;
+
+        // Dynamically create table rows
+        users.forEach(row => {
+            table += `<tr>`;
+            columnNames.forEach(column => {
+                table += `<td>${row[column] !== undefined ? row[column] : ""}</td>`;
+            });
+            table += `</tr>`;
+        });
+    
+        table += `</tbody></table>`;
+
+        tableOutput.innerHTML = "";
+        document.getElementById("userList").innerHTML = table;
+
+        // Setting table as DataTable
+        $('#userList').DataTable();
     }
 }
 
@@ -386,6 +441,7 @@ class UI {
             return;
         }
         document.getElementById("title").innerHTML = messages.userListTitle;
+        this.btnController.xhr.getUserList();
     }
 }
 

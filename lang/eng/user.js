@@ -6,7 +6,7 @@ const messages = {
     indexTitle: "Welcome to Meal Mancer!",
     adminIndexTitle: "Welcome, admin",
     indexDesc: "Describe App here",
-    startCooking: "Conjure Recipe →",
+    startCooking: "CONJURE RECIPE →",
     goToUserList: "See User list →",
 
     // cookingConjuration
@@ -35,6 +35,7 @@ const messages = {
 
     // user list
     userListTitle: "Users",
+    noUsersFound: "No users were found",
 
     // Error popup
     errorTitle: "Error",

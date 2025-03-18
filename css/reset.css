@@ -1,5 +1,6 @@
 /* Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Almendra:ital,wght@0,400;0,700;1,400;1,700&family=Martel:wght@200;300;400;600;700;800;900&family=Uncial+Antiqua&family=Macondo+Swash+Caps&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Almendra:ital,wght@0,400;0,700;1,400;1,700&family=Martel:wght@200;300;400;600;700;800;900&family=Uncial+Antiqua&family=Macondo+Swash+Caps&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=Martel:wght@200;300;400;600;700;800;900&family=Uncial+Antiqua&family=Macondo+Swash+Caps&family=Trochut:ital,wght@0,400;0,700;1,400&display=swap');
 
 .titleFont {
     font-family: "Uncial Antiqua", system-ui;
@@ -8,7 +9,13 @@
 }
 
 .headerFont {
-    font-family: "Almendra", serif;
+    font-family: "Trochut", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.btnFont {
+    font-family: "Macondo Swash Caps", cursive;
     font-weight: 400;
     font-style: normal;
 }
@@ -30,6 +37,14 @@ body {
 .wrap {
     min-width: 100vw;
     min-height: 100svh;
+}
+
+.title {
+    font-size: 55px;
+}
+
+.desc {
+    font-size: 40px;
 }
 
 /* Header styling */

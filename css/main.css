@@ -49,14 +49,11 @@
 #conjureBtn {
     max-width: 250px;
     width: 100%;
-    padding: 12px 25px;
-    /* font-family: "Macondo Swash Caps", cursive; */
-    font-family: "Martel", serif;
-    color: #eee;
-
+    padding: 16px 25px;    
     background-color: #661FE1;
     border: 0;
-    font-size: 20px;
+    color: #eee;
+    font-size: 22px;
     display: flex;
     justify-content: center;
     align-items: center;

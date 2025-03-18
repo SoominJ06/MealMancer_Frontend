@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MealMancer - Users</title>
     <link rel="stylesheet" href="css/reset.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/userList.css">
+    <link rel="stylesheet" href="css/dataTables.css">
 </head>
 <body>
 
@@ -16,17 +17,16 @@
         <!-- Body Content -->
         <div class="main">
             <div id="title" class="title titleFont"></div>
-            <div class="userList">
-                <div class="user">
-                    <div class="email"></div>
-                    <div class="tokensLeft"></div>
-                </div>
-            </div>
+            <table id="userList" class="cell-border hover order-column stripe dt-head-center"></table>
         </div>
     </div>
     
     <script src="js/script.js"></script>
     <script src="lang/eng/user.js"></script>
+
+    <!-- JQuery DataTables framework -->
+    <script src="js/jquery-3.7.1.js"></script>
+    <script src="js/dataTables.js"></script>
 
 </body>
 </html>
