@@ -117,6 +117,19 @@ class RecipeAPI {
 
         this.outputController.displayUserList(dummy);
     }
+
+    getFavorites() {
+        // Testing dummy data
+        const title = "avocado and tomato breakfast toast";
+        const ingredient = ["2 slices whole grain bread", "1 slice avocado", "1 medium tomato, sliced", "2 slices cooked bacon", "2 eggs", "salt and pepper to taste", "olive oil spray"];
+        const method = ["toast the bread slices in a toaster or under the broiler until golden brown.", "lightly spray a frying pan with olive oil spray and heat over medium heat.", "add the sliced avocado, tomato, and cooked bacon to the pan.", "season with salt and pepper, and cook for 3-4 minutes, or until the avocado is soft.", "add the eggs to the pan and scramble until fully cooked.", "remove from heat and cover the pan with a lid.", "serve immediately."];
+        const dummy = [
+            {"title": "Recipe 1", "ingredients": ingredient, "methods": method},
+            {"title": "Recipe 2", "ingredients": ingredient, "methods": method},
+            {"title": "Recipe 3", "ingredients": ingredient, "methods": method}
+        ];
+        this.outputController.displayFavorites(dummy)
+    }
 }
 
 class InputValidator {
@@ -226,6 +239,84 @@ class OutputController {
         // Setting table as DataTable
         $('#userList').DataTable();
     }
+
+    displayFavorites(favorites) {
+        const favoritesContainer = document.getElementById("favorites");
+
+        favoritesContainer.innerHTML = "";
+
+        if (favorites.length === 0 || favorites === null) {
+            console.log("Empty")
+            return;
+        }
+
+        favorites.forEach(recipe => {
+            const favoriteDiv = document.createElement("div");
+            favoriteDiv.className = "favorite";
+
+            let content = `<div class="title titleFont" id="recipeTitle">${recipe.title}</div>
+                        <div class="ingredients divide">
+                            <div class="desc headerFont" id="ingredientsTitle">${messages.ingredientsTitle}</div>
+                            <ul id="ingredientList">`
+
+            recipe.ingredients.forEach(ingredient => {
+                content += `<li>${ingredient}</li>`;
+            });
+
+            content +=     `</ul>
+                        </div>
+                        <div class="instructions divide">
+                            <div class="desc headerFont" id="instructionsTitle">${messages.instructionsTitle}</div>
+                            <ul id="instructionList">`
+
+            recipe.methods.forEach(method => {
+                content += `<li>${method}</li>`;
+            });
+
+            content +=     `</ul>
+                        </div>`;
+
+            favoriteDiv.innerHTML = content;
+            favoritesContainer.appendChild(favoriteDiv);
+        });
+
+        const prevBtn = document.querySelector('.prev');
+        const nextBtn = document.querySelector('.next');
+
+        favoritesContainer.style.width = `${favorites.length * 100}%`;
+        let index = 0;
+
+        // Event listener for next button
+        nextBtn.addEventListener('click', () => {
+            if (index < favorites.length - 1) {
+                index++;
+            } else {
+                index = 0; // Loop back to the first page
+            }
+            this.displayNextFav(index);
+        });
+
+        // Event listener for previous button
+        prevBtn.addEventListener('click', () => {
+            if (index > 0) {
+                index--;
+            } else {
+                index = favorites.length - 1; // Loop back to the last page
+            }
+            this.displayNextFav(index);
+        });
+
+        // Disable buttons if there are not enough quizzes
+        if (favorites.length > 1) {
+            nextBtn.style.display = 'block';
+            prevBtn.style.display = 'block';
+        }
+    }
+
+    displayNextFav(index) {
+        const offset = -index * (document.getElementById("favoritesWrap").clientWidth); // Calculate the offset
+        document.getElementById("favorites").style.transform = `translateX(${offset}px)`;
+    }
 }
 
 class ButtonController {
@@ -282,6 +373,26 @@ class ButtonController {
             // Add to fav list
         });
     }
+
+    // initFavNextBtn(index, totalFavs) {
+    //     document.querySelector('.prev').addEventListener("click", () => {
+    //         if (index < totalFavs - 1) {
+    //             index++;
+    //         } else {
+    //             index = 0; // Loop back to the first page
+    //         }
+    //     })
+    //     updateCategories();
+    // }
+
+    // initFavPrevBtn(index, totalFavs) {
+    //     if (index > 0) {
+    //         index--;
+    //     } else {
+    //         index = totalFavs - 1; // Loop back to the last page
+    //     }
+    //     updateCategories();
+    // }
 }
 
 class NavBar {
@@ -432,6 +543,7 @@ class UI {
             return;
         }
         document.getElementById("title").innerHTML = messages.favTitle;
+        this.btnController.xhr.getFavorites();
     }
 
     initUserList() {

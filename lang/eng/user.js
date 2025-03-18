@@ -59,4 +59,4 @@ const adminNavItems = [
     "Users",
     "Favorites",
     "Conjure Recipe"
-]
+];

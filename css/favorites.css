@@ -1,0 +1,60 @@
+.main {
+    width: 100%;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#favBtnWrap {
+    margin-top: 30px;
+    width: 85%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#favoritesWrap {
+    width: 90%;
+    /* padding: 0 100px; */
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden; /* Hides overflow categories */
+}
+
+.favorites {
+    width: max-content; /* Dynamically adjust width */
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    overflow: hidden;
+    transition: transform 0.4s ease-in-out;
+}
+
+.favorite {
+    width: 100%; 
+    /* Shows 3 categories at a time */
+    padding: 40px;
+    background: url(../public/images/scroll_horizontal.png) no-repeat center center;
+    transition-duration: 0.3s;
+    font-size: 20px;
+}
+
+.btn {
+    all: unset;
+    font-size: 30px;
+    color: #661FE1;
+    border: none;
+    cursor: pointer;
+    transition-duration: 0.2s;
+    display: none;
+}
+
+.btn:hover {
+    color: #3B1C32;
+}
+
+.divide {
+    margin-top: 20px;
+}
