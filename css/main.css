@@ -58,8 +58,18 @@
 }
 
 /* Output */
-#outputWrap {
+#outputBg {
     margin-top: 50px;
+    width: 90%;
+    height: fit-content;
+    padding: 50px;
+    background: url(../public/images/scroll_vertical.png) no-repeat center center;
+    background-size: 100% 100%;
+    display: none;
+}
+
+#outputWrap {
+    padding: 100px 80px;
 }
 
 .divide {

@@ -42,26 +42,26 @@ class RecipeAPI {
 
     getRecipe(ingredients) {
         // testing with dummy data
-        // const title = "avocado and tomato breakfast toast";
-        // const ingredient = ["2 slices whole grain bread", "1 slice avocado", "1 medium tomato, sliced", "2 slices cooked bacon", "2 eggs", "salt and pepper to taste", "olive oil spray"];
-        // const method = ["toast the bread slices in a toaster or under the broiler until golden brown.", "lightly spray a frying pan with olive oil spray and heat over medium heat.", "add the sliced avocado, tomato, and cooked bacon to the pan.", "season with salt and pepper, and cook for 3-4 minutes, or until the avocado is soft.", "add the eggs to the pan and scramble until fully cooked.", "remove from heat and cover the pan with a lid.", "serve immediately."];
-        // this.outputController.displayRecipe(title, ingredient, method)
+        const title = "avocado and tomato breakfast toast";
+        const ingredient = ["2 slices whole grain bread", "1 slice avocado", "1 medium tomato, sliced", "2 slices cooked bacon", "2 eggs", "salt and pepper to taste", "olive oil spray"];
+        const method = ["toast the bread slices in a toaster or under the broiler until golden brown.", "lightly spray a frying pan with olive oil spray and heat over medium heat.", "add the sliced avocado, tomato, and cooked bacon to the pan.", "season with salt and pepper, and cook for 3-4 minutes, or until the avocado is soft.", "add the eggs to the pan and scramble until fully cooked.", "remove from heat and cover the pan with a lid.", "serve immediately."];
+        this.outputController.displayRecipe(title, ingredient, method)
 
         // actual fetch
-        this.xhttp.open("GET", this.baseUrl + "generate/?ingredients=" + ingredients, true);
-        this.xhttp.setRequestHeader("Authorization", `Bearer ${this.session.getJWTToken()}`);
-        this.xhttp.send();
-        this.xhttp.onreadystatechange = () => {
-            if (this.xhttp.readyState === 4) {
-                const response = JSON.parse(this.xhttp.responseText);
-                if (this.xhttp.status === 200) {
-                    this.session.reduceToken();
-                    this.outputController.displayRecipe(response.title, response.ingredients, response.method)
-                } else {
-                    this.outputController.displayErrorPopup(messages.error);
-                }
-            }
-        }
+        // this.xhttp.open("GET", this.baseUrl + "generate/?ingredients=" + ingredients, true);
+        // this.xhttp.setRequestHeader("Authorization", `Bearer ${this.session.getJWTToken()}`);
+        // this.xhttp.send();
+        // this.xhttp.onreadystatechange = () => {
+        //     if (this.xhttp.readyState === 4) {
+        //         const response = JSON.parse(this.xhttp.responseText);
+        //         if (this.xhttp.status === 200) {
+        //             this.session.reduceToken();
+        //             this.outputController.displayRecipe(response.title, response.ingredients, response.method)
+        //         } else {
+        //             this.outputController.displayErrorPopup(messages.error);
+        //         }
+        //     }
+        // }
     }
 
     login(email, pw) {
@@ -179,12 +179,15 @@ class OutputController {
         document.getElementById("ingredientList").innerHTML = "";
         document.getElementById("instructionsTitle").innerHTML = "";
         document.getElementById("instructionList").innerHTML = "";
-        document.getElementById("addToFav").display = "none";
+        document.getElementById("addToFav").style.display = "none";
+        document.getElementById("outputBg").style.display = "none";
     }
 
     // Displaying recipe
     displayRecipe(title, ingredients, instructions) {
         this.emptyRecipeOutput();
+
+        document.getElementById("outputBg").style.display = "block";
 
         // document.getElementById("outputWrap").style.display = "block";
         document.getElementById("recipeTitle").innerHTML = title;
@@ -200,6 +203,14 @@ class OutputController {
         });
 
         document.getElementById("addToFav").style.display = "block";
+
+        let counter = 1;
+        let maxAttempts = 10;  // Prevent infinite loop
+
+        while (document.getElementById("outputBg").clientHeight / document.getElementById("outputWrap").clientHeight < 1.12 && counter < maxAttempts) {
+            counter++;
+            document.getElementById("outputWrap").style.padding = `${100 + (10 * counter)}px 80px`;
+        }
     }
 
     displayUserList(users) {
@@ -285,6 +296,14 @@ class OutputController {
             favoriteDiv.innerHTML = content;
             favoriteDivWrap.appendChild(favoriteDiv);
             favoritesContainer.appendChild(favoriteDivWrap);
+            
+            let counter = 1;
+            let maxAttempts = 10;  // Prevent infinite loop
+
+            while (favoriteDivWrap.clientHeight / favoriteDiv.clientHeight < 1.13 && counter < maxAttempts) {
+                counter++;
+                favoriteDiv.style.padding = `${100 + (10 * counter)}px 80px`;
+            }
         });
 
         const prevBtn = document.querySelector('.prev');
@@ -380,26 +399,6 @@ class ButtonController {
             // Add to fav list
         });
     }
-
-    // initFavNextBtn(index, totalFavs) {
-    //     document.querySelector('.prev').addEventListener("click", () => {
-    //         if (index < totalFavs - 1) {
-    //             index++;
-    //         } else {
-    //             index = 0; // Loop back to the first page
-    //         }
-    //     })
-    //     updateCategories();
-    // }
-
-    // initFavPrevBtn(index, totalFavs) {
-    //     if (index > 0) {
-    //         index--;
-    //     } else {
-    //         index = totalFavs - 1; // Loop back to the last page
-    //     }
-    //     updateCategories();
-    // }
 }
 
 class NavBar {

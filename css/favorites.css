@@ -42,8 +42,7 @@
 
 .favorite {
     width: 100%; 
-    padding: 100px;
-    transition-duration: 0.3s;
+    padding: 100px 80px;
     font-size: 20px;
 }
 
@@ -53,7 +52,6 @@
     color: #661FE1;
     border: none;
     cursor: pointer;
-    transition-duration: 0.2s;
     display: none;
 }
 
