@@ -32,11 +32,16 @@
     transition: transform 0.4s ease-in-out;
 }
 
+.favoriteBg {
+    width: 100%;
+    padding: 50px;
+    background: url(../public/images/scroll_vertical.png) no-repeat center center;
+    background-size: 100% 100%;
+}
+
 .favorite {
     width: 100%; 
-    /* Shows 3 categories at a time */
-    padding: 40px;
-    background: url(../public/images/scroll_horizontal.png) no-repeat center center;
+    padding: 100px;
     transition-duration: 0.3s;
     font-size: 20px;
 }

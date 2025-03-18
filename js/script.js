@@ -251,6 +251,9 @@ class OutputController {
         }
 
         favorites.forEach(recipe => {
+            const favoriteDivWrap = document.createElement("div");
+            favoriteDivWrap.className = "favoriteBg";
+
             const favoriteDiv = document.createElement("div");
             favoriteDiv.className = "favorite";
 
@@ -276,8 +279,10 @@ class OutputController {
             content +=     `</ul>
                         </div>`;
 
+            
             favoriteDiv.innerHTML = content;
-            favoritesContainer.appendChild(favoriteDiv);
+            favoriteDivWrap.appendChild(favoriteDiv);
+            favoritesContainer.appendChild(favoriteDivWrap);
         });
 
         const prevBtn = document.querySelector('.prev');
