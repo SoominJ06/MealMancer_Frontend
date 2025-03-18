@@ -65,27 +65,27 @@ class RecipeAPI {
     }
 
     login(email, pw) {
-        this.xhttp.open("POST", this.baseUrl + "login", true);
-        this.xhttp.withCredentials = true;
-        this.xhttp.setRequestHeader("Content-Type", "application/json");
-        const requestData = JSON.stringify({ email: email, password: pw });
-        this.xhttp.send(requestData);   
-        this.xhttp.onreadystatechange = () => { 
-            if (this.xhttp.readyState === 4) {
-                const response = JSON.parse(this.xhttp.responseText);
-                if (this.xhttp.status === 200) {
-                    // Store user info in session storage
-                    this.session.setUserInfo(response.role, response.tokens, response.jwt);
-                    window.location.href = "index.html";
-                } else {
-                    this.outputController.displayErrorPopup(response.message);
-                }
-            }
-        }
+        // this.xhttp.open("POST", this.baseUrl + "login", true);
+        // this.xhttp.withCredentials = true;
+        // this.xhttp.setRequestHeader("Content-Type", "application/json");
+        // const requestData = JSON.stringify({ email: email, password: pw });
+        // this.xhttp.send(requestData);   
+        // this.xhttp.onreadystatechange = () => { 
+        //     if (this.xhttp.readyState === 4) {
+        //         const response = JSON.parse(this.xhttp.responseText);
+        //         if (this.xhttp.status === 200) {
+        //             // Store user info in session storage
+        //             this.session.setUserInfo(response.role, response.tokens, response.jwt);
+        //             window.location.href = "index.html";
+        //         } else {
+        //             this.outputController.displayErrorPopup(response.message);
+        //         }
+        //     }
+        // }
         
         // For testing admin
-        // this.session.setUserInfo("admin", 20, "jwt");
-        // window.location.href = "index.html";
+        this.session.setUserInfo("admin", 20, "jwt");
+        window.location.href = "index.html";
     }
 
     signup(email, pw) {
@@ -410,7 +410,7 @@ class NavBar {
     }
 
     initLogo() {
-        return `<div class="logo titleFont">
+        return `<div class="logo titleFont hoverable">
                     <a href="index.html">
                         <div class="headerLogo">
                             <img src="public/images/logo.png" alt="Logo">
@@ -421,13 +421,13 @@ class NavBar {
     }
 
     initLoginBtn() {
-        return `<li class="login">
+        return `<li class="login hoverable">
                     <a href="login.html">${messages.loginTitle}</a>
                 </li>`;
     }
 
     initLogoutBtn() {
-        return `<li class="logout">
+        return `<li class="logout hoverable">
                     <a href="#">${messages.logoutBtn}</a>
                 </li>`;
     }
@@ -439,7 +439,7 @@ class NavBar {
         const itemNav = this.userRole === "admin" ? this.adminNavs : this.itemNavs;
         const item = this.userRole === "admin" ? adminNavItems : genNavItems;
         for (let i = 0; i < item.length; i++) {
-            const menuItem = `<li><a href=${itemNav[i]}>${item[i]}</a></li>`;
+            const menuItem = `<li class="hoverable"><a href=${itemNav[i]}>${item[i]}</a></li>`;
             menu.innerHTML+= menuItem;
         }
 
@@ -453,22 +453,51 @@ class NavBar {
     }
 
     initNavBar(loggedIn) {
-        const logoWrap = `<div class="logo titleFont">
-                            <a href="index.html">
-                                <div class="headerLogo">
-                                    <img src="public/images/logo.png" alt="Logo">
-                                </div>
-                                ${messages.appName}
-                            </a>
-                        </div>`;
-
-        document.getElementById("header").innerHTML += logoWrap;
+        document.getElementById("header").innerHTML += this.initLogo();
         document.getElementById("header").append(this.initMenu(loggedIn));      
+    }
+}
+
+class CustomCursor {
+    constructor() {
+        this.insertCustomCur();
+        this.cursor = document.getElementById("customCur");
+        this.initMouseMove();
+        this.initHoverable();
+    }
+
+    initMouseMove() {
+        // Move cursor with mouse
+        document.addEventListener("mousemove", (event) => {
+            this.cursor.style.left = `${event.clientX - 10}px`;  // Adjust x position
+            this.cursor.style.top = `${event.clientY - 20}px`;  // Adjust y position to center cursor
+        });
+    }
+
+    initHoverable() {
+        // Add hover effect to all elements with the "hoverable" class
+        document.querySelectorAll(".hoverable").forEach(element => {
+            element.addEventListener("mouseenter", () => {
+                document.body.style.cursor = "none";  // Hide default cursor when hovering over hoverable items
+                this.cursor.style.display = "block";  // Show custom cursor when hovering
+            });
+            element.addEventListener("mouseleave", () => {
+                document.body.style.cursor = "auto";  // Restore default cursor when not hovering over hoverable items
+                this.cursor.style.display = "none";  // Hide custom cursor when not hovering
+            });
+        });
+    }
+
+    insertCustomCur() {
+        const customCur = document.createElement('div');
+        customCur.id = "customCur";
+        document.body.appendChild(customCur);
     }
 }
 
 class UI {
     constructor(currLocation) {
+        this.customCur = new CustomCursor();
         this.navBar = new NavBar();
         this.btnController = new ButtonController();
         this.session = new SessionController();
@@ -563,7 +592,6 @@ class UI {
     }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-    document.getElementsByTagName("body")[0].style.cursor = "url('public/cursor/LOTR Gandalf the Grey & Wizard Staff--cursor--SweezyCursors.cur'), auto";
+document.addEventListener("DOMContentLoaded", () => {    
     new UI(window.location);
 });

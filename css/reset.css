@@ -33,6 +33,24 @@ body {
     font-weight: 400;
     font-style: normal;
     background-color: #fffaf1;
+    cursor: url('../public/cursor/default.cur'), auto !important;  /* Default cursor */
+}
+
+/* Custom cursor (GIF) */
+#customCur {
+    position: fixed;
+    width: 80px;  /* Adjust as needed */
+    height: 180px;
+    background-image: url('../public/cursor/pointer.gif');  
+    background-size: contain;
+    background-repeat: no-repeat;
+    pointer-events: none; /* Prevent interactions */
+    display: none; /* Hidden by default */
+    transform: translate(-40%, -10%);  /* Center cursor */
+    z-index: 1000; /* Ensure it's above everything */
+}
+.hoverable {
+    cursor: none !important;  /* Hide default cursor on hoverable items */
 }
 
 .wrap {

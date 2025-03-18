@@ -17,7 +17,6 @@
 
 #favoritesWrap {
     width: 90%;
-    /* padding: 0 100px; */
     margin: 0 auto;
     position: relative;
     overflow: hidden; /* Hides overflow categories */
@@ -48,7 +47,7 @@
 
 .btn {
     all: unset;
-    font-size: 30px;
+    font-size: 50px;
     color: #661FE1;
     border: none;
     cursor: pointer;
