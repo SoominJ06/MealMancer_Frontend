@@ -1,6 +1,14 @@
 /** String Constants */
 // Session Storage
 const userInfo = "userInfo";
+// Navitems
+const backendUrl = "https://meal-mancer-api-q3zh9.ondigitalocean.app/";
+const indexPage = "index.html";
+const loginPage = "login.html";
+const signupPage = "signup.html";
+const cookingPage = "cookingConjuration.html";
+const favPage = "favorites.html";
+const userListPage = "userList.html";
 
 class SessionController {
     constructor() {
@@ -41,7 +49,7 @@ class RecipeAPI {
         this.xhttp = new XMLHttpRequest();
         this.outputController = new OutputController();
         this.session = new SessionController();
-        this.baseUrl = "https://meal-mancer-api-q3zh9.ondigitalocean.app/";
+        this.baseUrl = backendUrl;
     }
 
     getRecipe(ingredients) {
@@ -80,7 +88,7 @@ class RecipeAPI {
                 if (this.xhttp.status === 200) {
                     // Store user info in session storage
                     this.session.setUserInfo(response.role, response.tokens, response.jwt);
-                    window.location.href = "index.html";
+                    window.location.href = indexPage;
                 } else {
                     this.outputController.displayErrorPopup(response.message);
                 }
@@ -103,7 +111,7 @@ class RecipeAPI {
                 const response = JSON.parse(this.xhttp.responseText);
                 if (this.xhttp.status === 200) {
                     this.session.setUserInfo(response.role, response.tokens, response.jwt);
-                    window.location.href = "index.html"
+                    window.location.href = indexPage
                 } else {
                     this.outputController.displayErrorPopup(response.message);
                 }
@@ -409,8 +417,8 @@ class NavBar {
     constructor() {
         this.session = new SessionController();
         this.userRole = this.session.getUserRole();
-        this.itemNavs = ["favorites.html", "cookingConjuration.html"];
-        this.adminNavs = ["userList.html", "favorites.html", "cookingConjuration.html"];
+        this.itemNavs = [favPage, cookingPage];
+        this.adminNavs = [userListPage, favPage, cookingPage];
     }
 
     initLogo() {
@@ -535,13 +543,13 @@ class UI {
             document.getElementById("title").innerHTML = messages.adminIndexTitle;
             document.getElementById("desc").innerHTML = "";
             document.getElementById("goCook").innerHTML = messages.goToUserList;
-            document.getElementById("goCook").href = "userList.html";
+            document.getElementById("goCook").href = userListPage;
             return;
         }
         document.getElementById("title").innerHTML = messages.indexTitle;
         document.getElementById("desc").innerHTML = messages.indexDesc;
         document.getElementById("goCook").innerHTML = messages.startCooking;
-        document.getElementById("goCook").href = this.loggedIn ? "cookingConjuration.html" : "login.html";
+        document.getElementById("goCook").href = this.loggedIn ? cookingPage : loginPage;
     }
 
     initLogin() {
@@ -565,7 +573,7 @@ class UI {
 
     initMagic() {
         if (!this.loggedIn) {
-            window.location.href = "login.html";
+            window.location.href = loginPage;
             return;
         }
         document.getElementById("title").innerHTML = messages.castTitle;
@@ -578,7 +586,7 @@ class UI {
 
     initFavs() {
         if (!this.loggedIn) {
-            window.location.href = "login.html";
+            window.location.href = loginPage;
             return;
         }
         document.getElementById("title").innerHTML = messages.favTitle;
@@ -587,7 +595,7 @@ class UI {
 
     initUserList() {
         if (this.userRole !== "admin") {
-            window.location.href = "index.html";
+            window.location.href = indexPage;
             alert(messages.notAdmin)
             return;
         }
