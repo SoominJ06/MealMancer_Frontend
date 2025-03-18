@@ -481,15 +481,15 @@ class UI {
     // Initializes UI with corresponding page
     init(currLocation) {
         const currPage = currLocation.pathname;
-        if (currPage.includes("login")) {
+        if (currPage.toLowerCase().includes("login")) {
             this.initLogin();
-        } else if (currPage.includes("signup")) {
+        } else if (currPage.toLowerCase().includes("signup")) {
             this.initSignup();
-        } else if (currPage.includes("cooking")) {
+        } else if (currPage.toLowerCase().includes("cooking")) {
             this.initMagic();
-        } else if (currPage.includes("favorites")) {
+        } else if (currPage.toLowerCase().includes("favorites")) {
             this.initFavs();
-        } else if (currPage.includes("userList")) {
+        } else if (currPage.toLowerCase().includes("userlist")) {
             this.initUserList();
         } else {
             this.initIndex();
