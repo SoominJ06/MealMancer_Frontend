@@ -9,6 +9,18 @@ const signupPage = "signup.html";
 const cookingPage = "cookingConjuration.html";
 const favPage = "favorites.html";
 const userListPage = "userList.html";
+const DOMContentLoadConst = "DOMContentLoaded";
+const methodPost = "POST";
+const methodGet = "GET";
+const methodPut = "PUT";
+const methodDelete = "DELETE";
+const contentType = "Content-Type";
+const appJson = "application/json";
+const loginEndpoint = "login";
+const signupEndpoint = "signup";
+const favEndpoint = "favorites";
+const userListEndpoint = "userlist";
+const cookingEndpoint = "cooking";
 
 class SessionController {
     constructor() {
@@ -77,9 +89,9 @@ class RecipeAPI {
     }
 
     login(email, pw) {
-        this.xhttp.open("POST", this.baseUrl + "login", true);
+        this.xhttp.open(methodPost, this.baseUrl + loginEndpoint, true);
         this.xhttp.withCredentials = true;
-        this.xhttp.setRequestHeader("Content-Type", "application/json");
+        this.xhttp.setRequestHeader(contentType, appJson);
         const requestData = JSON.stringify({ email: email, password: pw });
         this.xhttp.send(requestData);   
         this.xhttp.onreadystatechange = () => { 
@@ -101,9 +113,9 @@ class RecipeAPI {
     }
 
     signup(email, pw) {
-        this.xhttp.open("POST", this.baseUrl + "signup", true);
+        this.xhttp.open(methodPost, this.baseUrl + signupEndpoint, true);
         this.xhttp.withCredentials = true;
-        this.xhttp.setRequestHeader("Content-Type", "application/json");
+        this.xhttp.setRequestHeader(contentType, appJson);
         const requestData = JSON.stringify({ email: email, password: pw });
         this.xhttp.send(requestData);   
         this.xhttp.onreadystatechange = () => { 
@@ -521,15 +533,15 @@ class UI {
     // Initializes UI with corresponding page
     init(currLocation) {
         const currPage = currLocation.pathname;
-        if (currPage.toLowerCase().includes("login")) {
+        if (currPage.toLowerCase().includes(loginEndpoint)) {
             this.initLogin();
-        } else if (currPage.toLowerCase().includes("signup")) {
+        } else if (currPage.toLowerCase().includes(signupEndpoint)) {
             this.initSignup();
-        } else if (currPage.toLowerCase().includes("cooking")) {
+        } else if (currPage.toLowerCase().includes(cookingEndpoint)) {
             this.initMagic();
-        } else if (currPage.toLowerCase().includes("favorites")) {
+        } else if (currPage.toLowerCase().includes(favEndpoint)) {
             this.initFavs();
-        } else if (currPage.toLowerCase().includes("userlist")) {
+        } else if (currPage.toLowerCase().includes(userListEndpoint)) {
             this.initUserList();
         } else {
             this.initIndex();
@@ -604,6 +616,6 @@ class UI {
     }
 }
 
-document.addEventListener("DOMContentLoaded", () => {    
+document.addEventListener(DOMContentLoadConst, () => {    
     new UI(window.location);
 });
