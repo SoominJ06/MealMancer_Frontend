@@ -34,6 +34,7 @@
 
 .favoriteBg {
     width: 100%;
+    height: fit-content;
     padding: 50px;
     background: url(../public/images/scroll_vertical.png) no-repeat center center;
     background-size: 100% 100%;
