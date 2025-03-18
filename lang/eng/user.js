@@ -32,6 +32,7 @@ const messages = {
 
     // favorites
     favTitle: "Favorite Recipes",
+    noFavsFound: "There are no favorite recipes",
 
     // user list
     userListTitle: "Users",

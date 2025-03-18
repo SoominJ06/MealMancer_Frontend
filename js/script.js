@@ -204,13 +204,7 @@ class OutputController {
 
         document.getElementById("addToFav").style.display = "block";
 
-        let counter = 1;
-        let maxAttempts = 10;  // Prevent infinite loop
-
-        while (document.getElementById("outputBg").clientHeight / document.getElementById("outputWrap").clientHeight < 1.12 && counter < maxAttempts) {
-            counter++;
-            document.getElementById("outputWrap").style.padding = `${100 + (10 * counter)}px 80px`;
-        }
+        this.formatPadding(document.getElementById("outputBg"), document.getElementById("outputWrap"));
     }
 
     displayUserList(users) {
@@ -253,90 +247,67 @@ class OutputController {
         $('#userList').DataTable();
     }
 
+    formatPadding(container, content) {
+        let counter = 1;
+        let maxAttempts = 10;
+
+        while (container.clientHeight / content.clientHeight < 1.13 && counter < maxAttempts) {
+            counter++;
+            content.style.padding = `${100 + (10 * counter)}px 80px`;
+        }
+    }
+
     displayFavorites(favorites) {
         const favoritesContainer = document.getElementById("favorites");
-
+    
         favoritesContainer.innerHTML = "";
-
+    
         if (favorites.length === 0 || favorites === null) {
-            console.log("Empty")
+            favoritesContainer.innerHTML = messages.noFavsFound;
             return;
         }
-
+    
         favorites.forEach(recipe => {
             const favoriteDivWrap = document.createElement("div");
             favoriteDivWrap.className = "favoriteBg";
-
+    
             const favoriteDiv = document.createElement("div");
             favoriteDiv.className = "favorite";
-
+    
             let content = `<div class="title titleFont" id="recipeTitle">${recipe.title}</div>
-                        <div class="ingredients divide">
-                            <div class="desc headerFont" id="ingredientsTitle">${messages.ingredientsTitle}</div>
-                            <ul id="ingredientList">`
-
+                            <div class="ingredients divide">
+                                <div class="desc headerFont" id="ingredientsTitle">${messages.ingredientsTitle}</div>
+                                <ul id="ingredientList">`;
+    
             recipe.ingredients.forEach(ingredient => {
                 content += `<li>${ingredient}</li>`;
             });
-
-            content +=     `</ul>
+    
+            content += `</ul>
                         </div>
                         <div class="instructions divide">
                             <div class="desc headerFont" id="instructionsTitle">${messages.instructionsTitle}</div>
-                            <ul id="instructionList">`
-
+                            <ul id="instructionList">`;
+    
             recipe.methods.forEach(method => {
                 content += `<li>${method}</li>`;
             });
-
-            content +=     `</ul>
+    
+            content += `</ul>
                         </div>`;
-
-            
+    
             favoriteDiv.innerHTML = content;
             favoriteDivWrap.appendChild(favoriteDiv);
             favoritesContainer.appendChild(favoriteDivWrap);
             
-            let counter = 1;
-            let maxAttempts = 10;  // Prevent infinite loop
-
-            while (favoriteDivWrap.clientHeight / favoriteDiv.clientHeight < 1.13 && counter < maxAttempts) {
-                counter++;
-                favoriteDiv.style.padding = `${100 + (10 * counter)}px 80px`;
-            }
+            this.formatPadding(favoriteDivWrap, favoriteDiv);
         });
-
-        const prevBtn = document.querySelector('.prev');
-        const nextBtn = document.querySelector('.next');
-
+    
         favoritesContainer.style.width = `${favorites.length * 100}%`;
-        let index = 0;
-
-        // Event listener for next button
-        nextBtn.addEventListener('click', () => {
-            if (index < favorites.length - 1) {
-                index++;
-            } else {
-                index = 0; // Loop back to the first page
-            }
-            this.displayNextFav(index);
-        });
-
-        // Event listener for previous button
-        prevBtn.addEventListener('click', () => {
-            if (index > 0) {
-                index--;
-            } else {
-                index = favorites.length - 1; // Loop back to the last page
-            }
-            this.displayNextFav(index);
-        });
-
-        // Disable buttons if there are not enough quizzes
-        if (favorites.length > 1) {
-            nextBtn.style.display = 'block';
-            prevBtn.style.display = 'block';
-        }
+    
+        // Use ButtonController to initialize navigation
+        const buttonController = new ButtonController();
+        buttonController.initFavNavigation(document.querySelector('.prev'), document.querySelector('.next'), favorites.length, this.displayNextFav);
     }
 
     displayNextFav(index) {
@@ -399,6 +370,35 @@ class ButtonController {
             // Add to fav list
         });
     }
+
+    initFavNavigation(prevBtn, nextBtn, favoritesLength, displayNextFav) {
+        let index = 0;
+    
+        nextBtn.addEventListener('click', () => {
+            if (index < favoritesLength - 1) {
+                index++;
+            } else {
+                index = 0; // Loop back to the first page
+            }
+            displayNextFav(index);
+        });
+    
+        prevBtn.addEventListener('click', () => {
+            if (index > 0) {
+                index--;
+            } else {
+                index = favoritesLength - 1; // Loop back to the last page
+            }
+            displayNextFav(index);
+        });
+    
+        // Show buttons only if there are multiple favorites
+        if (favoritesLength > 1) {
+            nextBtn.style.display = 'block';
+            prevBtn.style.display = 'block';
+        }
+    }
+    
 }
 
 class NavBar {
