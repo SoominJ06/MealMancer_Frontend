@@ -1,17 +1,21 @@
+/** String Constants */
+// Session Storage
+const userInfo = "userInfo";
+
 class SessionController {
     constructor() {
-        this.session = JSON.parse(sessionStorage.getItem("userInfo")) || {};
+        this.session = JSON.parse(sessionStorage.getItem(userInfo)) || {};
     }
 
     setUserInfo(role, tokens, jwt) {
         this.session = { role, tokens, jwt };
-        sessionStorage.setItem("userInfo", JSON.stringify(this.session));
+        sessionStorage.setItem(userInfo, JSON.stringify(this.session));
     }
 
     reduceToken() {
         if (this.session.tokens > 0) { // Prevent negative tokens
             this.session.tokens--;
-            sessionStorage.setItem("userInfo", JSON.stringify(this.session)); // Save the update
+            sessionStorage.setItem(userInfo, JSON.stringify(this.session)); // Save the update
         }
     }
 
@@ -28,7 +32,7 @@ class SessionController {
     }
 
     clearSession() {
-        sessionStorage.removeItem("userInfo");
+        sessionStorage.removeItem(userInfo);
     }
 }
 
