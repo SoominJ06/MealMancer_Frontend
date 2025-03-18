@@ -49,12 +49,13 @@ body {
     transform: translate(-40%, -10%);  /* Center cursor */
     z-index: 1000; /* Ensure it's above everything */
 }
+
 .hoverable {
     cursor: none !important;  /* Hide default cursor on hoverable items */
 }
 
 .wrap {
-    min-width: 100vw;
+    width: 100vw;
     min-height: 100svh;
 }
 
@@ -82,7 +83,7 @@ header {
     justify-content: center;
     align-items: center;
     gap: 20px;
-    cursor: pointer;
+    cursor: none;
 }
 
 .headerLogo {
@@ -96,18 +97,19 @@ header {
     align-items: center;
 }
 
+.logo:hover a {
+    color: #FFC857;    
+}
+
 .navBar {
     font-size: 30px;
     display: flex;
     gap: 40px;
 }
 
-.navBar li {
-    cursor: pointer;
-}
-
 .navBar li:hover a {
     color: #661FE1;
+    cursor: none;
 }
 
 /* Input field styling */
@@ -194,7 +196,7 @@ input:focus {
     font-family: "Martel", serif;
     font-size: 20px;
     transition-duration: 0.3s;
-    cursor: pointer;
+    cursor: none;
 }
 
 #closeErrorPopupBtn:hover {

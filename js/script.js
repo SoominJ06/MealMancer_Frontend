@@ -65,27 +65,27 @@ class RecipeAPI {
     }
 
     login(email, pw) {
-        // this.xhttp.open("POST", this.baseUrl + "login", true);
-        // this.xhttp.withCredentials = true;
-        // this.xhttp.setRequestHeader("Content-Type", "application/json");
-        // const requestData = JSON.stringify({ email: email, password: pw });
-        // this.xhttp.send(requestData);   
-        // this.xhttp.onreadystatechange = () => { 
-        //     if (this.xhttp.readyState === 4) {
-        //         const response = JSON.parse(this.xhttp.responseText);
-        //         if (this.xhttp.status === 200) {
-        //             // Store user info in session storage
-        //             this.session.setUserInfo(response.role, response.tokens, response.jwt);
-        //             window.location.href = "index.html";
-        //         } else {
-        //             this.outputController.displayErrorPopup(response.message);
-        //         }
-        //     }
-        // }
+        this.xhttp.open("POST", this.baseUrl + "login", true);
+        this.xhttp.withCredentials = true;
+        this.xhttp.setRequestHeader("Content-Type", "application/json");
+        const requestData = JSON.stringify({ email: email, password: pw });
+        this.xhttp.send(requestData);   
+        this.xhttp.onreadystatechange = () => { 
+            if (this.xhttp.readyState === 4) {
+                const response = JSON.parse(this.xhttp.responseText);
+                if (this.xhttp.status === 200) {
+                    // Store user info in session storage
+                    this.session.setUserInfo(response.role, response.tokens, response.jwt);
+                    window.location.href = "index.html";
+                } else {
+                    this.outputController.displayErrorPopup(response.message);
+                }
+            }
+        }
         
         // For testing admin
-        this.session.setUserInfo("admin", 20, "jwt");
-        window.location.href = "index.html";
+        // this.session.setUserInfo("admin", 20, "jwt");
+        // window.location.href = "index.html";
     }
 
     signup(email, pw) {
@@ -497,13 +497,13 @@ class CustomCursor {
 
 class UI {
     constructor(currLocation) {
-        this.customCur = new CustomCursor();
         this.navBar = new NavBar();
         this.btnController = new ButtonController();
         this.session = new SessionController();
         this.userRole = this.session.getUserRole();
         this.loggedIn = this.userRole ? true : false;
         this.init(currLocation);
+        this.customCur = new CustomCursor();
     }
 
     // Initializes UI with corresponding page
