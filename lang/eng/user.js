@@ -5,7 +5,7 @@ const messages = {
     // index
     indexTitle: "Welcome to Meal Mancer!",
     adminIndexTitle: "Welcome, admin",
-    indexDesc: "Describe App here",
+    indexDesc: "Tell the Meal Mancer what ingredients you have and it will conjure a recipe for you!",
     startCooking: "CONJURE RECIPE →",
     goToUserList: "See User list →",
 

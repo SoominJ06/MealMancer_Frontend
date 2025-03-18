@@ -3,8 +3,10 @@
 
 Fonts Used: Google Fonts
 
-Title - IM Fell DW Pica
+Title - Uncial Antiqua
 
-Headers - Macondo Swash Caps
+Headers - Trochut
+
+Buttons - Macondo Swash Caps
 
 General - Martel
