@@ -564,5 +564,6 @@ class UI {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+    document.getElementsByTagName("body")[0].style.cursor = "url('public/cursor/LOTR Gandalf the Grey & Wizard Staff--cursor--SweezyCursors.cur'), auto";
     new UI(window.location);
 });
