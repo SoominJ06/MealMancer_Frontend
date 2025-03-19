@@ -89,3 +89,10 @@
 #addToFav:hover {
     box-shadow: inset 3px 3px 10px rgba(0, 0, 0, 0.6);
 }
+
+/* Loading icon */
+.loading {
+    font-size: 1.5rem;
+    text-align: center;
+    padding: 20px;
+}

@@ -189,6 +189,9 @@ class RecipeAPI {
         // check if session has expired or not
         this.checkSession();
 
+        // Show loading spinner
+        this.outputController.displayLoadingIcon("outputBg");
+
         // actual fetch
         this.xhttp.open(methodGet, this.baseUrl + "generate/?ingredients=" + ingredients, true);
         this.xhttp.withCredentials = true; // for Cookies
@@ -202,6 +205,7 @@ class RecipeAPI {
                 } else {
                     this.outputController.displayErrorPopup(messages.error);
                 }
+                this.outputController.hideLoadingIcon("outputBg"); // Hide loading icon
             }
         }
     }
@@ -447,6 +451,18 @@ class OutputController {
         document.getElementById(addToFav).style.display = blockConst;
 
         this.formatPadding(document.getElementById(outputBg), document.getElementById(outputWrap));
+    }
+
+    // CATHERINE MEMEMEMMEMEMEMEMEME
+    displayLoadingIcon(output) {
+        document.getElementById("loadingSpinner").style.display = "block";
+        document.getElementById(output).style.display = "none";
+    }
+    
+    // CATHERINE MEMEMEMMEMEMEMEMEME
+    hideLoadingIcon(output) {
+        document.getElementById("loadingSpinner").style.display = "none";
+        document.getElementById(output).style.display = "block";
     }
 
     /**
