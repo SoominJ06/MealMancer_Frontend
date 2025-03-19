@@ -394,12 +394,12 @@ class OutputController {
 
     /**
      * Displays the error popup with the error message
-     * @param {*} errorMsg 
+     * @param {*} errorDetails 
      */
-    displayErrorPopup(errorMsg) {
+    displayErrorPopup(errorDetails) {
         document.getElementById(closeErrorPopup).innerHTML = messages.ok;
-        document.getElementById(errorMsg).textContent = messages.errorTitle;
-        document.getElementById(errorDesc).innerHTML = errorMsg
+        document.getElementById(errorMsg).innerHTML = messages.errorTitle;
+        document.getElementById(errorDesc).innerHTML = errorDetails
         document.getElementById(errorPopup).style.opacity = one;
         document.getElementById(errorPopup).style.visibility = visibleConst;
         document.getElementById(closeErrorPopup).addEventListener(clickConst, () => {
