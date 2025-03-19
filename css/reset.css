@@ -212,3 +212,31 @@ input:focus {
     box-shadow: inset 3px 3px 10px rgba(0, 0, 0, 0.4);
     transform: scale(0.99);
 }
+
+/* Loading icon */
+.loader {
+    width: 100vw;
+    height: 100svh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    z-index: -99;
+}
+
+.loading {
+    background: url(../public/images/loading.png) no-repeat center center;
+    background-size: contain;
+    width: 500px;
+    height: 500px;
+    animation: spin 8s linear infinite;
+    display: none;
+}
+  
+@keyframes spin {
+    0% { transform: rotate(0deg); filter: hue-rotate(180deg); filter: drop-shadow(0 0 5px #C0F5FA); }
+    50% { filter: drop-shadow(0 0 5px #FFC857); }
+    100% { transform: rotate(360deg); filter: hue-rotate(-180deg); filter: drop-shadow(0 0 5px #C0F5FA); }
+}

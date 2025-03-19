@@ -190,7 +190,7 @@ class RecipeAPI {
         this.checkSession();
 
         // Show loading spinner
-        this.outputController.displayLoadingIcon("outputBg");
+        this.outputController.displayLoadingIcon();
 
         // actual fetch
         this.xhttp.open(methodGet, this.baseUrl + "generate/?ingredients=" + ingredients, true);
@@ -205,7 +205,8 @@ class RecipeAPI {
                 } else {
                     this.outputController.displayErrorPopup(messages.error);
                 }
-                this.outputController.hideLoadingIcon("outputBg"); // Hide loading icon
+                // Hide loading icon
+                this.outputController.hideLoadingIcon(); 
             }
         }
     }
@@ -454,15 +455,17 @@ class OutputController {
     }
 
     // CATHERINE MEMEMEMMEMEMEMEMEME
-    displayLoadingIcon(output) {
-        document.getElementById("loadingSpinner").style.display = "block";
-        document.getElementById(output).style.display = "none";
+    displayLoadingIcon() {
+        document.getElementById("loadingSpinner").style.display = "flex";
+        document.getElementById("loadingSpinner").style.zIndex = 99;
+        document.getElementById("loader").style.display = "none";
     }
     
     // CATHERINE MEMEMEMMEMEMEMEMEME
-    hideLoadingIcon(output) {
+    hideLoadingIcon() {
         document.getElementById("loadingSpinner").style.display = "none";
-        document.getElementById(output).style.display = "block";
+        document.getElementById("loadingSpinner").style.zIndex = -99;
+        document.getElementById("loader").style.display = "flex";
     }
 
     /**
