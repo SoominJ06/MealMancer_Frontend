@@ -271,6 +271,7 @@ class RecipeAPI {
         this.xhttp.onreadystatechange = () => { 
             if (this.xhttp.readyState === 4) {
                 const response = JSON.parse(this.xhttp.responseText);
+                console.log(response);
                 if (this.xhttp.status === 200) {
                     // Clear session
                     this.session.clearSession();
@@ -784,7 +785,11 @@ class NavBar {
      */
     initNavBar(loggedIn) {
         document.getElementById(headerConst).innerHTML += this.initLogo();
-        document.getElementById(headerConst).append(this.initMenu(loggedIn));
+        document.getElementById(headerConst).append(this.initMenu(loggedIn));   
+        if (loggedIn) {
+            const buttonController = new ButtonController();
+            buttonController.initLogoutBtn();   
+        }
     }
 }
 
@@ -882,9 +887,6 @@ class UI {
             this.initIndex();
         }
         this.navBar.initNavBar(this.loggedIn);
-        if (this.loggedIn) {
-            this.btnController.initLogoutBtn();   
-        }
     }
 
     /**
