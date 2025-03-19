@@ -107,6 +107,10 @@ header {
     gap: 40px;
 }
 
+.navBar button {
+    all: unset;
+}
+
 .navBar li:hover a {
     color: #661FE1;
     cursor: none;
