@@ -463,7 +463,7 @@ class OutputController {
     // CATHERINE MEMEMEMMEMEMEMEMEME
     hideLoadingIcon() {
         document.getElementById("loader").style.zIndex = -99;
-        document.getElementById("loader").style.display = "hide";
+        document.getElementById("loader").style.display = "none";
     }
 
     /**
