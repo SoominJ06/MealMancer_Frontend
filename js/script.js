@@ -456,16 +456,14 @@ class OutputController {
 
     // CATHERINE MEMEMEMMEMEMEMEMEME
     displayLoadingIcon() {
-        document.getElementById("loadingSpinner").style.display = "flex";
-        document.getElementById("loadingSpinner").style.zIndex = 99;
-        document.getElementById("loader").style.display = "none";
+        document.getElementById("loader").style.zIndex = 99;
+        document.getElementById("loader").style.display = "flex";
     }
     
     // CATHERINE MEMEMEMMEMEMEMEMEME
     hideLoadingIcon() {
-        document.getElementById("loadingSpinner").style.display = "none";
-        document.getElementById("loadingSpinner").style.zIndex = -99;
-        document.getElementById("loader").style.display = "flex";
+        document.getElementById("loader").style.zIndex = -99;
+        document.getElementById("loader").style.display = "hide";
     }
 
     /**
