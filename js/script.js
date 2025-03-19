@@ -752,7 +752,7 @@ class NavBar {
         if (loggedIn) {
             menu.innerHTML += (this.initLogoutBtn());
             const buttonController = new ButtonController();
-            buttonController.initLoginBtn();
+            buttonController.initLogoutBtn();
         } else {
             menu.innerHTML += (this.initLoginBtn());
         }
