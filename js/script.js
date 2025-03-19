@@ -1,6 +1,7 @@
 /** String Constants */
 // Session Storage
 const userInfo = "userInfo";
+const adminConst = "admin";
 
 // Navitems
 const backendUrl = "https://meal-mancer-api-q3zh9.ondigitalocean.app/";
@@ -52,8 +53,27 @@ const goCook = "goCook";
 const descConst = "desc";
 const loginDir = "loginDir";
 const signupDir = "signupDir";
-const customCur = "customCur";
+const customCurConst = "customCur";
 const headerConst = "header";
+const navBarConst = "navBar";
+
+// Styling
+const zero = "0";
+const one = "1";
+const hiddenConst = "hidden";
+const visibleConst = "visible";
+const noneConst = "none";
+const blockConst = "block";
+const headerFont = "headerFont";
+const autoConst = "auto";
+const divConst = "div";
+const ulConst = "ul";
+
+// Event Listeners
+const mouseleave = "mouseleave";
+const mouseenter = "mouseenter";
+const mousemove = "mousemove";
+const clickConst = "click";
 
 class SessionController {
     constructor() {
@@ -215,17 +235,17 @@ class OutputController {
 
     // Error popup
     hideErrorPopup() {
-        document.getElementById(errorPopup).style.opacity = "0";
-        document.getElementById(errorPopup).style.visibility = "hidden";
+        document.getElementById(errorPopup).style.opacity = zero;
+        document.getElementById(errorPopup).style.visibility = hiddenConst;
     }
 
     displayErrorPopup(errorMsg) {
         document.getElementById(closeErrorPopup).innerHTML = messages.ok;
         document.getElementById(errorMsg).textContent = messages.errorTitle;
         document.getElementById(errorDesc).innerHTML = errorMsg
-        document.getElementById(errorPopup).style.opacity = "1";
-        document.getElementById(errorPopup).style.visibility = "visible";
-        document.getElementById(closeErrorPopup).addEventListener("click", () => {
+        document.getElementById(errorPopup).style.opacity = one;
+        document.getElementById(errorPopup).style.visibility = visibleConst;
+        document.getElementById(closeErrorPopup).addEventListener(clickConst, () => {
             this.hideErrorPopup();
         })
     }
@@ -236,15 +256,15 @@ class OutputController {
         document.getElementById(ingredientList).innerHTML = "";
         document.getElementById(instructionsTitle).innerHTML = "";
         document.getElementById(instructionList).innerHTML = "";
-        document.getElementById(addToFav).style.display = "none";
-        document.getElementById(outputBg).style.display = "none";
+        document.getElementById(addToFav).style.display = noneConst;
+        document.getElementById(outputBg).style.display = noneConst;
     }
 
     // Displaying recipe
     displayRecipe(title, ingredients, instructions) {
         this.emptyRecipeOutput();
 
-        document.getElementById(outputBg).style.display = "block";
+        document.getElementById(outputBg).style.display = blockConst;
 
         // document.getElementById("outputWrap").style.display = "block";
         document.getElementById(recipeTitle).innerHTML = title;
@@ -259,7 +279,7 @@ class OutputController {
             document.getElementById(instructionList).innerHTML += `<li>${element}</li>`;
         });
 
-        document.getElementById(addToFav).style.display = "block";
+        document.getElementById(addToFav).style.display = blockConst;
 
         this.formatPadding(document.getElementById(outputBg), document.getElementById(outputWrap));
     }
@@ -325,10 +345,10 @@ class OutputController {
         }
     
         favorites.forEach(recipe => {
-            const favoriteDivWrap = document.createElement("div");
+            const favoriteDivWrap = document.createElement(divConst);
             favoriteDivWrap.className = favoriteBg;
     
-            const favoriteDiv = document.createElement("div");
+            const favoriteDiv = document.createElement(divConst);
             favoriteDiv.className = favorite;
     
             let content = `<div class="title titleFont" id="recipeTitle">${recipe.title}</div>
@@ -380,7 +400,7 @@ class ButtonController {
     }
 
     initLoginBtn() {
-        document.getElementById(loginBtn).addEventListener("click", (e) => {
+        document.getElementById(loginBtn).addEventListener(clickConst, (e) => {
             e.preventDefault();
             const email = document.getElementById(emailInput).value;
             const pw = document.getElementById(pwInput).value;
@@ -389,7 +409,7 @@ class ButtonController {
     }
 
     initSignupBtn() {
-        document.getElementById(signupBtn).addEventListener("click", (e) => {
+        document.getElementById(signupBtn).addEventListener(clickConst, (e) => {
             e.preventDefault();
             const email = document.getElementById(emailInput).value;
             const pw = document.getElementById(pwInput).value;
@@ -403,7 +423,7 @@ class ButtonController {
     }
 
     initConjureBtn(tokensLeft) {
-        document.getElementById(conjureBtn).addEventListener("click", (e) => {
+        document.getElementById(conjureBtn).addEventListener(clickConst, (e) => {
             e.preventDefault();
             const input = document.getElementById(ingredientInput).value;
             if (this.inputValidator.isEmpty(input)) {
@@ -422,7 +442,7 @@ class ButtonController {
     }
 
     initFavBtn() {
-        document.getElementById(addToFav).addEventListener("click", (e) => {
+        document.getElementById(addToFav).addEventListener(clickConst, (e) => {
             e.preventDefault();
             // Add to fav list
         });
@@ -431,7 +451,7 @@ class ButtonController {
     initFavNavigation(prevBtn, nextBtn, favoritesLength, displayNextFav) {
         let index = 0;
     
-        nextBtn.addEventListener('click', () => {
+        nextBtn.addEventListener(clickConst, () => {
             if (index < favoritesLength - 1) {
                 index++;
             } else {
@@ -440,7 +460,7 @@ class ButtonController {
             displayNextFav(index);
         });
     
-        prevBtn.addEventListener('click', () => {
+        prevBtn.addEventListener(clickConst, () => {
             if (index > 0) {
                 index--;
             } else {
@@ -451,8 +471,8 @@ class ButtonController {
     
         // Show buttons only if there are multiple favorites
         if (favoritesLength > 1) {
-            nextBtn.style.display = 'block';
-            prevBtn.style.display = 'block';
+            nextBtn.style.display = blockConst;
+            prevBtn.style.display = blockConst;
         }
     }
     
@@ -490,11 +510,11 @@ class NavBar {
     }
 
     initMenu(loggedIn) {
-        const menu = document.createElement("ul");
-        menu.classList.add("navBar", "headerFont");
+        const menu = document.createElement(ulConst);
+        menu.classList.add(navBarConst, headerFont);
 
-        const itemNav = this.userRole === "admin" ? this.adminNavs : this.itemNavs;
-        const item = this.userRole === "admin" ? adminNavItems : genNavItems;
+        const itemNav = this.userRole === adminConst ? this.adminNavs : this.itemNavs;
+        const item = this.userRole === adminConst ? adminNavItems : genNavItems;
         for (let i = 0; i < item.length; i++) {
             const menuItem = `<li class="hoverable"><a href=${itemNav[i]}>${item[i]}</a></li>`;
             menu.innerHTML+= menuItem;
@@ -518,14 +538,14 @@ class NavBar {
 class CustomCursor {
     constructor() {
         this.insertCustomCur();
-        this.cursor = document.getElementById(customCur);
+        this.cursor = document.getElementById(customCurConst);
         this.initMouseMove();
         this.initHoverable();
     }
 
     initMouseMove() {
         // Move cursor with mouse
-        document.addEventListener("mousemove", (event) => {
+        document.addEventListener(mousemove, (event) => {
             this.cursor.style.left = `${event.clientX - 10}px`;  // Adjust x position
             this.cursor.style.top = `${event.clientY - 20}px`;  // Adjust y position to center cursor
         });
@@ -534,20 +554,20 @@ class CustomCursor {
     initHoverable() {
         // Add hover effect to all elements with the "hoverable" class
         document.querySelectorAll(".hoverable").forEach(element => {
-            element.addEventListener("mouseenter", () => {
-                document.body.style.cursor = "none";  // Hide default cursor when hovering over hoverable items
-                this.cursor.style.display = "block";  // Show custom cursor when hovering
+            element.addEventListener(mouseenter, () => {
+                document.body.style.cursor = noneConst;  // Hide default cursor when hovering over hoverable items
+                this.cursor.style.display = blockConst;  // Show custom cursor when hovering
             });
-            element.addEventListener("mouseleave", () => {
-                document.body.style.cursor = "auto";  // Restore default cursor when not hovering over hoverable items
-                this.cursor.style.display = "none";  // Hide custom cursor when not hovering
+            element.addEventListener(mouseleave, () => {
+                document.body.style.cursor = autoConst;  // Restore default cursor when not hovering over hoverable items
+                this.cursor.style.display = noneConst;  // Hide custom cursor when not hovering
             });
         });
     }
 
     insertCustomCur() {
-        const customCur = document.createElement('div');
-        customCur.id = customCur;
+        const customCur = document.createElement(divConst);
+        customCur.id = customCurConst;
         document.body.appendChild(customCur);
     }
 }
@@ -584,7 +604,7 @@ class UI {
 
     // Page initializations
     initIndex() {
-        if (this.userRole === "admin") {
+        if (this.userRole === adminConst) {
             document.getElementById(titleConst).innerHTML = messages.adminIndexTitle;
             document.getElementById(descConst).innerHTML = "";
             document.getElementById(goCook).innerHTML = messages.goToUserList;
@@ -639,7 +659,7 @@ class UI {
     }
 
     initUserList() {
-        if (this.userRole !== "admin") {
+        if (this.userRole !== adminConst) {
             window.location.href = indexPage;
             alert(messages.notAdmin)
             return;
