@@ -265,9 +265,7 @@ class RecipeAPI {
     logout() {
         this.xhttp.open(methodPost, this.baseUrl + logoutEndpoint, true);
         this.xhttp.withCredentials = true;
-        // this.xhttp.setRequestHeader(contentType, appJson);
-        // const requestData = JSON.stringify({ email: email, password: pw });
-        // this.xhttp.send(requestData);   
+        this.xhttp.send();   
         this.xhttp.onreadystatechange = () => { 
             if (this.xhttp.readyState === 4) {
                 const response = JSON.parse(this.xhttp.responseText);
@@ -276,6 +274,7 @@ class RecipeAPI {
                     // Clear session
                     this.session.clearSession();
                     window.location.href = indexPage;
+                    alert(messages.loggedOut);
                 } else {
                     this.outputController.displayErrorPopup(response.message);
                 }

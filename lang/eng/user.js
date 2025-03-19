@@ -52,6 +52,9 @@ const messages = {
 
     // Session expired msg
     sessionExpired: "Your session has expired. Please log in again.",
+
+    // Logged out msg
+    loggedOut: "You are now logged out",
 };
 
 const genNavItems = [
