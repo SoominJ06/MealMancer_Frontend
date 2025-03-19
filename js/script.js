@@ -285,9 +285,9 @@ class InputValidator {
     constructor() {}
 
     /**
-     * Checks if the value is empty and trims the returned value
+     * Checks if the value is empty or consists of only whitespace
      * @param {*} value 
-     * @returns true if the value is empty, false otherwise
+     * @returns true if the value is empty or consists of only whitespace, false otherwise
      */
     isEmpty(value) {
         return !value || value.trim() === "";
