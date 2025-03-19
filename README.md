@@ -1,12 +1,19 @@
 # MealMancer_Frontend
 
 
-Fonts Used: Google Fonts
+## Fonts Used
+- Title - Uncial Antiqua
+- Headers - Trochut
+- Buttons - Macondo Swash Caps
+- General - Martel
 
-Title - Uncial Antiqua
+## Plugins
+- Data Tables: A JQuery plugin that provides advanced interaction features on tables
+  - [Official Website](https://datatables.net/)
 
-Headers - Trochut
-
-Buttons - Macondo Swash Caps
-
-General - Martel
+## Credits
+- Fonts: Google Fonts [Official Website](https://fonts.google.com/)
+- Icons: FontAwesome [Official Website](https://fontawesome.com/)
+- Cursor: Sweezy Cursors
+  - [Official Website](https://sweezy-cursors.com/)
+  - [Cursor Used in Meal Mancer](https://sweezy-cursors.com/cursor/blue-amp-pink-magic-staff-animated/)
