@@ -623,8 +623,8 @@ class ButtonController {
             e.preventDefault();
             const email = document.getElementById(emailInput).value;
             const pw = document.getElementById(pwInput).value;
-            const pwConfirm = document.getElementById(pwConfirm).value;
-            if (!this.inputValidator.confirmInput(pw, pwConfirm)) {
+            const pwConfirmed = document.getElementById(pwConfirm).value;
+            if (!this.inputValidator.confirmInput(pw, pwConfirmed)) {
                 this.xhr.outputController.displayErrorPopup(messages.pwMatchError);
                 return;
             }
