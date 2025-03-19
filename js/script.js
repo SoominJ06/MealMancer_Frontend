@@ -75,16 +75,32 @@ const mouseenter = "mouseenter";
 const mousemove = "mousemove";
 const clickConst = "click";
 
+/**
+ * SessionController class to manage the user session by 
+ * storing and retrieving user tokens, role, and JWT token.
+ */
 class SessionController {
+    /**
+     * Constructor to initialize the session object
+     */
     constructor() {
         this.session = JSON.parse(sessionStorage.getItem(userInfo)) || {};
     }
 
+    /**
+     * Sets the users role, tokens, and JWT token in the session storage
+     * @param {*} role
+     * @param {*} tokens 
+     * @param {*} jwt 
+     */
     setUserInfo(role, tokens, jwt) {
         this.session = { role, tokens, jwt };
         sessionStorage.setItem(userInfo, JSON.stringify(this.session));
     }
 
+    /**
+     * Reduces the token count by 1, while preventing negative tokens
+     */
     reduceToken() {
         if (this.session.tokens > 0) { // Prevent negative tokens
             this.session.tokens--;
@@ -92,24 +108,47 @@ class SessionController {
         }
     }
 
+    /**
+     * Getter for the user role from the session storage
+     * @returns the user role from the session storage
+     */
     getUserRole() {
         return this.session.role || null;
     }
 
+    /**
+     * Getter for the user tokens from the session storage
+     * @returns the user tokens from the session storage
+     */
     getUserTokens() {
         return this.session.tokens || null;
     }
 
+    /**
+     * Getter for the JWT token from the session storage
+     * @returns the JWT token from the session storage
+     */
     getJWTToken() {
         return this.session.jwt || null;
     }
 
+    /**
+     * Clears the session storage of the user information
+     */
     clearSession() {
         sessionStorage.removeItem(userInfo);
     }
 }
 
+/**
+ * RecipeAPI class to handle the API calls for the recipe generation.
+ * Takes in the user input and returns a recipe based on the input.
+ * Also handles the login and signup API calls.
+ */
 class RecipeAPI {
+    /**
+     * Constructor to initialize the RecipeAPI object
+     */
     constructor() {
         this.xhttp = new XMLHttpRequest();
         this.outputController = new OutputController();
@@ -117,6 +156,10 @@ class RecipeAPI {
         this.baseUrl = backendUrl;
     }
 
+    /**
+     * Retrieves a recipe based on the user input from the API
+     * @param string ingredients 
+     */
     getRecipe(ingredients) {
         // testing with dummy data
         const title = "avocado and tomato breakfast toast";
@@ -141,6 +184,12 @@ class RecipeAPI {
         // }
     }
 
+    /**
+     * Logs in the user based on the email and password, and stores the user
+     * info in the session storage.
+     * @param string email 
+     * @param string pw 
+     */
     login(email, pw) {
         this.xhttp.open(methodPost, this.baseUrl + loginEndpoint, true);
         this.xhttp.withCredentials = true;
@@ -165,6 +214,12 @@ class RecipeAPI {
         // window.location.href = "index.html";
     }
 
+    /**
+     * Signs up the user based on the email and password, and stores the user
+     * info in the session storage.
+     * @param string email 
+     * @param string pw 
+     */
     signup(email, pw) {
         this.xhttp.open(methodPost, this.baseUrl + signupEndpoint, true);
         this.xhttp.withCredentials = true;
@@ -184,6 +239,10 @@ class RecipeAPI {
         }
     }
 
+    /**
+     * Retrieves the list of users from the API and displays it in the table
+     * for admins to view.
+     */
     getUserList() {
         // Testing DataTable
         let dummy = [
@@ -195,6 +254,10 @@ class RecipeAPI {
         this.outputController.displayUserList(dummy);
     }
 
+    /**
+     * Retrieves the list of favorite recipes from the API and displays it
+     * for the user to view.
+     */
     getFavorites() {
         // Testing dummy data
         const ingredient1 = ["2 slices whole grain bread", "1 slice avocado", "1 medium tomato, sliced", "2 slices cooked bacon", "2 eggs", "salt and pepper to taste", "olive oil spray"];
@@ -211,34 +274,79 @@ class RecipeAPI {
     }
 }
 
+/**
+ * InputValidator class to validate the user input for the login,
+ * signup, and recipe generation.
+ */
 class InputValidator {
+    /**
+     * Constructor to initialize the InputValidator object
+     */
+    constructor() {}
 
+    /**
+     * Checks if the value is empty and trims the returned value
+     * @param {*} value 
+     * @returns true if the value is empty, false otherwise
+     */
     isEmpty(value) {
         return !value || value.trim() === "";
     }
 
+    /**
+     * Checks if the two values are equal
+     * @param {*} value1 
+     * @param {*} value2 
+     * @returns true if the two values are equal, false otherwise
+     */
     confirmInput(value1, value2) {
         return value1 === value2;
     }
 
+    /**
+     * Checks if the value contains numbers
+     * @param {*} value 
+     * @returns true if the value contains numbers, false otherwise
+     */
     containsNumbers(value) {
         return !/^[A-Za-z, ]+$/.test(value);
     }
 
+    /**
+     * Removes all whitespace from the value
+     * @param {*} value 
+     * @returns the value without any whitespace
+     */
     removeWhitespace(value) {
         return value.replace(/\s+/g, ""); // Removes all spaces
     }
 
 }
 
+/**
+ * OutputController class to handle the output of the recipe, user list,
+ * and favorites to the user interface. Determines the visibility of the
+ * error popup and the recipe output. Also formats the padding of the output.
+ */
 class OutputController {
 
-    // Error popup
+    /**
+     * Constructor to initialize the OutputController object
+     */
+    constructor() {}
+
+    /**
+     * Hides the error popup
+     */
     hideErrorPopup() {
         document.getElementById(errorPopup).style.opacity = zero;
         document.getElementById(errorPopup).style.visibility = hiddenConst;
     }
 
+    /**
+     * Displays the error popup with the error message
+     * @param {*} errorMsg 
+     */
     displayErrorPopup(errorMsg) {
         document.getElementById(closeErrorPopup).innerHTML = messages.ok;
         document.getElementById(errorMsg).textContent = messages.errorTitle;
@@ -250,6 +358,9 @@ class OutputController {
         })
     }
 
+    /**
+     * Empties the recipe output
+     */
     emptyRecipeOutput() {
         document.getElementById(recipeTitle).innerHTML = "";
         document.getElementById(ingredientsTitle).innerHTMLinnerHTML = "";
@@ -260,7 +371,12 @@ class OutputController {
         document.getElementById(outputBg).style.display = noneConst;
     }
 
-    // Displaying recipe
+    /**
+     * Displays the recipe with the title, ingredients, and instructions
+     * @param {*} title 
+     * @param {*} ingredients 
+     * @param {*} instructions 
+     */
     displayRecipe(title, ingredients, instructions) {
         this.emptyRecipeOutput();
 
@@ -284,6 +400,11 @@ class OutputController {
         this.formatPadding(document.getElementById(outputBg), document.getElementById(outputWrap));
     }
 
+    /**
+     * Displays the user list in a table format for admin to view
+     * @param {*} users 
+     * @returns the user list in a table format
+     */
     displayUserList(users) {
         const tableOutput = document.getElementById(userList);
 
@@ -324,6 +445,11 @@ class OutputController {
         $('#userList').DataTable();
     }
 
+    /**
+     * Formats the padding of the output based on the content and container
+     * @param {*} container 
+     * @param {*} content 
+     */
     formatPadding(container, content) {
         let counter = 1;
         let maxAttempts = 10;
@@ -334,6 +460,12 @@ class OutputController {
         }
     }
 
+    /**
+     * Displays the favorites in a div format by iterating through the favorites
+     * and displaying the title, ingredients, and instructions.
+     * @param {*} favorites 
+     * @returns the favorites in a div format
+     */
     displayFavorites(favorites) {
         const favoritesContainer = document.getElementById(favEndpoint);
     
@@ -387,18 +519,33 @@ class OutputController {
         buttonController.initFavNavigation(document.querySelector('.prev'), document.querySelector('.next'), favorites.length, this.displayNextFav);
     }
 
+    /**
+     * Displays the next favorite recipe based on the index
+     * @param {*} index 
+     */
     displayNextFav(index) {
         const offset = -index * (document.getElementById(favoritesWrap).clientWidth); // Calculate the offset
         document.getElementById(favEndpoint).style.transform = `translateX(${offset}px)`;
     }
 }
 
+/**
+ * ButtonController class to handle the button events for the login,
+ * signup, recipe generation, and favorite navigation.
+ */
 class ButtonController {
+    /**
+     * Constructor to initialize the ButtonController
+     * object with the RecipeAPI and InputValidator objects
+     */
     constructor() {
         this.xhr = new RecipeAPI();
         this.inputValidator = new InputValidator();
     }
 
+    /**
+     * Initializes the login button event listener.
+     */
     initLoginBtn() {
         document.getElementById(loginBtn).addEventListener(clickConst, (e) => {
             e.preventDefault();
@@ -408,6 +555,9 @@ class ButtonController {
         });
     }
 
+    /**
+     * Initializes the signup button event listener.
+     */
     initSignupBtn() {
         document.getElementById(signupBtn).addEventListener(clickConst, (e) => {
             e.preventDefault();
@@ -422,6 +572,11 @@ class ButtonController {
         });
     }
 
+    /**
+     * Initializes the conjure button event listener with the input validation
+     * and token check.
+     * @param {*} tokensLeft 
+     */
     initConjureBtn(tokensLeft) {
         document.getElementById(conjureBtn).addEventListener(clickConst, (e) => {
             e.preventDefault();
@@ -441,6 +596,9 @@ class ButtonController {
         });
     }
 
+    /**
+     * Initializes the favorite button event listener.
+     */
     initFavBtn() {
         document.getElementById(addToFav).addEventListener(clickConst, (e) => {
             e.preventDefault();
@@ -448,6 +606,14 @@ class ButtonController {
         });
     }
 
+    /**
+     * Initializes the favorite navigation buttons with the index and display
+     * function for the favorites
+     * @param {*} prevBtn 
+     * @param {*} nextBtn 
+     * @param {*} favoritesLength 
+     * @param {*} displayNextFav 
+     */
     initFavNavigation(prevBtn, nextBtn, favoritesLength, displayNextFav) {
         let index = 0;
     
@@ -478,7 +644,14 @@ class ButtonController {
     
 }
 
+/**
+ * NavBar class to handle the navigation bar for the user and admin roles.
+ */
 class NavBar {
+    /**
+     * Constructor to initialize the NavBar object with the session controller
+     * and the navigation pages for the user and admin roles.
+     */
     constructor() {
         this.session = new SessionController();
         this.userRole = this.session.getUserRole();
@@ -486,6 +659,10 @@ class NavBar {
         this.adminNavs = [userListPage, favPage, cookingPage];
     }
 
+    /**
+     * Initializes the logo for the navigation bar
+     * @returns the logo for the navigation bar
+     */
     initLogo() {
         return `<div class="logo titleFont hoverable">
                     <a href="index.html">
@@ -497,18 +674,31 @@ class NavBar {
                 </div>`;
     }
 
+    /**
+     * Initializes the login button for the navigation bar
+     * @returns the login button for the navigation bar
+     */
     initLoginBtn() {
         return `<li class="login hoverable">
                     <a href="login.html">${messages.loginTitle}</a>
                 </li>`;
     }
 
+    /**
+     * Initializes the logout button for the navigation bar
+     * @returns the logout button for the navigation bar
+     */
     initLogoutBtn() {
         return `<li class="logout hoverable">
                     <a href="#">${messages.logoutBtn}</a>
                 </li>`;
     }
 
+    /**
+     * Initializes the menu for the navigation bar based on the user role
+     * @param {*} loggedIn 
+     * @returns the menu for the navigation bar
+     */
     initMenu(loggedIn) {
         const menu = document.createElement(ulConst);
         menu.classList.add(navBarConst, headerFont);
@@ -529,13 +719,24 @@ class NavBar {
         return menu;
     }
 
+    /**
+     * Initializes the navigation bar with the logo and menu
+     * @param {*} loggedIn 
+     */
     initNavBar(loggedIn) {
         document.getElementById(headerConst).innerHTML += this.initLogo();
         document.getElementById(headerConst).append(this.initMenu(loggedIn));      
     }
 }
 
+/**
+ * CustomCursor class to handle the custom cursor for the user interface.
+ */
 class CustomCursor {
+    /**
+     * Constructor to initialize the CustomCursor object with the custom cursor
+     * element and the event listeners for the mouse move and hoverable items.
+     */
     constructor() {
         this.insertCustomCur();
         this.cursor = document.getElementById(customCurConst);
@@ -543,6 +744,9 @@ class CustomCursor {
         this.initHoverable();
     }
 
+    /**
+     * Initializes the mouse move event listener to move the cursor with the mouse
+     */
     initMouseMove() {
         // Move cursor with mouse
         document.addEventListener(mousemove, (event) => {
@@ -551,6 +755,9 @@ class CustomCursor {
         });
     }
 
+    /**
+     * Initializes the hoverable items with the custom cursor
+     */
     initHoverable() {
         // Add hover effect to all elements with the "hoverable" class
         document.querySelectorAll(".hoverable").forEach(element => {
@@ -565,6 +772,9 @@ class CustomCursor {
         });
     }
 
+    /**
+     * Inserts the custom cursor element into the body of the document
+     */
     insertCustomCur() {
         const customCur = document.createElement(divConst);
         customCur.id = customCurConst;
@@ -572,7 +782,17 @@ class CustomCursor {
     }
 }
 
+/**
+ * UI class to handle the user interface for the login, signup, recipe generation,
+ * user list, and favorites. Initializes the navigation bar, buttons, session, and
+ * custom cursor for the user interface.
+ */
 class UI {
+    /**
+     * Constructor to initialize the UI object with the navigation bar, button
+     * controller, session controller, user role, and custom cursor.
+     * @param {*} currLocation 
+     */
     constructor(currLocation) {
         this.navBar = new NavBar();
         this.btnController = new ButtonController();
@@ -583,7 +803,10 @@ class UI {
         this.customCur = new CustomCursor();
     }
 
-    // Initializes UI with corresponding page
+    /**
+     * Initializes the user interface based on the current location
+     * @param {*} currLocation 
+     */
     init(currLocation) {
         const currPage = currLocation.pathname;
         if (currPage.toLowerCase().includes(loginEndpoint)) {
@@ -602,7 +825,10 @@ class UI {
         this.navBar.initNavBar(this.loggedIn);
     }
 
-    // Page initializations
+    /**
+     * Initializes the index page based on the user role
+     * @returns the index page based on the user role
+     */
     initIndex() {
         if (this.userRole === adminConst) {
             document.getElementById(titleConst).innerHTML = messages.adminIndexTitle;
@@ -617,6 +843,10 @@ class UI {
         document.getElementById(goCook).href = this.loggedIn ? cookingPage : loginPage;
     }
 
+    /**
+     * Initializes the login page with the login title, email placeholder,
+     * password placeholder, login button, and signup direction
+     */
     initLogin() {
         document.getElementById(titleConst).innerHTML = messages.loginTitle;
         document.getElementById(emailInput).placeholder = messages.emailPlaceholder;
@@ -626,6 +856,11 @@ class UI {
         this.btnController.initLoginBtn();
     }
 
+    /**
+     * Initializes the signup page with the signup title, email placeholder,
+     * password placeholder, password confirmation placeholder, signup button, and
+     * login direction.
+     */
     initSignup() {
         document.getElementById(titleConst).innerHTML = messages.signupTitle;
         document.getElementById(emailInput).placeholder = messages.emailPlaceholder;
@@ -636,7 +871,12 @@ class UI {
         this.btnController.initSignupBtn();
     }
 
+    /**
+     * Initializes the magic page with the title, ingredient placeholder, conjure button,
+     * and add to favorites button.
+     */
     initMagic() {
+        // Redirect to login if not logged in
         if (!this.loggedIn) {
             window.location.href = loginPage;
             return;
@@ -649,7 +889,11 @@ class UI {
         this.btnController.initFavBtn();
     }
 
+    /**
+     * Initializes the favorites page with the title and the favorites from the API.
+     */
     initFavs() {
+        // Redirect to login if not logged in
         if (!this.loggedIn) {
             window.location.href = loginPage;
             return;
@@ -658,7 +902,11 @@ class UI {
         this.btnController.xhr.getFavorites();
     }
 
+    /**
+     * Initializes the user list page with the title and the user list from the API.
+     */
     initUserList() {
+        // Redirect to index if not admin and display error message
         if (this.userRole !== adminConst) {
             window.location.href = indexPage;
             alert(messages.notAdmin)
@@ -669,6 +917,10 @@ class UI {
     }
 }
 
+/**
+ * Event listener for the DOM content load to initialize the user interface
+ * based on the current location.
+ */
 document.addEventListener(DOMContentLoadConst, () => {    
     new UI(window.location);
 });
