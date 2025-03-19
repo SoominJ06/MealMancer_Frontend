@@ -19,6 +19,7 @@ const methodDelete = "DELETE";
 const contentType = "Content-Type";
 const appJson = "application/json";
 const loginEndpoint = "login";
+const logoutEndpoint = "logout";
 const signupEndpoint = "signup";
 const favEndpoint = "favorites";
 const userListEndpoint = "userlist";
@@ -42,6 +43,7 @@ const favoritesWrap = "favoritesWrap";
 const favoriteBg = "favoriteBg";
 const favorite = "favorite";
 const loginBtn = "loginBtn";
+const logoutBtn = "logoutBtn";
 const signupBtn = "signupBtn";
 const conjureBtn = "conjureBtn";
 const emailInput = "emailInput";
@@ -88,13 +90,13 @@ class SessionController {
     }
 
     /**
-     * Sets the users role, tokens, and JWT token in the session storage
+     * Sets the users role, tokens, and the time the session expires in the session storage
      * @param {*} role
      * @param {*} tokens 
-     * @param {*} jwt 
+     * @param {*} expiresAt  
      */
-    setUserInfo(role, tokens, jwt) {
-        this.session = { role, tokens, jwt };
+    setUserInfo(role, tokens, expiresAt) {
+        this.session = { role, tokens, expiresAt };
         sessionStorage.setItem(userInfo, JSON.stringify(this.session));
     }
 
@@ -125,11 +127,11 @@ class SessionController {
     }
 
     /**
-     * Getter for the JWT token from the session storage
-     * @returns the JWT token from the session storage
+     * Getter for the expiration time from the session storage
+     * @returns the expiration time from the session storage
      */
-    getJWTToken() {
-        return this.session.jwt || null;
+    getExpireTime() {
+        return this.session.expiresAt || null;
     }
 
     /**
@@ -162,26 +164,27 @@ class RecipeAPI {
      */
     getRecipe(ingredients) {
         // testing with dummy data
-        const title = "avocado and tomato breakfast toast";
-        const ingredient = ["2 slices whole grain bread", "1 slice avocado", "1 medium tomato, sliced", "2 slices cooked bacon", "2 eggs", "salt and pepper to taste", "olive oil spray"];
-        const method = ["toast the bread slices in a toaster or under the broiler until golden brown.", "lightly spray a frying pan with olive oil spray and heat over medium heat.", "add the sliced avocado, tomato, and cooked bacon to the pan.", "season with salt and pepper, and cook for 3-4 minutes, or until the avocado is soft.", "add the eggs to the pan and scramble until fully cooked.", "remove from heat and cover the pan with a lid.", "serve immediately."];
-        this.outputController.displayRecipe(title, ingredient, method)
+        // const title = "avocado and tomato breakfast toast";
+        // const ingredient = ["2 slices whole grain bread", "1 slice avocado", "1 medium tomato, sliced", "2 slices cooked bacon", "2 eggs", "salt and pepper to taste", "olive oil spray"];
+        // const method = ["toast the bread slices in a toaster or under the broiler until golden brown.", "lightly spray a frying pan with olive oil spray and heat over medium heat.", "add the sliced avocado, tomato, and cooked bacon to the pan.", "season with salt and pepper, and cook for 3-4 minutes, or until the avocado is soft.", "add the eggs to the pan and scramble until fully cooked.", "remove from heat and cover the pan with a lid.", "serve immediately."];
+        // this.outputController.displayRecipe(title, ingredient, method)
 
         // actual fetch
-        // this.xhttp.open("GET", this.baseUrl + "generate/?ingredients=" + ingredients, true);
-        // this.xhttp.setRequestHeader("Authorization", `Bearer ${this.session.getJWTToken()}`);
-        // this.xhttp.send();
-        // this.xhttp.onreadystatechange = () => {
-        //     if (this.xhttp.readyState === 4) {
-        //         const response = JSON.parse(this.xhttp.responseText);
-        //         if (this.xhttp.status === 200) {
-        //             this.session.reduceToken();
-        //             this.outputController.displayRecipe(response.title, response.ingredients, response.method)
-        //         } else {
-        //             this.outputController.displayErrorPopup(messages.error);
-        //         }
-        //     }
-        // }
+        this.xhttp.open(methodGet, this.baseUrl + "generate/?ingredients=" + ingredients, true);
+        this.xhttp.withCredentials = true; // for Cookies
+        this.xhttp.setRequestHeader("Authorization", `Bearer ${this.session.getJWTToken()}`);
+        this.xhttp.send();
+        this.xhttp.onreadystatechange = () => {
+            if (this.xhttp.readyState === 4) {
+                const response = JSON.parse(this.xhttp.responseText);
+                if (this.xhttp.status === 200) {
+                    this.session.reduceToken();
+                    this.outputController.displayRecipe(response.title, response.ingredients, response.directions)
+                } else {
+                    this.outputController.displayErrorPopup(messages.error);
+                }
+            }
+        }
     }
 
     /**
@@ -201,7 +204,7 @@ class RecipeAPI {
                 const response = JSON.parse(this.xhttp.responseText);
                 if (this.xhttp.status === 200) {
                     // Store user info in session storage
-                    this.session.setUserInfo(response.role, response.tokens, response.jwt);
+                    this.session.setUserInfo(response.role, response.tokens, response.expiresAt );
                     window.location.href = indexPage;
                 } else {
                     this.outputController.displayErrorPopup(response.message);
@@ -232,6 +235,32 @@ class RecipeAPI {
                 if (this.xhttp.status === 200) {
                     this.session.setUserInfo(response.role, response.tokens, response.jwt);
                     window.location.href = indexPage
+                } else {
+                    this.outputController.displayErrorPopup(response.message);
+                }
+            }
+        }
+    }
+
+    /**
+     * Logs in the user based on the email and password, and stores the user
+     * info in the session storage.
+     * @param string email 
+     * @param string pw 
+     */
+    logout() {
+        this.xhttp.open(methodPost, this.baseUrl + logoutEndpoint, true);
+        this.xhttp.withCredentials = true;
+        // this.xhttp.setRequestHeader(contentType, appJson);
+        // const requestData = JSON.stringify({ email: email, password: pw });
+        // this.xhttp.send(requestData);   
+        this.xhttp.onreadystatechange = () => { 
+            if (this.xhttp.readyState === 4) {
+                const response = JSON.parse(this.xhttp.responseText);
+                if (this.xhttp.status === 200) {
+                    // Clear session
+                    this.session.clearSession();
+                    window.location.href = indexPage;
                 } else {
                     this.outputController.displayErrorPopup(response.message);
                 }
@@ -556,6 +585,16 @@ class ButtonController {
     }
 
     /**
+     * Initializes the logout button event listener.
+     */
+    initLogoutBtn() {
+        document.getElementById(logoutBtn).addEventListener(clickConst, (e) => {
+            e.preventDefault();
+            this.xhr.logout();
+        });
+    }
+
+    /**
      * Initializes the signup button event listener.
      */
     initSignupBtn() {
@@ -690,7 +729,7 @@ class NavBar {
      */
     initLogoutBtn() {
         return `<li class="logout hoverable">
-                    <a href="#">${messages.logoutBtn}</a>
+                    <button id="logoutBtn">${messages.logoutBtn}</button>
                 </li>`;
     }
 
@@ -712,6 +751,8 @@ class NavBar {
 
         if (loggedIn) {
             menu.innerHTML += (this.initLogoutBtn());
+            const buttonController = new ButtonController();
+            buttonController.initLoginBtn();
         } else {
             menu.innerHTML += (this.initLoginBtn());
         }

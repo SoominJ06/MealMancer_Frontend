@@ -112,6 +112,11 @@ header {
     cursor: none;
 }
 
+.navBar li:hover button {
+    color: #661FE1;
+    cursor: none;
+}
+
 /* Input field styling */
 input {
     font-family: "Martel", serif;
