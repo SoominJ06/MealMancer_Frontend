@@ -49,6 +49,9 @@ const messages = {
 
     // Non-admin msg
     notAdmin: "Only admins can access this page!",
+
+    // Session expired msg
+    sessionExpired: "Your session has expired. Please log in again.",
 };
 
 const genNavItems = [

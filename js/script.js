@@ -79,7 +79,7 @@ const clickConst = "click";
 
 /**
  * SessionController class to manage the user session by 
- * storing and retrieving user tokens, role, and JWT token.
+ * storing and retrieving user tokens, role, and the time session expires.
  */
 class SessionController {
     /**
@@ -134,11 +134,19 @@ class SessionController {
         return this.session.expiresAt || null;
     }
 
+    // CATHERINE MEMEMEMMEMEMEMEMEME
+    isSessionExpired() {
+        if (!this.session.expiresAt) return true; // If no expiry time, consider expired
+        const expiresAt = new Date(this.session.expiresAt).getTime();
+        return isNaN(expiresAt) || Date.now() >= expiresAt;
+    }
+
     /**
      * Clears the session storage of the user information
      */
     clearSession() {
         sessionStorage.removeItem(userInfo);
+        this.session = {};
     }
 }
 
@@ -158,6 +166,15 @@ class RecipeAPI {
         this.baseUrl = backendUrl;
     }
 
+    // CATHERINE MEMEMEMMEMEMEMEMEME
+    checkSession() {
+        if (this.session.isSessionExpired()) {
+            this.session.clearSession();
+            alert(messages.sessionExpired);
+            window.location.href = "login.html"; // Redirect to login page
+        }
+    }
+
     /**
      * Retrieves a recipe based on the user input from the API
      * @param string ingredients 
@@ -169,10 +186,12 @@ class RecipeAPI {
         // const method = ["toast the bread slices in a toaster or under the broiler until golden brown.", "lightly spray a frying pan with olive oil spray and heat over medium heat.", "add the sliced avocado, tomato, and cooked bacon to the pan.", "season with salt and pepper, and cook for 3-4 minutes, or until the avocado is soft.", "add the eggs to the pan and scramble until fully cooked.", "remove from heat and cover the pan with a lid.", "serve immediately."];
         // this.outputController.displayRecipe(title, ingredient, method)
 
+        // check if session has expired or not
+        this.checkSession();
+
         // actual fetch
         this.xhttp.open(methodGet, this.baseUrl + "generate/?ingredients=" + ingredients, true);
         this.xhttp.withCredentials = true; // for Cookies
-        this.xhttp.setRequestHeader("Authorization", `Bearer ${this.session.getJWTToken()}`);
         this.xhttp.send();
         this.xhttp.onreadystatechange = () => {
             if (this.xhttp.readyState === 4) {
@@ -194,27 +213,27 @@ class RecipeAPI {
      * @param string pw 
      */
     login(email, pw) {
-        // this.xhttp.open(methodPost, this.baseUrl + loginEndpoint, true);
-        // this.xhttp.withCredentials = true;
-        // this.xhttp.setRequestHeader(contentType, appJson);
-        // const requestData = JSON.stringify({ email: email, password: pw });
-        // this.xhttp.send(requestData);   
-        // this.xhttp.onreadystatechange = () => { 
-        //     if (this.xhttp.readyState === 4) {
-        //         const response = JSON.parse(this.xhttp.responseText);
-        //         if (this.xhttp.status === 200) {
-        //             // Store user info in session storage
-        //             this.session.setUserInfo(response.role, response.tokens, response.expiresAt );
-        //             window.location.href = indexPage;
-        //         } else {
-        //             this.outputController.displayErrorPopup(response.message);
-        //         }
-        //     }
-        // }
+        this.xhttp.open(methodPost, this.baseUrl + loginEndpoint, true);
+        this.xhttp.withCredentials = true;
+        this.xhttp.setRequestHeader(contentType, appJson);
+        const requestData = JSON.stringify({ email: email, password: pw });
+        this.xhttp.send(requestData);   
+        this.xhttp.onreadystatechange = () => { 
+            if (this.xhttp.readyState === 4) {
+                const response = JSON.parse(this.xhttp.responseText);
+                if (this.xhttp.status === 200) {
+                    // Store user info in session storage
+                    this.session.setUserInfo(response.role, response.tokens, response.expiresAt );
+                    window.location.href = indexPage;
+                } else {
+                    this.outputController.displayErrorPopup(response.message);
+                }
+            }
+        }
         
         // For testing admin
-        this.session.setUserInfo("admin", 20, "jwt");
-        window.location.href = "index.html";
+        // this.session.setUserInfo("admin", 20, "2026-03-19T10:33:18.885Z");
+        // window.location.href = "index.html";
     }
 
     /**
@@ -233,7 +252,7 @@ class RecipeAPI {
             if (this.xhttp.readyState === 4) {
                 const response = JSON.parse(this.xhttp.responseText);
                 if (this.xhttp.status === 200) {
-                    this.session.setUserInfo(response.role, response.tokens, response.jwt);
+                    this.session.setUserInfo(response.role, response.tokens, response.expiresAt);
                     window.location.href = indexPage
                 } else {
                     this.outputController.displayErrorPopup(response.message);
@@ -242,12 +261,7 @@ class RecipeAPI {
         }
     }
 
-    /**
-     * Logs in the user based on the email and password, and stores the user
-     * info in the session storage.
-     * @param string email 
-     * @param string pw 
-     */
+    // CATHERINE MEMEMEMMEMEMEMEMEME
     logout() {
         this.xhttp.open(methodPost, this.baseUrl + logoutEndpoint, true);
         this.xhttp.withCredentials = true;
@@ -273,6 +287,9 @@ class RecipeAPI {
      * for admins to view.
      */
     getUserList() {
+        // check if session has expired or not
+        // this.checkSession();
+        
         // Testing DataTable
         let dummy = [
             {"id": 0, "name" : "Test1", "dob": "2000-01-01"}, 
@@ -288,6 +305,9 @@ class RecipeAPI {
      * for the user to view.
      */
     getFavorites() {
+        // check if session has expired or not
+        // this.checkSession();
+
         // Testing dummy data
         const ingredient1 = ["2 slices whole grain bread", "1 slice avocado", "1 medium tomato, sliced", "2 slices cooked bacon", "2 eggs", "salt and pepper to taste", "olive oil spray"];
         const ingredient2 = ["2 slices whole grain bread", "1 slice avocado", "1 medium tomato, sliced"];
