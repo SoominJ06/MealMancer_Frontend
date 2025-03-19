@@ -784,11 +784,7 @@ class NavBar {
      */
     initNavBar(loggedIn) {
         document.getElementById(headerConst).innerHTML += this.initLogo();
-        document.getElementById(headerConst).append(this.initMenu(loggedIn));   
-        if (loggedIn) {
-            const buttonController = new ButtonController();
-            buttonController.initLogoutBtn();   
-        }
+        document.getElementById(headerConst).append(this.initMenu(loggedIn));
     }
 }
 
@@ -886,6 +882,9 @@ class UI {
             this.initIndex();
         }
         this.navBar.initNavBar(this.loggedIn);
+        if (this.loggedIn) {
+            this.btnController.initLogoutBtn();   
+        }
     }
 
     /**
