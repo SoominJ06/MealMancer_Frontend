@@ -751,8 +751,6 @@ class NavBar {
 
         if (loggedIn) {
             menu.innerHTML += (this.initLogoutBtn());
-            const buttonController = new ButtonController();
-            buttonController.initLogoutBtn();
         } else {
             menu.innerHTML += (this.initLoginBtn());
         }
@@ -766,7 +764,11 @@ class NavBar {
      */
     initNavBar(loggedIn) {
         document.getElementById(headerConst).innerHTML += this.initLogo();
-        document.getElementById(headerConst).append(this.initMenu(loggedIn));      
+        document.getElementById(headerConst).append(this.initMenu(loggedIn));   
+        if (loggedIn) {
+            const buttonController = new ButtonController();
+            buttonController.initLogoutBtn();   
+        }
     }
 }
 
