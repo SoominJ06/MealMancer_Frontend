@@ -928,11 +928,24 @@ class UI {
     }
 
     /**
+     * Checks if the session has expired and redirects to the login page if it has
+     * expired. Clears the session if it has expired.
+     */
+    checkSession() {
+        if (this.loggedIn && this.session.isSessionExpired()) {
+            this.session.clearSession();
+            alert(messages.sessionExpired);
+            window.location.href = loginPage; // Redirect to login page
+        }
+    }
+
+    /**
      * Initializes the user interface based on the current location
      * @param {*} currLocation 
      */
     init(currLocation) {
         const currPage = currLocation.pathname;
+        this.checkSession(); // check if session expired
         if (currPage.toLowerCase().includes(loginEndpoint)) {
             this.initLogin();
         } else if (currPage.toLowerCase().includes(signupEndpoint)) {
