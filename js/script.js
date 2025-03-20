@@ -945,7 +945,6 @@ class UI {
      */
     init(currLocation) {
         const currPage = currLocation.pathname;
-        this.checkSession(); // check if session expired
         if (currPage.toLowerCase().includes(loginEndpoint)) {
             this.initLogin();
         } else if (currPage.toLowerCase().includes(signupEndpoint)) {
@@ -959,7 +958,10 @@ class UI {
         } else {
             this.initIndex();
         }
+        // init navbar
         this.navBar.initNavBar(this.loggedIn);
+        // check if session expired
+        this.checkSession(); 
     }
 
     /**
