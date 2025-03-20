@@ -1,25 +1,14 @@
 /** String Constants */
 
-//const { list } = require("aws-amplify/storage");
-
 // Session Storage
 const userInfo = "userInfo";
 const adminConst = "admin";
+
+// Data Table JQuery plugin
 const hashtagUserList = "#userList";
 
-// Navitems
+// Endpoints
 const backendUrl = "https://meal-mancer-api-q3zh9.ondigitalocean.app/";
-const indexPage = "index.html";
-const loginPage = "login.html";
-const signupPage = "signup.html";
-const cookingPage = "cookingConjuration.html";
-const favPage = "favorites.html";
-const userListPage = "userList.html";
-const DOMContentLoadConst = "DOMContentLoaded";
-const methodPost = "POST";
-const methodGet = "GET";
-const contentType = "Content-Type";
-const appJson = "application/json";
 const loginEndpoint = "login";
 const logoutEndpoint = "logout";
 const signupEndpoint = "signup";
@@ -27,6 +16,21 @@ const favEndpoint = "favorites";
 const userListEndpoint = "userlist";
 const cookingEndpoint = "cooking";
 const generateEndpoint = "generate/?ingredients=";
+
+// API request 
+const methodPost = "POST";
+const methodGet = "GET";
+const contentType = "Content-Type";
+const appJson = "application/json";
+
+// HTML pages
+const indexPage = "index.html";
+const loginPage = "login.html";
+const signupPage = "signup.html";
+const cookingPage = "cookingConjuration.html";
+const favPage = "favorites.html";
+const userListPage = "userList.html";
+const DOMContentLoadConst = "DOMContentLoaded";
 
 // ContentIDs
 const errorPopup = "errorPopupWrap";
@@ -63,7 +67,9 @@ const headerConst = "header";
 const navBarConst = "navBar";
 const loaderConst = "loader";
 const prevConst = '.prev';
+const nextConst = '.next';
 const translateStyleConst = "translateX(%OFFSET%px)";
+const hoverableConst = ".hoverable";
 
 // Styling
 const zero = "0";
@@ -77,7 +83,6 @@ const headerFont = "headerFont";
 const autoConst = "auto";
 const divConst = "div";
 const ulConst = "ul";
-const hoverableConst = ".hoverable";
 
 // HTML evelents
 const recipeTableTemplate = `<div class="title titleFont" id="recipeTitle">%TITLE%</div>
@@ -632,7 +637,7 @@ class OutputController {
     
         // Use ButtonController to initialize navigation
         const buttonController = new ButtonController();
-        buttonController.initFavNavigation(document.querySelector(prevConst), document.querySelector('.next'), favorites.length, this.displayNextFav);
+        buttonController.initFavNavigation(document.querySelector(prevConst), document.querySelector(nextConst), favorites.length, this.displayNextFav);
     }
 
     /**
