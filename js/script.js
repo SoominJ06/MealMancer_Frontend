@@ -614,9 +614,9 @@ class OutputController {
                 .replace("%TITLE%", recipe.title)
                 .replace("%INGREDIENTS_TITLE%", messages.ingredientsTitle);
     
-                recipe.ingredients.forEach(ingredient => {
-                    content += listTemplate.replace("%ITEM%", ingredient);
-                });
+            recipe.ingredients.forEach(ingredient => {
+                content += listTemplate.replace("%ITEM%", ingredient);
+            });
     
             content += instructionsTemplate.replace("%INSTRUCTIONS_TITLE%", messages.instructionsTitle);
     
@@ -874,8 +874,8 @@ class CustomCursor {
     initMouseMove() {
         // Move cursor with mouse
         document.addEventListener(mousemove, (event) => {
-            this.cursor.style.left = `${event.clientX - 10}px`;  // Adjust x position
-            this.cursor.style.top = `${event.clientY - 20}px`;  // Adjust y position to center cursor
+            this.cursor.style.left = `${event.clientX}px`;  // Adjust x position
+            this.cursor.style.top = `${event.clientY}px`;  // Adjust y position to center cursor
         });
     }
 
