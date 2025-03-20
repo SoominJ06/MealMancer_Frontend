@@ -803,7 +803,7 @@ class NavBar {
      * @returns the login button for the navigation bar
      */
     initLoginBtn() {
-        return initLoginButtonTemplate.replace("%LOGIN_TITLE%", messages.loginBtn);
+        return initLoginButtonTemplate.replace("%LOGIN_TITLE%", messages.loginTitle);
     }
 
     /**
