@@ -1,6 +1,6 @@
 /** String Constants */
 
-const { list } = require("aws-amplify/storage");
+//const { list } = require("aws-amplify/storage");
 
 // Session Storage
 const userInfo = "userInfo";
