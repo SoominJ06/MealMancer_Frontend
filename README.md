@@ -13,7 +13,7 @@
 
 ## Credits
 - Fonts: Google Fonts [Official Website](https://fonts.google.com/)
-- Icons: FontAwesome [Official Website](https://fontawesome.com/)
+- Icons: Icons8 [Official Website](https://icons8.com/)
 - Cursor: Sweezy Cursors
   - [Official Website](https://sweezy-cursors.com/)
   - [Cursor Used in Meal Mancer](https://sweezy-cursors.com/cursor/blue-amp-pink-magic-staff-animated/)
