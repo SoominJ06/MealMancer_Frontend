@@ -223,7 +223,7 @@ input:focus {
     bottom: 0;
     left: 0;
     z-index: -99;
-    display: none;
+    /* display: none; */
 }
 
 .loading {
@@ -235,7 +235,7 @@ input:focus {
 }
   
 @keyframes spin {
-    0% { transform: rotate(0deg); filter: hue-rotate(0); filter: drop-shadow(0 0 5px #C0F5FA); }
-    50% { filter: drop-shadow(0 0 5px #FFC857); }
-    100% { transform: rotate(360deg); filter: hue-rotate(-360); filter: drop-shadow(0 0 5px #C0F5FA); }
+    0% { transform: rotate(0deg); filter: hue-rotate(0) drop-shadow(0 0 5px #C0F5FA); }
+    50% { filter: hue-rotate(-180deg) drop-shadow(0 0 5px #FFC857); }
+    100% { transform: rotate(360deg); filter: hue-rotate(-360deg) drop-shadow(0 0 5px #C0F5FA); }
 }

@@ -9,7 +9,7 @@
 
 #favBtnWrap {
     margin-top: 30px;
-    width: 85%;
+    width: 95%;
     display: flex;
     justify-content: center;
     align-items: baseline;
@@ -47,15 +47,16 @@
 
 .btn {
     all: unset;
-    font-size: 50px;
-    color: #661FE1;
-    border: none;
+    width: 150px;
+    height: 100px;
+    padding: 20px;
     cursor: none;
     display: none;
+    transition-duration: 0.3s;
 }
 
 .btn:hover {
-    color: #3B1C32;
+    filter: hue-rotate(-25deg) saturate(5);
 }
 
 .divide {
