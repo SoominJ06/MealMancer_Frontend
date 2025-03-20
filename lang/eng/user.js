@@ -21,13 +21,13 @@ const messages = {
     loginTitle: "Login",
     emailPlaceholder: "Email",
     pwPlaceholder: "Password",
-    loginBtn: "Log In",
+    loginBtn: "LOG IN",
     signupDir: "Don't have an account? Sign up",
 
     // signup
     signupTitle: "Signup",
     pwConfirm: "Confirm Password",
-    signupBtn: "Sign Up",
+    signupBtn: "SIGN UP",
     loginDir: "Already have an account? Log in",
 
     // favorites
