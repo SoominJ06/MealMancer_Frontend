@@ -26,13 +26,13 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    overflow: hidden;
 }
 
 #ingredientInput {
     width: 100%;
-    background: url(../public/images/scroll_vertical.png) no-repeat center center;
-    padding: 12px 30px;
+    background: url(../public/images/shredded_paper.png) no-repeat center center;
+    background-size: 100% 100%;
+    padding: 25px 45px;
     border: 0;
     font-size: 20px;
     outline: none;
@@ -41,11 +41,12 @@
 #conjureBtn {
     max-width: 250px;
     width: 100%;
-    padding: 16px 25px;    
-    background-color: #661FE1;
+    padding: 25px 45px;
+    background: url(../public/images/shredded_paper_purple.png) no-repeat center center;
+    background-size: 100% 100%;
     border: 0;
     color: #eee;
-    font-size: 22px;
+    font-size: 25px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -54,7 +55,7 @@
 }
 
 #conjureBtn:hover {
-    box-shadow: inset 3px 3px 10px rgba(0, 0, 0, 0.6);
+    filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.3));
 }
 
 /* Output */

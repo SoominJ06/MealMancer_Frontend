@@ -38,6 +38,9 @@
 
 .loginForm input,
 .signupForm input {
+    /* background: url(../public/images/shredded_paper.png) no-repeat center center; */
+    /* background-size: 100% 100%; */
+    /* border: 0; */
     padding: 20px 30px;
     font-size: 18px;
     border: 1px solid #3B1C32;
@@ -45,6 +48,9 @@
 
 #loginBtn,
 #signupBtn {
+    /* background: url(../public/images/shredded_paper_purple.png) no-repeat center center; */
+    /* background-size: 100% 100%; */
+    border: 0;
     padding: 20px 30px;
     font-size: 25px;
     background-color: #661FE1;
