@@ -1,7 +1,11 @@
 /** String Constants */
+
+const { list } = require("aws-amplify/storage");
+
 // Session Storage
 const userInfo = "userInfo";
 const adminConst = "admin";
+const hashtagUserList = "#userList";
 
 // Navitems
 const backendUrl = "https://meal-mancer-api-q3zh9.ondigitalocean.app/";
@@ -14,8 +18,6 @@ const userListPage = "userList.html";
 const DOMContentLoadConst = "DOMContentLoaded";
 const methodPost = "POST";
 const methodGet = "GET";
-const methodPut = "PUT";
-const methodDelete = "DELETE";
 const contentType = "Content-Type";
 const appJson = "application/json";
 const loginEndpoint = "login";
@@ -24,6 +26,7 @@ const signupEndpoint = "signup";
 const favEndpoint = "favorites";
 const userListEndpoint = "userlist";
 const cookingEndpoint = "cooking";
+const generateEndpoint = "generate/?ingredients=";
 
 // ContentIDs
 const errorPopup = "errorPopupWrap";
@@ -58,6 +61,9 @@ const signupDir = "signupDir";
 const customCurConst = "customCur";
 const headerConst = "header";
 const navBarConst = "navBar";
+const loaderConst = "loader";
+const prevConst = '.prev';
+const translateStyleConst = "translateX(%OFFSET%px)";
 
 // Styling
 const zero = "0";
@@ -65,11 +71,48 @@ const one = "1";
 const hiddenConst = "hidden";
 const visibleConst = "visible";
 const noneConst = "none";
+const flexConst = "flex";
 const blockConst = "block";
 const headerFont = "headerFont";
 const autoConst = "auto";
 const divConst = "div";
 const ulConst = "ul";
+const hoverableConst = ".hoverable";
+
+// HTML evelents
+const recipeTableTemplate = `<div class="title titleFont" id="recipeTitle">%TITLE%</div>
+                         <div class="ingredients divide">
+                             <div class="desc headerFont" id="ingredientsTitle">%INGREDIENTS_TITLE%</div>
+                             <ul id="ingredientList">`;
+const listTemplate = `<li>%ITEM%</li>`;
+const instructionsTemplate = `</ul>
+    </div>
+    <div class="instructions divide">
+        <div class="desc headerFont" id="instructionsTitle">%INSTRUCTIONS_TITLE%</div>
+        <ul id="instructionList">`;
+const unorderedListDiv = `</ul>
+                        </div>`;
+const tableHeadBuild = `<table><thead><tr>`;
+const tableHeadTemplate = `<th>%ITEM%</th>`;
+const tableHeadEnd = `</tr></thead><tbody>`;
+const tableRowTemplate = `<tr>%CELL_CONTENTS%</tr>`;
+const tableCellTemplate = `<td>%CELL%</td>`;
+const tableEndConst = `</tbody></table>`;
+const initButtonTemplate = `<div class="logo titleFont hoverable">
+                                <a href="index.html">
+                                    <div class="headerLogo">
+                                        <img src="public/images/logo.png" alt="Logo">
+                                    </div>
+                                    %APP_NAME%
+                                </a>
+                            </div>`;
+const initLoginButtonTemplate = `<li class="login hoverable">
+                                    <a href="login.html">%LOGIN_TITLE%</a>
+                                  </li>`;
+const logoutButtonTemplate = `<li class="logout hoverable">
+                                    <button id="logoutBtn">%LOGOUT_BTN%</button>
+                                  </li>`;
+const menuItemTemplate = `<li class="hoverable"><a href="%ITEM_NAV%">%ITEM%</a></li>`;
 
 // Event Listeners
 const mouseleave = "mouseleave";
@@ -134,7 +177,10 @@ class SessionController {
         return this.session.expiresAt || null;
     }
 
-    // CATHERINE MEMEMEMMEMEMEMEMEME
+    /**
+     * Checks if the session has expired based on the expiration time
+     * @returns true if the session has expired, false otherwise
+     */
     isSessionExpired() {
         if (!this.session.expiresAt) return true; // If no expiry time, consider expired
         const expiresAt = new Date(this.session.expiresAt).getTime();
@@ -166,12 +212,15 @@ class RecipeAPI {
         this.baseUrl = backendUrl;
     }
 
-    // CATHERINE MEMEMEMMEMEMEMEMEME
+    /**
+     * Checks if the session has expired and redirects to the login page if it has
+     * expired. Clears the session if it has expired.
+     */
     checkSession() {
         if (this.session.isSessionExpired()) {
             this.session.clearSession();
             alert(messages.sessionExpired);
-            window.location.href = "login.html"; // Redirect to login page
+            window.location.href = loginPage; // Redirect to login page
         }
     }
 
@@ -192,8 +241,8 @@ class RecipeAPI {
         // Show loading spinner
         this.outputController.displayLoadingIcon();
 
-        // actual fetch
-        this.xhttp.open(methodGet, this.baseUrl + "generate/?ingredients=" + ingredients, true);
+        // Actual fetch
+        this.xhttp.open(methodGet, this.baseUrl + generateEndpoint + ingredients, true);
         this.xhttp.withCredentials = true; // for Cookies
         this.xhttp.send();
         this.xhttp.onreadystatechange = () => {
@@ -266,7 +315,10 @@ class RecipeAPI {
         }
     }
 
-    // CATHERINE MEMEMEMMEMEMEMEMEME
+    /**
+     * Logs out the user by clearing the session storage and
+     * redirecting to the index page.
+     */
     logout() {
         this.xhttp.open(methodPost, this.baseUrl + logoutEndpoint, true);
         this.xhttp.withCredentials = true;
@@ -441,12 +493,12 @@ class OutputController {
 
         document.getElementById(ingredientsTitle).innerHTML = messages.ingredientsTitle;
         ingredients.forEach(element => {
-            document.getElementById(ingredientList).innerHTML += `<li>${element}</li>`;
+            document.getElementById(ingredientList).innerHTML += listTemplate.replace("%ITEM%", element);
         });
 
         document.getElementById(instructionsTitle).innerHTML = messages.instructionsTitle;
         instructions.forEach(element => {
-            document.getElementById(instructionList).innerHTML += `<li>${element}</li>`;
+            document.getElementById(instructionList).innerHTML += listTemplate.replace("%ITEM%", element);
         });
 
         document.getElementById(addToFav).style.display = blockConst;
@@ -454,16 +506,20 @@ class OutputController {
         this.formatPadding(document.getElementById(outputBg), document.getElementById(outputWrap));
     }
 
-    // CATHERINE MEMEMEMMEMEMEMEMEME
+    /**
+     * Displays the loading icon
+     */
     displayLoadingIcon() {
-        document.getElementById("loader").style.zIndex = 99;
-        document.getElementById("loader").style.display = "flex";
+        document.getElementById(loaderConst).style.zIndex = 99;
+        document.getElementById(loaderConst).style.display = flexConst;
     }
     
-    // CATHERINE MEMEMEMMEMEMEMEMEME
+    /**
+     * Hides the loading icon
+     */
     hideLoadingIcon() {
-        document.getElementById("loader").style.zIndex = -99;
-        document.getElementById("loader").style.display = "none";
+        document.getElementById(loaderConst).style.zIndex = -99;
+        document.getElementById(loaderConst).style.display = noneConst;
     }
 
     /**
@@ -484,31 +540,31 @@ class OutputController {
         // Extract the column names dynamically from the first object
         const columnNames = Object.keys(users[0]);
     
-        let table = `<table><thead><tr>`;
+        let table = tableHeadBuild;
         
         // Dynamically create table headers
         columnNames.forEach(column => {
-            table += `<th>${column}</th>`;
+            table += tableHeadTemplate.replace("%ITEM%", column);
         });
 
-        table += `</tr></thead><tbody>`;
+        table += tableHeadEnd;
 
         // Dynamically create table rows
         users.forEach(row => {
-            table += `<tr>`;
+            let rowContent = "";
             columnNames.forEach(column => {
-                table += `<td>${row[column] !== undefined ? row[column] : ""}</td>`;
+                rowContent += tableCellTemplate.replace("%CELL%", row[column] !== undefined ? row[column] : "");
             });
-            table += `</tr>`;
+            table += tableRowTemplate.replace("%CELL_CONTENTS%", rowContent);
         });
     
-        table += `</tbody></table>`;
+        table += tableEndConst;
 
         tableOutput.innerHTML = "";
         document.getElementById(userList).innerHTML = table;
 
         // Setting table as DataTable
-        $('#userList').DataTable();
+        $(hashtagUserList).DataTable();
     }
 
     /**
@@ -549,27 +605,21 @@ class OutputController {
             const favoriteDiv = document.createElement(divConst);
             favoriteDiv.className = favorite;
     
-            let content = `<div class="title titleFont" id="recipeTitle">${recipe.title}</div>
-                            <div class="ingredients divide">
-                                <div class="desc headerFont" id="ingredientsTitle">${messages.ingredientsTitle}</div>
-                                <ul id="ingredientList">`;
+            let content = recipeTableTemplate
+                .replace("%TITLE%", recipe.title)
+                .replace("%INGREDIENTS_TITLE%", messages.ingredientsTitle);
     
-            recipe.ingredients.forEach(ingredient => {
-                content += `<li>${ingredient}</li>`;
-            });
+                recipe.ingredients.forEach(ingredient => {
+                    content += listTemplate.replace("%ITEM%", ingredient);
+                });
     
-            content += `</ul>
-                        </div>
-                        <div class="instructions divide">
-                            <div class="desc headerFont" id="instructionsTitle">${messages.instructionsTitle}</div>
-                            <ul id="instructionList">`;
+            content += instructionsTemplate.replace("%INSTRUCTIONS_TITLE%", messages.instructionsTitle);
     
             recipe.methods.forEach(method => {
-                content += `<li>${method}</li>`;
+                content += listTemplate.replace("%ITEM%", method);
             });
     
-            content += `</ul>
-                        </div>`;
+            content += unorderedListDiv;
     
             favoriteDiv.innerHTML = content;
             favoriteDivWrap.appendChild(favoriteDiv);
@@ -582,7 +632,7 @@ class OutputController {
     
         // Use ButtonController to initialize navigation
         const buttonController = new ButtonController();
-        buttonController.initFavNavigation(document.querySelector('.prev'), document.querySelector('.next'), favorites.length, this.displayNextFav);
+        buttonController.initFavNavigation(document.querySelector(prevConst), document.querySelector('.next'), favorites.length, this.displayNextFav);
     }
 
     /**
@@ -591,7 +641,7 @@ class OutputController {
      */
     displayNextFav(index) {
         const offset = -index * (document.getElementById(favoritesWrap).clientWidth); // Calculate the offset
-        document.getElementById(favEndpoint).style.transform = `translateX(${offset}px)`;
+        document.getElementById(favEndpoint).style.transform = translateStyleConst.replace("%OFFSET%", offset);
     }
 }
 
@@ -740,14 +790,7 @@ class NavBar {
      * @returns the logo for the navigation bar
      */
     initLogo() {
-        return `<div class="logo titleFont hoverable">
-                    <a href="index.html">
-                        <div class="headerLogo">
-                            <img src="public/images/logo.png" alt="Logo">
-                        </div>
-                        ${messages.appName}
-                    </a>
-                </div>`;
+        return initButtonTemplate.replace("%APP_NAME%", messages.appName);
     }
 
     /**
@@ -755,9 +798,7 @@ class NavBar {
      * @returns the login button for the navigation bar
      */
     initLoginBtn() {
-        return `<li class="login hoverable">
-                    <a href="login.html">${messages.loginTitle}</a>
-                </li>`;
+        return initLoginButtonTemplate.replace("%LOGIN_TITLE%", messages.loginBtn);
     }
 
     /**
@@ -765,9 +806,7 @@ class NavBar {
      * @returns the logout button for the navigation bar
      */
     initLogoutBtn() {
-        return `<li class="logout hoverable">
-                    <button id="logoutBtn">${messages.logoutBtn}</button>
-                </li>`;
+        return logoutButtonTemplate.replace("%LOGOUT_BTN%", messages.logoutBtn);
     }
 
     /**
@@ -782,7 +821,7 @@ class NavBar {
         const itemNav = this.userRole === adminConst ? this.adminNavs : this.itemNavs;
         const item = this.userRole === adminConst ? adminNavItems : genNavItems;
         for (let i = 0; i < item.length; i++) {
-            const menuItem = `<li class="hoverable"><a href=${itemNav[i]}>${item[i]}</a></li>`;
+            const menuItem = menuItemTemplate.replace("%ITEM_NAV%", itemNav[i]).replace("%ITEM%", item[i]);
             menu.innerHTML+= menuItem;
         }
 
@@ -840,7 +879,7 @@ class CustomCursor {
      */
     initHoverable() {
         // Add hover effect to all elements with the "hoverable" class
-        document.querySelectorAll(".hoverable").forEach(element => {
+        document.querySelectorAll(hoverableConst).forEach(element => {
             element.addEventListener(mouseenter, () => {
                 document.body.style.cursor = noneConst;  // Hide default cursor when hovering over hoverable items
                 this.cursor.style.display = blockConst;  // Show custom cursor when hovering
