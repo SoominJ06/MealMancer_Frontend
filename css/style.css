@@ -62,7 +62,7 @@
     border: 0;
     padding: 20px 30px;
     font-size: 25px;
-    color: white;
+    color: #eee;
     cursor: none;
 }
 
@@ -84,16 +84,19 @@
     text-shadow: 0 0 15px #661FE1;
 }
 
+/* Index Styling */
 .goCookBtn {
-    min-width: 430px;
-    background: url(../public/images/scroll.png) no-repeat center center;
-    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #goCook {
-    align-self: center;
-    padding: 10px 40px;
+    background: url(../public/images/shredded_paper.png) no-repeat center center;
+    background-size: 100% 100%;
+    padding: 20px 80px;
     font-size: 25px;
+    align-self: center;
     display: flex;
     justify-content: center;
     align-items: center;

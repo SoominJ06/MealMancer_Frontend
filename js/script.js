@@ -235,34 +235,34 @@ class RecipeAPI {
      */
     getRecipe(ingredients) {
         // testing with dummy data
-        // const title = "avocado and tomato breakfast toast";
-        // const ingredient = ["2 slices whole grain bread", "1 slice avocado", "1 medium tomato, sliced", "2 slices cooked bacon", "2 eggs", "salt and pepper to taste", "olive oil spray"];
-        // const method = ["toast the bread slices in a toaster or under the broiler until golden brown.", "lightly spray a frying pan with olive oil spray and heat over medium heat.", "add the sliced avocado, tomato, and cooked bacon to the pan.", "season with salt and pepper, and cook for 3-4 minutes, or until the avocado is soft.", "add the eggs to the pan and scramble until fully cooked.", "remove from heat and cover the pan with a lid.", "serve immediately."];
-        // this.outputController.displayRecipe(title, ingredient, method)
+        const title = "avocado and tomato breakfast toast";
+        const ingredient = ["2 slices whole grain bread", "1 slice avocado", "1 medium tomato, sliced", "2 slices cooked bacon", "2 eggs", "salt and pepper to taste", "olive oil spray"];
+        const method = ["toast the bread slices in a toaster or under the broiler until golden brown.", "lightly spray a frying pan with olive oil spray and heat over medium heat.", "add the sliced avocado, tomato, and cooked bacon to the pan.", "season with salt and pepper, and cook for 3-4 minutes, or until the avocado is soft.", "add the eggs to the pan and scramble until fully cooked.", "remove from heat and cover the pan with a lid.", "serve immediately."];
+        this.outputController.displayRecipe(title, ingredient, method)
 
         // check if session has expired or not
-        this.checkSession();
+        // this.checkSession();
 
         // Show loading spinner
-        this.outputController.displayLoadingIcon();
+        // this.outputController.displayLoadingIcon();
 
         // Actual fetch
-        this.xhttp.open(methodGet, this.baseUrl + generateEndpoint + ingredients, true);
-        this.xhttp.withCredentials = true; // for Cookies
-        this.xhttp.send();
-        this.xhttp.onreadystatechange = () => {
-            if (this.xhttp.readyState === 4) {
-                const response = JSON.parse(this.xhttp.responseText);
-                if (this.xhttp.status === 200) {
-                    this.session.reduceToken();
-                    this.outputController.displayRecipe(response.title, response.ingredients, response.directions)
-                } else {
-                    this.outputController.displayErrorPopup(messages.error);
-                }
-                // Hide loading icon
-                this.outputController.hideLoadingIcon(); 
-            }
-        }
+        // this.xhttp.open(methodGet, this.baseUrl + generateEndpoint + ingredients, true);
+        // this.xhttp.withCredentials = true; // for Cookies
+        // this.xhttp.send();
+        // this.xhttp.onreadystatechange = () => {
+        //     if (this.xhttp.readyState === 4) {
+        //         const response = JSON.parse(this.xhttp.responseText);
+        //         if (this.xhttp.status === 200) {
+        //             this.session.reduceToken();
+        //             this.outputController.displayRecipe(response.title, response.ingredients, response.directions)
+        //         } else {
+        //             this.outputController.displayErrorPopup(messages.error);
+        //         }
+        //         // Hide loading icon
+        //         this.outputController.hideLoadingIcon(); 
+        //     }
+        // }
     }
 
     /**
@@ -272,27 +272,27 @@ class RecipeAPI {
      * @param string pw 
      */
     login(email, pw) {
-        this.xhttp.open(methodPost, this.baseUrl + loginEndpoint, true);
-        this.xhttp.withCredentials = true;
-        this.xhttp.setRequestHeader(contentType, appJson);
-        const requestData = JSON.stringify({ email: email, password: pw });
-        this.xhttp.send(requestData);   
-        this.xhttp.onreadystatechange = () => { 
-            if (this.xhttp.readyState === 4) {
-                const response = JSON.parse(this.xhttp.responseText);
-                if (this.xhttp.status === 200) {
-                    // Store user info in session storage
-                    this.session.setUserInfo(response.role, response.tokens, response.expiresAt );
-                    window.location.href = indexPage;
-                } else {
-                    this.outputController.displayErrorPopup(response.message);
-                }
-            }
-        }
+        // this.xhttp.open(methodPost, this.baseUrl + loginEndpoint, true);
+        // this.xhttp.withCredentials = true;
+        // this.xhttp.setRequestHeader(contentType, appJson);
+        // const requestData = JSON.stringify({ email: email, password: pw });
+        // this.xhttp.send(requestData);   
+        // this.xhttp.onreadystatechange = () => { 
+        //     if (this.xhttp.readyState === 4) {
+        //         const response = JSON.parse(this.xhttp.responseText);
+        //         if (this.xhttp.status === 200) {
+        //             // Store user info in session storage
+        //             this.session.setUserInfo(response.role, response.tokens, response.expiresAt );
+        //             window.location.href = indexPage;
+        //         } else {
+        //             this.outputController.displayErrorPopup(response.message);
+        //         }
+        //     }
+        // }
         
         // For testing admin
-        // this.session.setUserInfo("admin", 20, "2026-03-19T10:33:18.885Z");
-        // window.location.href = "index.html";
+        this.session.setUserInfo("admin", 20, "2026-03-19T10:33:18.885Z");
+        window.location.href = "index.html";
     }
 
     /**
