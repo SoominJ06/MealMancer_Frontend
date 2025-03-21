@@ -38,6 +38,10 @@
     outline: none;
 }
 
+#ingredientInput:hover {
+    filter: drop-shadow(0 0 5px #4f391f);
+}
+
 #conjureBtn {
     max-width: 250px;
     width: 100%;
@@ -55,7 +59,8 @@
 }
 
 #conjureBtn:hover {
-    filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.3));
+    filter: drop-shadow(0 0 15px #C0F5FA);
+    color: #C0F5FA;
 }
 
 /* Output */

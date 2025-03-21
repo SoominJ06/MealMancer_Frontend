@@ -113,11 +113,13 @@ header {
 
 .navBar li:hover a {
     color: #661FE1;
+    text-shadow: 0 0 15px #C0F5FA;
     cursor: none;
 }
 
 .navBar li:hover button {
     color: #661FE1;
+    text-shadow: 0 0 15px #C0F5FA;
     cursor: none;
 }
 
@@ -128,6 +130,7 @@ input {
     font-style: normal; 
 }
 
+/* Changing placeholder styling */
 ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
     color: rgba(0, 0, 0, 0.7);
     font-family: "Martel", serif;
@@ -148,10 +151,17 @@ input {
     font-style: normal;
 }
 
+/* Disabling autofill to change background color of input field */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  transition: background-color 5000s ease-in-out 0s; 
+}
+
+/* Diabling outline when input field is focused */
 input:focus {
-    /* box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.7); */
     outline: 0;
-    filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.3));
 }
 
 /* Styling error popup field */

@@ -272,27 +272,27 @@ class RecipeAPI {
      * @param string pw 
      */
     login(email, pw) {
-        // this.xhttp.open(methodPost, this.baseUrl + loginEndpoint, true);
-        // this.xhttp.withCredentials = true;
-        // this.xhttp.setRequestHeader(contentType, appJson);
-        // const requestData = JSON.stringify({ email: email, password: pw });
-        // this.xhttp.send(requestData);   
-        // this.xhttp.onreadystatechange = () => { 
-        //     if (this.xhttp.readyState === 4) {
-        //         const response = JSON.parse(this.xhttp.responseText);
-        //         if (this.xhttp.status === 200) {
-        //             // Store user info in session storage
-        //             this.session.setUserInfo(response.role, response.tokens, response.expiresAt );
-        //             window.location.href = indexPage;
-        //         } else {
-        //             this.outputController.displayErrorPopup(response.message);
-        //         }
-        //     }
-        // }
+        this.xhttp.open(methodPost, this.baseUrl + loginEndpoint, true);
+        this.xhttp.withCredentials = true;
+        this.xhttp.setRequestHeader(contentType, appJson);
+        const requestData = JSON.stringify({ email: email, password: pw });
+        this.xhttp.send(requestData);   
+        this.xhttp.onreadystatechange = () => { 
+            if (this.xhttp.readyState === 4) {
+                const response = JSON.parse(this.xhttp.responseText);
+                if (this.xhttp.status === 200) {
+                    // Store user info in session storage
+                    this.session.setUserInfo(response.role, response.tokens, response.expiresAt );
+                    window.location.href = indexPage;
+                } else {
+                    this.outputController.displayErrorPopup(response.message);
+                }
+            }
+        }
         
         // For testing admin
-        this.session.setUserInfo("admin", 20, "2026-03-19T10:33:18.885Z");
-        window.location.href = "index.html";
+        // this.session.setUserInfo("admin", 20, "2026-03-19T10:33:18.885Z");
+        // window.location.href = "index.html";
     }
 
     /**

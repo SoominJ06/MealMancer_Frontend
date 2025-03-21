@@ -56,7 +56,7 @@
 }
 
 .btn:hover {
-    filter: hue-rotate(-25deg) saturate(5);
+    filter: hue-rotate(-25deg) saturate(5) drop-shadow(0 0 15px #C0F5FA);
 }
 
 .divide {
