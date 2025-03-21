@@ -111,7 +111,7 @@ const initButtonTemplate = `<div class="logo titleFont hoverable">
                                     %APP_NAME%
                                 </a>
                             </div>`;
-const initLoginButtonTemplate = `<li class="login hoverable">
+const initLoginButtonTemplate = `<li class="loginNav hoverable">
                                     <a href="login.html">%LOGIN_TITLE%</a>
                                   </li>`;
 const logoutButtonTemplate = `<li class="logout hoverable">
