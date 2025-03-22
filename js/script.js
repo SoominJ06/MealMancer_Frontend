@@ -30,7 +30,6 @@ const signupPage = "signup.html";
 const cookingPage = "cookingConjuration.html";
 const favPage = "favorites.html";
 const userListPage = "userList.html";
-const DOMContentLoadConst = "DOMContentLoaded";
 
 // ContentIDs
 const errorPopup = "errorPopupWrap";
@@ -72,6 +71,7 @@ const translateStyleConst = "translateX(%OFFSET%px)";
 const hoverableConst = ".hoverable";
 
 // Styling
+const emptyString = "";
 const zero = "0";
 const one = "1";
 const hiddenConst = "hidden";
@@ -120,10 +120,11 @@ const logoutButtonTemplate = `<li class="logout hoverable">
 const menuItemTemplate = `<li class="hoverable"><a href="%ITEM_NAV%">%ITEM%</a></li>`;
 
 // Event Listeners
+const DOMContentLoadConst = "DOMContentLoaded";
+const clickConst = "click";
 const mouseleave = "mouseleave";
 const mouseenter = "mouseenter";
 const mousemove = "mousemove";
-const clickConst = "click";
 
 /**
  * SessionController class to manage the user session by 
@@ -401,7 +402,7 @@ class InputValidator {
      * @returns true if the value is empty or consists of only whitespace, false otherwise
      */
     isEmpty(value) {
-        return !value || value.trim() === "";
+        return !value || value.trim() === emptyString;
     }
 
     /**
@@ -429,7 +430,7 @@ class InputValidator {
      * @returns the value without any whitespace
      */
     removeWhitespace(value) {
-        return value.replace(/\s+/g, ""); // Removes all spaces
+        return value.replace(/\s+/g, emptyString); // Removes all spaces
     }
 
 }
@@ -473,11 +474,11 @@ class OutputController {
      * Empties the recipe output
      */
     emptyRecipeOutput() {
-        document.getElementById(recipeTitle).innerHTML = "";
-        document.getElementById(ingredientsTitle).innerHTMLinnerHTML = "";
-        document.getElementById(ingredientList).innerHTML = "";
-        document.getElementById(instructionsTitle).innerHTML = "";
-        document.getElementById(instructionList).innerHTML = "";
+        document.getElementById(recipeTitle).innerHTML = emptyString;
+        document.getElementById(ingredientsTitle).innerHTMLinnerHTML = emptyString;
+        document.getElementById(ingredientList).innerHTML = emptyString;
+        document.getElementById(instructionsTitle).innerHTML = emptyString;
+        document.getElementById(instructionList).innerHTML = emptyString;
         document.getElementById(addToFav).style.display = noneConst;
         document.getElementById(outputBg).style.display = noneConst;
     }
@@ -537,7 +538,7 @@ class OutputController {
 
         // Checks if tableData is empty
         if (users.length <= 0) {
-            tableOutput.innerHTML = "";
+            tableOutput.innerHTML = emptyString;
             document.getElementById(userList).innerHTML = messages.noUsersFound;
             return;
         }
@@ -556,16 +557,16 @@ class OutputController {
 
         // Dynamically create table rows
         users.forEach(row => {
-            let rowContent = "";
+            let rowContent = emptyString;
             columnNames.forEach(column => {
-                rowContent += tableCellTemplate.replace("%CELL%", row[column] !== undefined ? row[column] : "");
+                rowContent += tableCellTemplate.replace("%CELL%", row[column] !== undefined ? row[column] : emptyString);
             });
             table += tableRowTemplate.replace("%CELL_CONTENTS%", rowContent);
         });
     
         table += tableEndConst;
 
-        tableOutput.innerHTML = "";
+        tableOutput.innerHTML = emptyString;
         document.getElementById(userList).innerHTML = table;
 
         // Setting table as DataTable
@@ -596,7 +597,7 @@ class OutputController {
     displayFavorites(favorites) {
         const favoritesContainer = document.getElementById(favEndpoint);
     
-        favoritesContainer.innerHTML = "";
+        favoritesContainer.innerHTML = emptyString;
     
         if (favorites.length === 0 || favorites === null) {
             favoritesContainer.innerHTML = messages.noFavsFound;
@@ -971,7 +972,7 @@ class UI {
     initIndex() {
         if (this.userRole === adminConst) {
             document.getElementById(titleConst).innerHTML = messages.adminIndexTitle;
-            document.getElementById(descConst).innerHTML = "";
+            document.getElementById(descConst).innerHTML = emptyString;
             document.getElementById(goCook).innerHTML = messages.goToUserList;
             document.getElementById(goCook).href = userListPage;
             return;
