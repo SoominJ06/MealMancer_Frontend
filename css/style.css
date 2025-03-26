@@ -1,19 +1,28 @@
 .main {
     min-height: calc(100svh - 120px);
+    padding: 50px;
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-}
-
-.main>div {
-    width: 40%;
+    gap: 50px;
 }
 
 .mainLogo {
+    max-width: 40vw;
+    max-height: calc(100svh - 210px);
     scale: 0.9;
 }
 
+.mainLogo img {
+    max-width: inherit;
+    max-height: inherit;
+    object-fit: contain;
+}
+
 .mainWrap {
+    max-width: 750px;
+    width: 60%;
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -23,6 +32,7 @@
 .login,
 .signup {
     max-width: 600px;
+    width: 60%;
     background: url(../public/images/scroll_vertical.png) no-repeat center center;
     background-size: 100% 100%;
     padding: 110px 80px;
@@ -104,4 +114,99 @@
 
 .goCookBtn:hover {
     filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.5));
+}
+
+@media screen and (max-width: 1250px) {
+    .mainWrap .title {
+        font-size: 40px;
+    }
+
+    .mainWrap .desc {
+        font-size: 30px;
+    }
+
+    .mainLogo {
+        max-width: 30vw;
+    }
+
+    #goCook {
+        font-size: 20px;
+    }
+}
+
+@media screen and (max-width: 900px) {
+    .main {
+        gap: 20px;
+    }
+}
+
+@media screen and (max-width: 850px) {
+    .login ~ .mainLogo,
+    .signup ~ .mainLogo {
+        display: none;
+    }
+
+    .login,
+    .signup {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 685px) {
+    .main {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .mainWrap {
+        max-width: unset;
+        width: 100%;
+    }
+
+    .mainWrap {
+        text-align: center;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .main:has(.login),
+    .main:has(.signup) {
+        padding: 30px;
+    }
+
+    .login .title,
+    .signup .title {
+        font-size: 40px;
+    }
+
+    .loginForm input,
+    .signupForm input,
+    #loginBtn,
+    #signupBtn {
+        font-size: 15px;
+    }
+}
+
+@media screen and (max-width: 550px) {
+    .login,
+    .signup {
+        padding: 90px 15%;
+    }
+
+    #signupDir,
+    #loginDir {
+        font-size: 14px;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .login .title,
+    .signup .title {
+        font-size: 35px;
+    }
+
+    #signupDir,
+    #loginDir {
+        font-size: 12px;
+    }
 }

@@ -105,6 +105,8 @@ header {
     font-size: 30px;
     display: flex;
     gap: 40px;
+    align-items: center;
+    text-align: center;
 }
 
 .navBar button {
