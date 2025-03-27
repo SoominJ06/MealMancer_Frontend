@@ -65,17 +65,39 @@
 
 /* Output */
 #outputBg {
-    margin-top: 50px;
-    width: 90%;
-    height: fit-content;
-    padding: 50px;
-    background: url(../public/images/scroll_vertical.png) no-repeat center center;
-    background-size: 100% 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
     display: none;
 }
 
+.scrollTop,
+.scrollBottom {
+    width: 100%;
+}
+
+.scrollTop {
+    width: 100%;
+    background: url(../public/images/scroll_top.png) no-repeat center center;
+    background-size: 100% 100%;
+}
+
+.scrollBottom {
+    width: 100%;
+    background: url(../public/images/scroll_bottom.png) no-repeat center center;
+    background-size: 100% 100%;
+}
+
+.scrollMiddle {
+    background: url(../public/images/scroll_middle.png) no-repeat center center;
+    background-size: 100% 100%;
+    padding: 0 50px;
+}
+
 #outputWrap {
-    padding: 150px 80px;
+    padding: 20px 80px;
+    font-size: 20px;
 }
 
 .divide {
@@ -103,6 +125,10 @@
     #outputBg {
         width: 100%;
     }
+
+    #outputWrap {
+        padding: 20px 60px;
+    }
 }
 
 @media screen and (max-width: 950px) {
@@ -119,6 +145,10 @@
         padding: 20px 30px;
         font-size: 20px;
     }    
+
+    #outputWrap {
+        padding: 20px 40px;
+    }
 }
 
 @media screen and (max-width: 850px) {
@@ -137,10 +167,6 @@
     #outputBg {
         width: 95%;
     }
-
-    #outputWrap {
-        padding: 110px 40px;
-    }
 }
 
 @media screen and (max-width: 750px) {
@@ -151,16 +177,13 @@
 
     .ingredientForm {
         flex-direction: column;
-    }
-
-    #outputWrap {
-        padding: 150px 40px;
+        gap: 10px;
     }
 }
 
 @media screen and (max-width: 700px) {
     #outputWrap {
-        padding: 150px 30px;
+        padding: 20px 30px;
     }
 }
 
@@ -174,7 +197,7 @@
     }
 
     #outputWrap {
-        padding: 150px 20px;
+        padding: 20px;
     }
 
     .divide ul {

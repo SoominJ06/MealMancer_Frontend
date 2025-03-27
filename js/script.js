@@ -516,7 +516,7 @@ class OutputController {
 
         document.getElementById(addToFav).style.display = blockConst;
 
-        this.formatPadding(document.getElementById(outputBg), document.getElementById(outputWrap));
+        this.formatPadding("scrollTop", "scrollBottom");
     }
 
     /**
@@ -585,15 +585,12 @@ class OutputController {
      * @param {*} container 
      * @param {*} content 
      */
-    formatPadding(container, content) {
-        let counter = 1;
-        let maxAttempts = 10;
+    formatPadding(topScroll, bottomScroll) {
+        const top = document.getElementById(topScroll);
+        if (top) top.style.height = `${top.offsetWidth / 316 * 100}px`;
 
-        while (container.clientHeight / content.clientHeight < 1.13 && counter < maxAttempts) {
-            counter++;
-            content.style.padding = `${content.style.paddingTop + (10 * counter)}px ${content.style.paddingLeft}px`;
-            // content.style.padding = `${100 + (10 * counter)}px 80px`;
-        }
+        const bottom = document.getElementById(bottomScroll);
+        if (bottom) bottom.style.height = `${bottom.offsetWidth / 316 * 100}px`;
     }
 
     /**
@@ -639,11 +636,7 @@ class OutputController {
             favoritesContainer.innerHTML += content;
 
             // Adjust scroll top & bottom dynamically
-            const top = document.getElementById(`scrollTop${recipeID}`);
-            if (top) top.style.height = `${top.offsetWidth / 316 * 100}px`;
-
-            const bottom = document.getElementById(`scrollBottom${recipeID}`);
-            if (bottom) bottom.style.height = `${bottom.offsetWidth / 316 * 100}px`;
+            this.formatPadding(`scrollTop${recipeID}`, `scrollBottom${recipeID}`);
 
             recipeID++;
         });

@@ -62,7 +62,7 @@
 }
 
 .favorite {
-    padding: 20px 50px;
+    padding: 20px 80px;
     font-size: 20px;
 }
 
@@ -84,9 +84,21 @@
     margin-top: 20px;
 }
 
-@media screen and (max-width: 1060px) {
+@media screen and (max-width: 1300px) {
+    .favorite {
+        padding: 20px 50px;
+    }
+}
+
+@media screen and (max-width: 1150px) {
     .favorite {
         padding: 20px 40px;
+    }
+}
+
+@media screen and (max-width: 1060px) {
+    .favorite {
+        padding: 20px 30px;
     }
 
     .btn {
@@ -97,7 +109,7 @@
 
 @media screen and (max-width: 950px) {
     .favorite {
-        padding: 20px 30px;
+        padding: 20px;
     }
 
     .title {
