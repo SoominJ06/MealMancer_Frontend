@@ -1,6 +1,7 @@
 .main {
     min-height: calc(100svh - 120px);
     padding: 50px;
+    padding-bottom: 115px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -168,10 +169,16 @@
     }
 }
 
+@media screen and (max-width: 610px) {
+    .main {
+        min-height: calc(100svh - 120px - 65px);
+    }
+}
+
 @media screen and (max-width: 600px) {
-    .main:has(.login),
-    .main:has(.signup) {
-        padding: 30px;
+    .main {
+        padding: 20px;
+        padding-bottom: 100px;
     }
 
     .login .title,
