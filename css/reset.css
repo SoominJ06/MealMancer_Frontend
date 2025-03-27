@@ -115,7 +115,7 @@ header {
 }
 
 .navBar li {
-    width: min-content;
+    width: fit-content;
 }
 
 .navBar li:hover a {

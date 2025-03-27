@@ -299,8 +299,8 @@ class RecipeAPI {
         }
         
         // For testing admin
-        this.session.setUserInfo("admin", 20, "2026-03-19T10:33:18.885Z");
-        window.location.href = "index.html";
+        // this.session.setUserInfo("admin", 20, "2026-03-19T10:33:18.885Z");
+        // window.location.href = "index.html";
     }
 
     /**
