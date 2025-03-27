@@ -75,7 +75,7 @@
 }
 
 #outputWrap {
-    padding: 100px 80px;
+    padding: 150px 80px;
 }
 
 .divide {
@@ -97,4 +97,95 @@
 #addToFav:hover {
     filter: drop-shadow(0 0 15px #C0F5FA);
     color: #C0F5FA;
+}
+
+@media screen and (max-width: 1050px) {
+    #outputBg {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 950px) {
+    .title {
+        font-size: 40px;
+    }
+
+    #ingredientInput {
+        font-size: 18px;
+        padding: 20px 40px;
+    }
+
+    #conjureBtn {
+        padding: 20px 30px;
+        font-size: 20px;
+    }    
+}
+
+@media screen and (max-width: 850px) {
+    .main {
+        padding: 50px 0;
+    }
+
+    .inputWrap {
+        padding: 0 30px;
+    }
+
+    #conjureBtn {
+        max-width: 200px;
+    }
+
+    #outputBg {
+        width: 95%;
+    }
+
+    #outputWrap {
+        padding: 110px 40px;
+    }
+}
+
+@media screen and (max-width: 750px) {
+    
+    .title {
+        text-align: center;
+    }
+
+    .ingredientForm {
+        flex-direction: column;
+    }
+
+    #outputWrap {
+        padding: 150px 40px;
+    }
+}
+
+@media screen and (max-width: 700px) {
+    #outputWrap {
+        padding: 150px 30px;
+    }
+}
+
+@media screen and (max-width: 550px) {
+    .title {
+        font-size: 30px;
+    }
+
+    #outputBg {
+        margin-top: 10px;
+    }
+
+    #outputWrap {
+        padding: 150px 20px;
+    }
+
+    .divide ul {
+        font-size: 16px;
+    }
+
+    .desc {
+        font-size: 30px;
+    }
+
+    #addToFav {
+        font-size: 20px;
+    }
 }
