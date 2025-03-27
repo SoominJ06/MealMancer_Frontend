@@ -24,7 +24,7 @@
 /* Global styling */
 * { margin: 0; padding: 0; box-sizing: border-box; transition-duration: 0.3s; }
 ul { list-style: none; }
-img { width: 100%; height: 100%; }
+img { width: 100%; height: 100%; object-fit: contain; }
 a { text-decoration: none; color: #000; }
 
 body {
@@ -79,6 +79,7 @@ header {
 
 .logo a {
     font-size: 40px;
+    line-height: 1;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -113,6 +114,10 @@ header {
     all: unset;
 }
 
+.navBar li {
+    width: min-content;
+}
+
 .navBar li:hover a {
     color: #661FE1;
     text-shadow: 0 0 15px #C0F5FA;
@@ -123,6 +128,72 @@ header {
     color: #661FE1;
     text-shadow: 0 0 15px #C0F5FA;
     cursor: none;
+}
+
+@media screen and (max-width: 1050px) {
+    header {
+        padding: 10px 30px;
+        gap: 30px;
+    }
+
+    .logo a {
+        font-size: 35px;
+    }
+
+    .navBar {
+        font-size: 25px;
+        gap: 30px;
+    }
+}
+
+@media screen and (max-width: 850px) {
+    header {
+        padding: 10px 20px;
+        gap: 20px;
+    }
+    
+    .logo a {
+        font-size: 30px;
+    }
+
+    .navBar {
+        gap: 25px;
+    }
+}
+
+@media screen and (max-width: 710px) {
+    .logo a {
+        font-size: 25px;
+    }
+
+    .navBar {
+        font-size: 20px;
+        gap: 20px;
+    }
+}
+
+@media screen and (max-width: 610px) {
+    header {
+        flex-direction: column;
+        gap: 0;
+        overflow: hidden;
+    }
+
+    .navBar {
+        height: 0;
+        width: 100%;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+    .navBar li {
+        width: max-content;
+    }
+
+    header:hover .navBar {
+        margin-top: 10px;
+        height: 25px;
+    }
 }
 
 /* Input field styling */
