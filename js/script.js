@@ -85,18 +85,7 @@ const divConst = "div";
 const ulConst = "ul";
 
 // HTML evelents
-const recipeTableTemplate = `<div class="title titleFont" id="recipeTitle">%TITLE%</div>
-                         <div class="ingredients divide">
-                             <div class="desc headerFont" id="ingredientsTitle">%INGREDIENTS_TITLE%</div>
-                             <ul id="ingredientList">`;
 const listTemplate = `<li>%ITEM%</li>`;
-const instructionsTemplate = `</ul>
-    </div>
-    <div class="instructions divide">
-        <div class="desc headerFont" id="instructionsTitle">%INSTRUCTIONS_TITLE%</div>
-        <ul id="instructionList">`;
-const unorderedListDiv = `</ul>
-                        </div>`;
 const tableHeadBuild = `<table><thead><tr>`;
 const tableHeadTemplate = `<th>%ITEM%</th>`;
 const tableHeadEnd = `</tr></thead><tbody>`;
@@ -118,6 +107,18 @@ const logoutButtonTemplate = `<li class="logout hoverable">
                                     <button id="logoutBtn">%LOGOUT_BTN%</button>
                                   </li>`;
 const menuItemTemplate = `<li class="hoverable"><a href="%ITEM_NAV%">%ITEM%</a></li>`;
+const favoritesTemplate = `<div class="favoriteBg"><div class="scrollTop" id="scrollTop%TID%"></div>
+                                <div class="scrollMiddle">
+                                    <div class="favorite">
+                                        <div class="title titleFont">%RECIPE_TITLE%</div>
+                                        <div class="ingredients divide">
+                                            <div class="desc headerFont">%INGREDIENTS_TITLE%</div>
+                                            <ul>%INGREDIENT_LIST%</ul>
+                                        </div>
+                                    <div class="instructions divide">
+                                        <div class="desc headerFont">%INSTRUCTIONS_TITLE%</div>
+                                        <ul id="instructionList">%INSTRUCTION_LIST%</ul>
+                                    </div></div></div><div class="scrollBottom" id="scrollBottom%BID%"></div></div>`;
 
 // Event Listeners
 const DOMContentLoadConst = "DOMContentLoaded";
@@ -611,34 +612,40 @@ class OutputController {
             return;
         }
     
+        let recipeID = 0;
+
         favorites.forEach(recipe => {
-            const favoriteDivWrap = document.createElement(divConst);
-            favoriteDivWrap.className = favoriteBg;
-    
-            const favoriteDiv = document.createElement(divConst);
-            favoriteDiv.className = favorite;
-    
-            let content = recipeTableTemplate
-                .replace("%TITLE%", recipe.title)
-                .replace("%INGREDIENTS_TITLE%", messages.ingredientsTitle);
-    
+            let content = favoritesTemplate;
+
+            let ingredientList = "";
             recipe.ingredients.forEach(ingredient => {
-                content += listTemplate.replace("%ITEM%", ingredient);
+                ingredientList += listTemplate.replace("%ITEM%", ingredient);
             });
-    
-            content += instructionsTemplate.replace("%INSTRUCTIONS_TITLE%", messages.instructionsTitle);
-    
+
+            let methodList = "";
             recipe.methods.forEach(method => {
-                content += listTemplate.replace("%ITEM%", method);
+                methodList += listTemplate.replace("%ITEM%", method);
             });
-    
-            content += unorderedListDiv;
-    
-            favoriteDiv.innerHTML = content;
-            favoriteDivWrap.appendChild(favoriteDiv);
-            favoritesContainer.appendChild(favoriteDivWrap);
-            
-            this.formatPadding(favoriteDivWrap, favoriteDiv);
+
+            content = content
+                .replace("%RECIPE_TITLE%", recipe.title)
+                .replace("%INGREDIENTS_TITLE%", messages.ingredientsTitle)
+                .replace("%INGREDIENT_LIST%", ingredientList)
+                .replace("%INSTRUCTIONS_TITLE%", messages.instructionsTitle)
+                .replace("%INSTRUCTION_LIST%", methodList)
+                .replace("%TID%", recipeID).replace("%BID%", recipeID);
+
+            // Append updated `content`
+            favoritesContainer.innerHTML += content;
+
+            // Adjust scroll top & bottom dynamically
+            const top = document.getElementById(`scrollTop${recipeID}`);
+            if (top) top.style.height = `${top.offsetWidth / 316 * 100}px`;
+
+            const bottom = document.getElementById(`scrollBottom${recipeID}`);
+            if (bottom) bottom.style.height = `${bottom.offsetWidth / 316 * 100}px`;
+
+            recipeID++;
         });
     
         favoritesContainer.style.width = `${favorites.length * 100}%`;
