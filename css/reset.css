@@ -196,6 +196,12 @@ header {
     }
 }
 
+@media screen and (max-width: 360px) {
+    header:hover .navBar {
+        height: 45px;
+    }
+}
+
 /* Input field styling */
 input {
     font-family: "Martel", serif;
