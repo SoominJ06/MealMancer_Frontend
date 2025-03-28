@@ -69,6 +69,9 @@ const prevConst = '.prev';
 const nextConst = '.next';
 const translateStyleConst = "translateX(%OFFSET%px)";
 const hoverableConst = ".hoverable";
+const scrollTopConst = "scrollTop";
+const scrollBottomConst = "scrollBottom";
+const tokensLeftConst = "tokensLeft";
 
 // Styling
 const emptyString = "";
@@ -83,6 +86,12 @@ const headerFont = "headerFont";
 const autoConst = "auto";
 const divConst = "div";
 const ulConst = "ul";
+
+// Replaceable strings
+const recipeItem = "%ITEM%";
+const cellItem = "%CELL%";
+const cellContents = "%CELL_CONTENTS%";
+const offsetConst = "%OFFSET%"
 
 // HTML evelents
 const listTemplate = `<li>%ITEM%</li>`;
@@ -140,13 +149,14 @@ class SessionController {
     }
 
     /**
-     * Sets the users role, tokens, and the time the session expires in the session storage
+     * Sets the users role, tokens, total number of API calls they've made, and the time the session expires in the session storage
      * @param {*} role
      * @param {*} tokens 
+     * @param {*} totalAPI 
      * @param {*} expiresAt  
      */
-    setUserInfo(role, tokens, expiresAt) {
-        this.session = { role, tokens, expiresAt };
+    setUserInfo(role, tokens, totalAPI, expiresAt) {
+        this.session = { role, tokens, totalAPI, expiresAt };
         sessionStorage.setItem(userInfo, JSON.stringify(this.session));
     }
 
@@ -174,6 +184,14 @@ class SessionController {
      */
     getUserTokens() {
         return this.session.tokens || null;
+    }
+
+    /**
+     * Getter for the total number of API calls the user has made from the session storage
+     * @returns the the total number of API calls the user has made from the session storage
+     */
+    getTotalAPI() {
+        return this.session.totalAPI || null;
     }
 
     /**
@@ -290,7 +308,7 @@ class RecipeAPI {
                 const response = JSON.parse(this.xhttp.responseText);
                 if (this.xhttp.status === 200) {
                     // Store user info in session storage
-                    this.session.setUserInfo(response.role, response.tokens, response.expiresAt );
+                    this.session.setUserInfo(response.role, response.tokens, null, response.expiresAt ); //replace null with total api call num
                     window.location.href = indexPage;
                 } else {
                     this.outputController.displayErrorPopup(response.message);
@@ -299,7 +317,7 @@ class RecipeAPI {
         }
         
         // For testing admin
-        // this.session.setUserInfo("admin", 20, "2026-03-19T10:33:18.885Z");
+        // this.session.setUserInfo("admin", 20, 40, "2026-03-19T10:33:18.885Z");
         // window.location.href = "index.html";
     }
 
@@ -506,17 +524,17 @@ class OutputController {
 
         document.getElementById(ingredientsTitle).innerHTML = messages.ingredientsTitle;
         ingredients.forEach(element => {
-            document.getElementById(ingredientList).innerHTML += listTemplate.replace("%ITEM%", element);
+            document.getElementById(ingredientList).innerHTML += listTemplate.replace(recipeItem, element);
         });
 
         document.getElementById(instructionsTitle).innerHTML = messages.instructionsTitle;
         instructions.forEach(element => {
-            document.getElementById(instructionList).innerHTML += listTemplate.replace("%ITEM%", element);
+            document.getElementById(instructionList).innerHTML += listTemplate.replace(recipeItem, element);
         });
 
         document.getElementById(addToFav).style.display = blockConst;
 
-        this.formatPadding("scrollTop", "scrollBottom");
+        this.formatPadding(scrollTopConst, scrollBottomConst);
     }
 
     /**
@@ -557,7 +575,7 @@ class OutputController {
         
         // Dynamically create table headers
         columnNames.forEach(column => {
-            table += tableHeadTemplate.replace("%ITEM%", column);
+            table += tableHeadTemplate.replace(recipeItem, column);
         });
 
         table += tableHeadEnd;
@@ -566,9 +584,9 @@ class OutputController {
         users.forEach(row => {
             let rowContent = emptyString;
             columnNames.forEach(column => {
-                rowContent += tableCellTemplate.replace("%CELL%", row[column] !== undefined ? row[column] : emptyString);
+                rowContent += tableCellTemplate.replace(cellItem, row[column] !== undefined ? row[column] : emptyString);
             });
-            table += tableRowTemplate.replace("%CELL_CONTENTS%", rowContent);
+            table += tableRowTemplate.replace(cellContents, rowContent);
         });
     
         table += tableEndConst;
@@ -614,14 +632,14 @@ class OutputController {
         favorites.forEach(recipe => {
             let content = favoritesTemplate;
 
-            let ingredientList = "";
+            let ingredientList = emptyString;
             recipe.ingredients.forEach(ingredient => {
-                ingredientList += listTemplate.replace("%ITEM%", ingredient);
+                ingredientList += listTemplate.replace(recipeItem, ingredient);
             });
 
-            let methodList = "";
+            let methodList = emptyString;
             recipe.methods.forEach(method => {
-                methodList += listTemplate.replace("%ITEM%", method);
+                methodList += listTemplate.replace(recipeItem, method);
             });
 
             content = content
@@ -636,7 +654,7 @@ class OutputController {
             favoritesContainer.innerHTML += content;
 
             // Adjust scroll top & bottom dynamically
-            this.formatPadding(`scrollTop${recipeID}`, `scrollBottom${recipeID}`);
+            this.formatPadding(scrollTopConst+recipeID, scrollBottomConst+recipeID);
 
             recipeID++;
         });
@@ -654,7 +672,7 @@ class OutputController {
      */
     displayNextFav(index) {
         const offset = -index * (document.getElementById(favoritesWrap).clientWidth); // Calculate the offset
-        document.getElementById(favEndpoint).style.transform = translateStyleConst.replace("%OFFSET%", offset);
+        document.getElementById(favEndpoint).style.transform = translateStyleConst.replace(offsetConst, offset);
     }
 }
 
@@ -834,7 +852,7 @@ class NavBar {
         const itemNav = this.userRole === adminConst ? this.adminNavs : this.itemNavs;
         const item = this.userRole === adminConst ? adminNavItems : genNavItems;
         for (let i = 0; i < item.length; i++) {
-            const menuItem = menuItemTemplate.replace("%ITEM_NAV%", itemNav[i]).replace("%ITEM%", item[i]);
+            const menuItem = menuItemTemplate.replace("%ITEM_NAV%", itemNav[i]).replace(recipeItem, item[i]);
             menu.innerHTML+= menuItem;
         }
 
@@ -977,6 +995,7 @@ class UI {
      * @returns the index page based on the user role
      */
     initIndex() {
+        document.getElementById(tokensLeftConst).innerHTML = this.loggedIn ? messages.apiInfo.replace("%TOKENS%", this.session.getUserTokens()).replace("%TOTAL_API_CALLS%", this.session.getTotalAPI()) : "";
         if (this.userRole === adminConst) {
             document.getElementById(titleConst).innerHTML = messages.adminIndexTitle;
             document.getElementById(descConst).innerHTML = emptyString;
