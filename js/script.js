@@ -8,7 +8,7 @@ const adminConst = "admin";
 const hashtagUserList = "#userList";
 
 // Endpoints
-const backendUrl = "https://meal-mancer-api-q3zh9.ondigitalocean.app/";
+const backendUrl = "https://meal-mancer-api-q3zh9.ondigitalocean.app/v1/";
 const loginEndpoint = "login";
 const logoutEndpoint = "logout";
 const signupEndpoint = "signup";
@@ -377,7 +377,7 @@ class RecipeAPI {
     getUserList() {
         // check if session has expired or not
         // this.checkSession();
-        this.xhttp.open(methodGet, this.baseUrl + "v1/users", true);
+        this.xhttp.open(methodGet, this.baseUrl + "users", true);
         this.xhttp.withCredentials = true;
         this.xhttp.send();   
         this.xhttp.onreadystatechange = () => { 
