@@ -376,7 +376,7 @@ class RecipeAPI {
      */
     getUserList() {
         // check if session has expired or not
-        // this.checkSession();
+        this.checkSession();
         this.xhttp.open(methodGet, this.baseUrl + "users", true);
         this.xhttp.withCredentials = true;
         this.xhttp.send();   
@@ -395,11 +395,11 @@ class RecipeAPI {
 
         // Testing DataTable
         // let dummy = [
-        //     {"id": 0, "name" : "Test1", "dob": "2000-01-01"}, 
-        //     {"id": 1, "name" : "Test2", "dob": "2000-02-02"}, 
-        //     {"id": 2, "name" : "Test3", "dob": "2000-03-03"}, 
+        //     {"user_id": 1, "email": "example1@gmail.com", "tokens": 20, "httpRequests": 0 }, 
+        //     {"user_id": 2, "email": "example1@gmail.com", "tokens": 20, "httpRequests": 0 }, 
+        //     {"user_id": 3, "email": "example1@gmail.com", "tokens": 20, "httpRequests": 0 }, 
         // ];
-
+          
         // this.outputController.displayUserList(dummy);
     }
 
@@ -647,8 +647,10 @@ class OutputController {
     
             // Insert "Edit" and "Delete" buttons with user_id embedded in the ID
             const actionButtons = `
-                <button id="editUser${row.user_id}" class="edit-btn" onclick="editUser(${row.user_id})">Edit</button>
-                <button id="deleteUser${row.user_id}" class="delete-btn" onclick="deleteUser(${row.user_id})">Delete</button>
+                <div class="userListBtnWrap">
+                    <button id="editUser${row.user_id}" class="editUserBtn headerFont hoverable" data-userid="${row.user_id}">Edit</button>
+                    <button id="deleteUser${row.user_id}" class="deleteUserBtn headerFont hoverable" data-userid="${row.user_id}">Delete</button>
+                </div>
             `;
             rowContent += tableCellTemplate.replace(cellItem, actionButtons);
     
@@ -864,7 +866,33 @@ class ButtonController {
             prevBtn.style.display = blockConst;
         }
     }
-    
+
+    initUserListBtns() {
+        const tableOutput = document.getElementById(userList);
+
+        // Use event delegation to handle button clicks dynamically
+        tableOutput.addEventListener("click", (event) => {
+            const target = event.target;
+
+            if (target.classList.contains("editUserBtn")) {
+                const userId = target.dataset.userid; // Fetch user_id from data attribute
+                this.editUser(userId);
+            }
+
+            if (target.classList.contains("deleteUserBtn")) {
+                const userId = target.dataset.userid;
+                this.deleteUser(userId);
+            }
+        });
+    }
+
+    editUser(userId) {
+        // Load edit User page? tbd
+    }
+
+    deleteUser(userId) {
+        // Fetch this.xhr.deleteUser();
+    }
 }
 
 /**
@@ -1146,6 +1174,7 @@ class UI {
         }
         document.getElementById(titleConst).innerHTML = messages.userListTitle;
         this.btnController.xhr.getUserList();
+        this.btnController.initUserListBtns();
     }
 }
 

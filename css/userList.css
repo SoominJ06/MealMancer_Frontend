@@ -16,3 +16,37 @@
     max-width: 800px;
     width: 100%;
 }
+
+.userListBtnWrap {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.editUserBtn,
+.deleteUserBtn {
+    border: 0;
+    background: url(../public/images/shredded_paper_purple.png) no-repeat center center;
+    background-size: 100% 100%;
+    border: 0;
+    padding: 20px 30px;
+    font-size: 25px;
+    color: #eee;
+    align-self: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.deleteUserBtn {
+    filter: hue-rotate(75deg);
+}
+
+.deleteUserBtn:hover {
+    filter: hue-rotate(75deg) drop-shadow(0 0 5px rgba(0, 0, 0, 0.5));
+}
+
+.editUserBtn:hover {
+    filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.5));
+}
