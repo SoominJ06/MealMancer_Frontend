@@ -34,6 +34,7 @@ const userListPage = "userList.html";
 // ContentIDs
 const errorPopup = "errorPopupWrap";
 const closeErrorPopup = "closeErrorPopupBtn";
+const errorStatus = "errorStatus";
 const errorMsg = "errorMsg";
 const errorDesc = "errorDesc";
 const recipeTitle = "recipeTitle";
@@ -311,7 +312,7 @@ class RecipeAPI {
                     this.session.setUserInfo(response.role, response.tokens, null, response.expiresAt ); //replace null with total api call num
                     window.location.href = indexPage;
                 } else {
-                    this.outputController.displayErrorPopup(response.message);
+                    this.outputController.displayErrorPopup(response.message, this.xhttp.status);
                 }
             }
         }
@@ -498,8 +499,9 @@ class OutputController {
      * Displays the error popup with the error message
      * @param {*} errorDetails 
      */
-    displayErrorPopup(errorDetails) {
+    displayErrorPopup(errorDetails, status) {
         document.getElementById(closeErrorPopup).innerHTML = messages.ok;
+        document.getElementById(errorStatus).innerHTML = status ? status : emptyString;
         document.getElementById(errorMsg).innerHTML = messages.errorTitle;
         document.getElementById(errorDesc).innerHTML = errorDetails
         document.getElementById(errorPopup).style.opacity = one;
