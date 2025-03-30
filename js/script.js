@@ -1,5 +1,7 @@
 /** String Constants */
 
+const { captureRejectionSymbol } = require("events");
+
 // Session Storage
 const userInfo = "userInfo";
 const adminConst = "admin";
@@ -374,9 +376,13 @@ class RecipeAPI {
         console.log("inside getApiStats")
         // check if session has expired or not
         this.checkSession();
+        console.log("checked session")
         this.xhttp.open(methodGet, this.baseUrl + "apiStats", true);
+        console.log("xhttp opened")
         this.xhttp.withCredentials = true;
-        this.xhttp.send();   
+        console.log("credentials set")
+        this.xhttp.send();
+        console.log("xhttp sent")
         this.xhttp.onreadystatechange = () => { 
             if (this.xhttp.readyState === 4) {
                 const response = JSON.parse(this.xhttp.responseText);
@@ -413,7 +419,6 @@ class RecipeAPI {
         this.xhttp.onreadystatechange = () => { 
             if (this.xhttp.readyState === 4) {
                 const response = JSON.parse(this.xhttp.responseText);
-                console.log(response);
                 if (this.xhttp.status === 200) {
                     this.outputController.displayUserList(response);
                 } else {
@@ -598,7 +603,6 @@ class OutputController {
     }
 
     displayApiStats(stats) {
-        console.log("inside displayApiStats")
         const tableOutput = document.getElementById("apiStats");
     
         // Check if there are users to display
@@ -1203,7 +1207,6 @@ class UI {
             alert(messages.notAdmin)
             return;
         }
-        console.log("inside initInfoPage")
         this.initApiStats();
         this.initUserList();
     }
@@ -1212,7 +1215,6 @@ class UI {
      * Initializes the info page with the title and the api stats from the API.
      */
     initApiStats() {
-        console.log("inside initApiStats")
         document.getElementById("apiTitle").innerHTML = messages.apiTitle;
         this.btnController.xhr.getApiStats();
     }
