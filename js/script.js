@@ -1,7 +1,5 @@
 /** String Constants */
 
-const { captureRejectionSymbol } = require("events");
-
 // Session Storage
 const userInfo = "userInfo";
 const adminConst = "admin";
