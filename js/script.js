@@ -6,6 +6,7 @@ const adminConst = "admin";
 
 // Data Table JQuery plugin
 const hashtagUserList = "#userList";
+const hashtagApiStats = "#apiStats";
 
 // Endpoints
 const backendUrl = "https://meal-mancer-api-q3zh9.ondigitalocean.app/v1/";
@@ -382,8 +383,11 @@ class RecipeAPI {
         this.xhttp.send();
         console.log("xhttp sent")
         this.xhttp.onreadystatechange = () => { 
+            console.log("inside onreadystatechange")
             if (this.xhttp.readyState === 4) {
+                console.log("readystate is 4")
                 const response = JSON.parse(this.xhttp.responseText);
+                console.log("parsing response")
                 console.log(response);
                 console.log("inside xhttp req")
                 if (this.xhttp.status === 200) {
