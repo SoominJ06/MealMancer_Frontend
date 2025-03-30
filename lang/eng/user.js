@@ -7,7 +7,7 @@ const messages = {
     adminIndexTitle: "Welcome, admin",
     indexDesc: "Tell the Meal Mancer what ingredients you have and it will conjure a recipe for you!",
     startCooking: "CONJURE RECIPE →",
-    goToUserList: "See User list →",
+    goToUserList: "See API Info →",
     apiInfo: "You have %TOKENS% tokens left, has called a total of %TOTAL_API_CALLS% API calls",
 
     // cookingConjuration
