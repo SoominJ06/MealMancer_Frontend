@@ -300,7 +300,7 @@ class RecipeAPI {
                     this.session.reduceToken();
                     this.outputController.displayRecipe(response.title, response.ingredients, response.directions)
                 } else {
-                    this.outputController.displayErrorPopup(messages.error);
+                    this.outputController.displayErrorPopup(messages.error, this.xhttp.status);
                 }
                 // Hide loading icon
                 this.outputController.hideLoadingIcon(); 
@@ -357,7 +357,7 @@ class RecipeAPI {
                     this.session.setUserInfo(response.role, response.tokens, response.expiresAt);
                     window.location.href = indexPage
                 } else {
-                    this.outputController.displayErrorPopup(response.message);
+                    this.outputController.displayErrorPopup(response.message, this.xhttp.status);
                 }
             }
         }
