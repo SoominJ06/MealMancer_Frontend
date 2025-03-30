@@ -390,9 +390,9 @@ class RecipeAPI {
 
         // Testing DataTable
         // let dummy = [
-        //     {"user_id": 1, "email": "example1@gmail.com", "tokens": 20, "httpRequests": 0 }, 
-        //     {"user_id": 2, "email": "example1@gmail.com", "tokens": 20, "httpRequests": 0 }, 
-        //     {"user_id": 3, "email": "example1@gmail.com", "tokens": 20, "httpRequests": 0 }, 
+        //     {"id":1,"method":"GET","endpoint":"/API/v1/login","requests":0},
+        //     {"id":1,"method":"GET","endpoint":"/API/v1/login","requests":0},
+        //     {"id":1,"method":"GET","endpoint":"/API/v1/login","requests":0},
         // ];
           
         // this.outputController.displayApiStats(dummy);
@@ -605,12 +605,12 @@ class OutputController {
             return;
         }
         
-        // Extract column names dynamically, but exclude "user_id"
+        // Extract column names dynamically, but exclude "id"
         const columnNames = Object.keys(stats[0]).filter(column => column !== "id");
     
         let table = tableHeadBuild;
     
-        // Generate table headers dynamically (excluding "user_id")
+        // Generate table headers dynamically (excluding "id")
         columnNames.forEach(column => {
             table += tableHeadTemplate.replace(recipeItem, column);
         });
@@ -621,7 +621,7 @@ class OutputController {
         stats.forEach(row => {
             let rowContent = emptyString;
             
-            // Populate row cells, excluding "user_id"
+            // Populate row cells, excluding "id"
             columnNames.forEach(column => {
                 rowContent += tableCellTemplate.replace(cellItem, row[column] !== undefined ? row[column] : emptyString);
             });
@@ -1200,8 +1200,13 @@ class UI {
             alert(messages.notAdmin)
             return;
         }
-        this.initApiStats();
-        this.initUserList();
+        document.getElementById("apiTitle").innerHTML = messages.apiTitle;
+        this.btnController.xhr.getApiStats();
+        document.getElementById("userListTitle").innerHTML = messages.userListTitle;
+        this.btnController.xhr.getUserList();
+        this.btnController.initUserListBtns();
+        // this.initApiStats();
+        // this.initUserList();
     }
 
     /**
