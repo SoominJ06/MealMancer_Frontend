@@ -387,6 +387,15 @@ class RecipeAPI {
                 }
             }
         }
+
+        // Testing DataTable
+        // let dummy = [
+        //     {"user_id": 1, "email": "example1@gmail.com", "tokens": 20, "httpRequests": 0 }, 
+        //     {"user_id": 2, "email": "example1@gmail.com", "tokens": 20, "httpRequests": 0 }, 
+        //     {"user_id": 3, "email": "example1@gmail.com", "tokens": 20, "httpRequests": 0 }, 
+        // ];
+          
+        // this.outputController.displayApiStats(dummy);
     }
 
     /**
@@ -609,7 +618,7 @@ class OutputController {
         table += tableHeadEnd;
     
         // Generate table rows dynamically
-        users.forEach(row => {
+        stats.forEach(row => {
             let rowContent = emptyString;
             
             // Populate row cells, excluding "user_id"
@@ -1200,7 +1209,7 @@ class UI {
      */
     initApiStats() {
         document.getElementById("apiTitle").innerHTML = messages.apiTitle;
-        this.btnController.xhr.getUserList();
+        this.btnController.xhr.getApiStats();
     }
 
     /**

@@ -7,14 +7,29 @@
     align-items: center;
 }
 
-#userList {
+.title {
+    text-align: center;
+}
+
+.tableWrap {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#userList,
+#apiStats {
     width: 100%;
     background: url(../public/images/scroll_vertical.png) no-repeat center center;
 }
 
-#userList_wrapper {
+#userList_wrapper,
+#apiStats_wrapper {
     max-width: 800px;
     width: 100%;
+    overflow-x: scroll;
 }
 
 .userListBtnWrap {
