@@ -1,7 +1,5 @@
 /** String Constants */
 
-const { info } = require("console");
-
 // Session Storage
 const userInfo = "userInfo";
 const adminConst = "admin";
