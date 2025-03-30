@@ -1,5 +1,7 @@
 /** String Constants */
 
+const { info } = require("console");
+
 // Session Storage
 const userInfo = "userInfo";
 const adminConst = "admin";
@@ -1125,7 +1127,7 @@ class UI {
             document.getElementById(titleConst).innerHTML = messages.adminIndexTitle;
             document.getElementById(descConst).innerHTML = emptyString;
             document.getElementById(goCook).innerHTML = messages.goToUserList;
-            document.getElementById(goCook).href = userListPage;
+            document.getElementById(goCook).href = infoPage;
             return;
         }
         document.getElementById(titleConst).innerHTML = messages.indexTitle;
