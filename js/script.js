@@ -14,7 +14,9 @@ const loginEndpoint = "login";
 const logoutEndpoint = "logout";
 const signupEndpoint = "signup";
 const favEndpoint = "favorites";
-const userListEndpoint = "userlist";
+const apiStatsEndpoint = "apiStats";
+const userListEndpoint = "users";
+const infoPageEndpoint = "info"
 const cookingEndpoint = "cooking";
 const generateEndpoint = "generate/?ingredients=";
 
@@ -45,7 +47,13 @@ const instructionsTitle = "instructionsTitle";
 const instructionList = "instructionList";
 const addToFav = "addToFav";
 const outputBg = "outputBg";
+const apiStatsTitle = "apiTitle";
+const apiStatsList = "apiStats";
+const userListTitle = "userListTitle";
 const userList = "userList";
+const actionItems = "actions";
+const editUserBtn = "editUserBtn";
+const deleteUserBtn = "deleteUserBtn";
 const outputWrap = "outputWrap";
 const favoritesWrap = "favoritesWrap";
 const favoriteBg = "favoriteBg";
@@ -77,6 +85,7 @@ const tokensLeftConst = "tokensLeft";
 
 // Styling
 const emptyString = "";
+const spaceString = " ";
 const zero = "0";
 const one = "1";
 const hiddenConst = "hidden";
@@ -92,8 +101,10 @@ const ulConst = "ul";
 // Replaceable strings
 const recipeItem = "%ITEM%";
 const cellItem = "%CELL%";
+const idItem = "%ID%";
 const cellContents = "%CELL_CONTENTS%";
 const offsetConst = "%OFFSET%"
+const errorCodeConst = "%ERROR_CODE%";
 
 // HTML evelents
 const listTemplate = `<li>%ITEM%</li>`;
@@ -103,6 +114,10 @@ const tableHeadEnd = `</tr></thead><tbody>`;
 const tableRowTemplate = `<tr>%CELL_CONTENTS%</tr>`;
 const tableCellTemplate = `<td>%CELL%</td>`;
 const tableEndConst = `</tbody></table>`;
+const tableButtonsTemplate = `<div class="userListBtnWrap">
+                                <button id="editUser%ID%" class="editUserBtn headerFont hoverable" data-userid="%ID%">Edit</button>
+                                <button id="deleteUser%ID%" class="deleteUserBtn headerFont hoverable" data-userid="%ID%">Delete</button>
+                            </div>`;
 const initButtonTemplate = `<div class="logo titleFont hoverable">
                                 <a href="index.html">
                                     <div class="headerLogo">
@@ -376,7 +391,7 @@ class RecipeAPI {
         // check if session has expired or not
         this.checkSession();
         console.log("checked session")
-        this.xhttp.open(methodGet, this.baseUrl + "apiStats", true);
+        this.xhttp.open(methodGet, this.baseUrl + apiStatsEndpoint, true);
         console.log("xhttp opened")
         this.xhttp.withCredentials = true;
         console.log("credentials set")
@@ -416,7 +431,7 @@ class RecipeAPI {
     getUserList() {
         // check if session has expired or not
         this.checkSession();
-        this.xhttp.open(methodGet, this.baseUrl + "users", true);
+        this.xhttp.open(methodGet, this.baseUrl + userListEndpoint, true);
         this.xhttp.withCredentials = true;
         this.xhttp.send();   
         this.xhttp.onreadystatechange = () => { 
@@ -538,7 +553,7 @@ class OutputController {
      */
     displayErrorPopup(errorDetails, status) {
         document.getElementById(closeErrorPopup).innerHTML = messages.ok;
-        document.getElementById(errorMsg).innerHTML = status ? messages.errorTitle.replace("%ERROR_CODE%", status + " ") : messages.errorTitle.replace("%ERROR_CODE%", emptyString);
+        document.getElementById(errorMsg).innerHTML = status ? messages.errorTitle.replace(errorCodeConst, status + spaceString) : messages.errorTitle.replace(errorCodeConst, emptyString);
         document.getElementById(errorDesc).innerHTML = errorDetails
         document.getElementById(errorPopup).style.opacity = one;
         document.getElementById(errorPopup).style.visibility = visibleConst;
@@ -606,12 +621,12 @@ class OutputController {
     }
 
     displayApiStats(stats) {
-        const tableOutput = document.getElementById("apiStats");
+        const tableOutput = document.getElementById(apiStatsList);
     
         // Check if there are users to display
         if (stats.length === 0) {
             tableOutput.innerHTML = emptyString;
-            document.getElementById("apiStats").innerHTML = messages.noApiStatsFound;
+            document.getElementById(apiStatsList).innerHTML = messages.noApiStatsFound;
             return;
         }
         
@@ -645,7 +660,7 @@ class OutputController {
         tableOutput.innerHTML = table;
     
         // Convert the table into a DataTable
-        $("#apiStats").DataTable();
+        $(hashtagApiStats).DataTable();
     }
     
     /**
@@ -674,7 +689,7 @@ class OutputController {
         });
     
         // Add an extra "Actions" column
-        table += tableHeadTemplate.replace(recipeItem, "Actions");
+        table += tableHeadTemplate.replace(recipeItem, actionItems);
         table += tableHeadEnd;
     
         // Generate table rows dynamically
@@ -687,12 +702,7 @@ class OutputController {
             });
     
             // Insert "Edit" and "Delete" buttons with user_id embedded in the ID
-            const actionButtons = `
-                <div class="userListBtnWrap">
-                    <button id="editUser${row.user_id}" class="editUserBtn headerFont hoverable" data-userid="${row.user_id}">Edit</button>
-                    <button id="deleteUser${row.user_id}" class="deleteUserBtn headerFont hoverable" data-userid="${row.user_id}">Delete</button>
-                </div>
-            `;
+            const actionButtons = tableButtonsTemplate.replace(idItem, row.user_id);
             rowContent += tableCellTemplate.replace(cellItem, actionButtons);
     
             table += tableRowTemplate.replace(cellContents, rowContent);
@@ -912,15 +922,15 @@ class ButtonController {
         const tableOutput = document.getElementById(userList);
 
         // Use event delegation to handle button clicks dynamically
-        tableOutput.addEventListener("click", (event) => {
+        tableOutput.addEventListener(clickConst, (event) => {
             const target = event.target;
 
-            if (target.classList.contains("editUserBtn")) {
+            if (target.classList.contains(editUserBtn)) {
                 const userId = target.dataset.userid; // Fetch user_id from data attribute
                 this.editUser(userId);
             }
 
-            if (target.classList.contains("deleteUserBtn")) {
+            if (target.classList.contains(deleteUserBtn)) {
                 const userId = target.dataset.userid;
                 this.deleteUser(userId);
             }
@@ -1114,7 +1124,7 @@ class UI {
             this.initMagic();
         } else if (currPage.toLowerCase().includes(favEndpoint)) {
             this.initFavs();
-        } else if (currPage.toLowerCase().includes("info")) {
+        } else if (currPage.toLowerCase().includes(infoPageEndpoint)) {
             this.initInfoPage();
         } else {
             this.initIndex();
@@ -1218,7 +1228,7 @@ class UI {
      * Initializes the info page with the title and the api stats from the API.
      */
     initApiStats() {
-        document.getElementById("apiTitle").innerHTML = messages.apiTitle;
+        document.getElementById(apiStatsTitle).innerHTML = messages.apiTitle;
         this.btnController.xhr.getApiStats();
     }
 
@@ -1226,7 +1236,7 @@ class UI {
      * Initializes the info page with the title and the user list from the API.
      */
     initUserList() {
-        document.getElementById("userListTitle").innerHTML = messages.userListTitle;
+        document.getElementById(userListTitle).innerHTML = messages.userListTitle;
         this.btnController.xhr.getUserList();
         this.btnController.initUserListBtns();
     }
