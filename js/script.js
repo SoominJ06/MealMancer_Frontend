@@ -573,45 +573,96 @@ class OutputController {
      * @param {*} users 
      * @returns the user list in a table format
      */
-    displayUserList(users) {
-        const tableOutput = document.getElementById(userList);
+    // displayUserList(users) {
+    //     const tableOutput = document.getElementById(userList);
 
-        // Checks if tableData is empty
-        if (users.length <= 0) {
+    //     // Checks if tableData is empty
+    //     if (users.length <= 0) {
+    //         tableOutput.innerHTML = emptyString;
+    //         document.getElementById(userList).innerHTML = messages.noUsersFound;
+    //         return;
+    //     }
+        
+    //     // Extract the column names dynamically from the first object
+    //     const columnNames = Object.keys(users[0]);
+    
+    //     let table = tableHeadBuild;
+        
+    //     // Dynamically create table headers
+    //     columnNames.forEach(column => {
+    //         table += tableHeadTemplate.replace(recipeItem, column);
+    //     });
+
+    //     table += tableHeadEnd;
+
+    //     // Dynamically create table rows
+    //     users.forEach(row => {
+    //         let rowContent = emptyString;
+    //         columnNames.forEach(column => {
+    //             rowContent += tableCellTemplate.replace(cellItem, row[column] !== undefined ? row[column] : emptyString);
+    //         });
+    //         table += tableRowTemplate.replace(cellContents, rowContent);
+    //     });
+    
+    //     table += tableEndConst;
+
+    //     tableOutput.innerHTML = emptyString;
+    //     document.getElementById(userList).innerHTML = table;
+
+    //     // Setting table as DataTable
+    //     $(hashtagUserList).DataTable();
+    // }
+    displayUserList(users) { 
+        const tableOutput = document.getElementById(userList);
+    
+        // Check if there are users to display
+        if (users.length === 0) {
             tableOutput.innerHTML = emptyString;
             document.getElementById(userList).innerHTML = messages.noUsersFound;
             return;
         }
         
-        // Extract the column names dynamically from the first object
-        const columnNames = Object.keys(users[0]);
+        // Extract column names dynamically, but exclude "user_id"
+        const columnNames = Object.keys(users[0]).filter(column => column !== "user_id");
     
         let table = tableHeadBuild;
-        
-        // Dynamically create table headers
+    
+        // Generate table headers dynamically (excluding "user_id")
         columnNames.forEach(column => {
             table += tableHeadTemplate.replace(recipeItem, column);
         });
-
+    
+        // Add an extra "Actions" column
+        table += tableHeadTemplate.replace(recipeItem, "Actions");
         table += tableHeadEnd;
-
-        // Dynamically create table rows
+    
+        // Generate table rows dynamically
         users.forEach(row => {
             let rowContent = emptyString;
+            
+            // Populate row cells, excluding "user_id"
             columnNames.forEach(column => {
                 rowContent += tableCellTemplate.replace(cellItem, row[column] !== undefined ? row[column] : emptyString);
             });
+    
+            // Insert "Edit" and "Delete" buttons with user_id embedded in the ID
+            const actionButtons = `
+                <button id="editUser${row.user_id}" class="edit-btn" onclick="editUser(${row.user_id})">Edit</button>
+                <button id="deleteUser${row.user_id}" class="delete-btn" onclick="deleteUser(${row.user_id})">Delete</button>
+            `;
+            rowContent += tableCellTemplate.replace(cellItem, actionButtons);
+    
             table += tableRowTemplate.replace(cellContents, rowContent);
         });
     
         table += tableEndConst;
-
-        tableOutput.innerHTML = emptyString;
-        document.getElementById(userList).innerHTML = table;
-
-        // Setting table as DataTable
+    
+        // Update the table output
+        tableOutput.innerHTML = table;
+    
+        // Convert the table into a DataTable
         $(hashtagUserList).DataTable();
-    }
+    }    
 
     /**
      * Formats the padding of the output based on the content and container
