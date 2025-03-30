@@ -370,6 +370,25 @@ class RecipeAPI {
         }
     }
 
+    getApiStats() {
+        // check if session has expired or not
+        this.checkSession();
+        this.xhttp.open(methodGet, this.baseUrl + "apiStats", true);
+        this.xhttp.withCredentials = true;
+        this.xhttp.send();   
+        this.xhttp.onreadystatechange = () => { 
+            if (this.xhttp.readyState === 4) {
+                const response = JSON.parse(this.xhttp.responseText);
+                console.log(response);
+                if (this.xhttp.status === 200) {
+                    this.outputController.displayApiStats(response);
+                } else {
+                    this.outputController.displayErrorPopup(messages.error,  this.xhttp.status);
+                }
+            }
+        }
+    }
+
     /**
      * Retrieves the list of users from the API and displays it in the table
      * for admins to view.
@@ -387,8 +406,7 @@ class RecipeAPI {
                 if (this.xhttp.status === 200) {
                     this.outputController.displayUserList(response);
                 } else {
-                    // this.outputController.displayErrorPopup(messages.error);
-                    console.log("something went wrong")
+                    this.outputController.displayErrorPopup(messages.error, this.xhttp.status);
                 }
             }
         }
@@ -568,50 +586,54 @@ class OutputController {
         document.getElementById(loaderConst).style.display = noneConst;
     }
 
+    displayApiStats(stats) {
+        const tableOutput = document.getElementById("apiStats");
+    
+        // Check if there are users to display
+        if (stats.length === 0) {
+            tableOutput.innerHTML = emptyString;
+            document.getElementById("apiStats").innerHTML = messages.noApiStatsFound;
+            return;
+        }
+        
+        // Extract column names dynamically, but exclude "user_id"
+        const columnNames = Object.keys(stats[0]).filter(column => column !== "id");
+    
+        let table = tableHeadBuild;
+    
+        // Generate table headers dynamically (excluding "user_id")
+        columnNames.forEach(column => {
+            table += tableHeadTemplate.replace(recipeItem, column);
+        });
+    
+        table += tableHeadEnd;
+    
+        // Generate table rows dynamically
+        users.forEach(row => {
+            let rowContent = emptyString;
+            
+            // Populate row cells, excluding "user_id"
+            columnNames.forEach(column => {
+                rowContent += tableCellTemplate.replace(cellItem, row[column] !== undefined ? row[column] : emptyString);
+            });
+    
+            table += tableRowTemplate.replace(cellContents, rowContent);
+        });
+    
+        table += tableEndConst;
+    
+        // Update the table output
+        tableOutput.innerHTML = table;
+    
+        // Convert the table into a DataTable
+        $("#apiStats").DataTable();
+    }
+    
     /**
      * Displays the user list in a table format for admin to view
      * @param {*} users 
      * @returns the user list in a table format
      */
-    // displayUserList(users) {
-    //     const tableOutput = document.getElementById(userList);
-
-    //     // Checks if tableData is empty
-    //     if (users.length <= 0) {
-    //         tableOutput.innerHTML = emptyString;
-    //         document.getElementById(userList).innerHTML = messages.noUsersFound;
-    //         return;
-    //     }
-        
-    //     // Extract the column names dynamically from the first object
-    //     const columnNames = Object.keys(users[0]);
-    
-    //     let table = tableHeadBuild;
-        
-    //     // Dynamically create table headers
-    //     columnNames.forEach(column => {
-    //         table += tableHeadTemplate.replace(recipeItem, column);
-    //     });
-
-    //     table += tableHeadEnd;
-
-    //     // Dynamically create table rows
-    //     users.forEach(row => {
-    //         let rowContent = emptyString;
-    //         columnNames.forEach(column => {
-    //             rowContent += tableCellTemplate.replace(cellItem, row[column] !== undefined ? row[column] : emptyString);
-    //         });
-    //         table += tableRowTemplate.replace(cellContents, rowContent);
-    //     });
-    
-    //     table += tableEndConst;
-
-    //     tableOutput.innerHTML = emptyString;
-    //     document.getElementById(userList).innerHTML = table;
-
-    //     // Setting table as DataTable
-    //     $(hashtagUserList).DataTable();
-    // }
     displayUserList(users) { 
         const tableOutput = document.getElementById(userList);
     
@@ -1073,8 +1095,8 @@ class UI {
             this.initMagic();
         } else if (currPage.toLowerCase().includes(favEndpoint)) {
             this.initFavs();
-        } else if (currPage.toLowerCase().includes(userListEndpoint)) {
-            this.initUserList();
+        } else if (currPage.toLowerCase().includes("info")) {
+            this.initInfoPage();
         } else {
             this.initIndex();
         }
@@ -1162,17 +1184,30 @@ class UI {
         this.btnController.xhr.getFavorites();
     }
 
-    /**
-     * Initializes the user list page with the title and the user list from the API.
-     */
-    initUserList() {
+    initInfoPage() {
         // Redirect to index if not admin and display error message
         if (this.userRole !== adminConst) {
             window.location.href = indexPage;
             alert(messages.notAdmin)
             return;
         }
-        document.getElementById(titleConst).innerHTML = messages.userListTitle;
+        this.initApiStats();
+        this.initUserList();
+    }
+
+    /**
+     * Initializes the info page with the title and the api stats from the API.
+     */
+    initApiStats() {
+        document.getElementById("apiTitle").innerHTML = messages.apiTitle;
+        this.btnController.xhr.getUserList();
+    }
+
+    /**
+     * Initializes the info page with the title and the user list from the API.
+     */
+    initUserList() {
+        document.getElementById("userListTitle").innerHTML = messages.userListTitle;
         this.btnController.xhr.getUserList();
         this.btnController.initUserListBtns();
     }

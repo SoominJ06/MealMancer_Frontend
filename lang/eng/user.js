@@ -35,7 +35,9 @@ const messages = {
     favTitle: "Favorite Recipes",
     noFavsFound: "There are no favorite recipes",
 
-    // user list
+    // info page
+    apiTitle: "API Status",
+    noApiStatsFound: "No API requests have been made",
     userListTitle: "Users",
     noUsersFound: "No users were found",
 
