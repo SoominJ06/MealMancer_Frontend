@@ -19,10 +19,14 @@ const userListEndpoint = "users";
 const infoPageEndpoint = "info"
 const cookingEndpoint = "cooking";
 const generateEndpoint = "generate/?ingredients=";
+const updateUserEndpoint = "users?user="
+const deleteFavEndpoint = "favourites?recipe=";
 
 // API request 
 const methodPost = "POST";
 const methodGet = "GET";
+const methodPut = "PUT";
+const methodDelete = "DELETE";
 const contentType = "Content-Type";
 const appJson = "application/json";
 
@@ -325,7 +329,7 @@ class RecipeAPI {
                 const response = JSON.parse(this.xhttp.responseText);
                 if (this.xhttp.status === 200) {
                     // Store user info in session storage
-                    this.session.setUserInfo(response.role, response.tokens, null, response.expiresAt ); //replace null with total api call num
+                    this.session.setUserInfo(response.role, response.tokens, response.httpRequests, response.expiresAt );
                     window.location.href = indexPage;
                 } else {
                     this.outputController.displayErrorPopup(response.message, this.xhttp.status);
@@ -354,7 +358,7 @@ class RecipeAPI {
             if (this.xhttp.readyState === 4) {
                 const response = JSON.parse(this.xhttp.responseText);
                 if (this.xhttp.status === 200) {
-                    this.session.setUserInfo(response.role, response.tokens, response.expiresAt);
+                    this.session.setUserInfo(response.role, response.tokens, response.httpRequests, response.expiresAt );
                     window.location.href = indexPage
                 } else {
                     this.outputController.displayErrorPopup(response.message, this.xhttp.status);
@@ -433,7 +437,7 @@ class RecipeAPI {
         this.checkSession();
         this.xhttp.open(methodGet, this.baseUrl + userListEndpoint, true);
         this.xhttp.withCredentials = true;
-        this.xhttp.send();   
+        this.xhttp.send();
         this.xhttp.onreadystatechange = () => { 
             if (this.xhttp.readyState === 4) {
                 const response = JSON.parse(this.xhttp.responseText);
@@ -455,26 +459,115 @@ class RecipeAPI {
         // this.outputController.displayUserList(dummy);
     }
 
+    updateUserToken(id, amount) {
+        // check if session has expired or not
+        this.checkSession();
+        this.xhttp.open(methodPut, this.baseUrl + updateUserEndpoint + id, true);
+        this.xhttp.withCredentials = true;
+        this.xhttp.setRequestHeader(contentType, appJson);
+        const requestData = JSON.stringify({ newTokens: amount });
+        this.xhttp.send(requestData);   
+        this.xhttp.onreadystatechange = () => { 
+            if (this.xhttp.readyState === 4) {
+                const response = JSON.parse(this.xhttp.responseText);
+                if (this.xhttp.status === 200) {
+                    this.outputController.displayErrorPopup(response.message);
+                } else {
+                    this.outputController.displayErrorPopup(response.message, this.xhttp.status);
+                }
+            }
+        }
+    }
+
+    delteUser(id) {
+        // check if session has expired or not
+        this.checkSession();
+        this.xhttp.open(methodDelete, this.baseUrl + updateUserEndpoint + id, true);
+        this.xhttp.withCredentials = true;
+        this.xhttp.send();   
+        this.xhttp.onreadystatechange = () => { 
+            if (this.xhttp.readyState === 4) {
+                const response = JSON.parse(this.xhttp.responseText);
+                if (this.xhttp.status === 200) {
+                    this.outputController.displayErrorPopup(response.message);
+                } else {
+                    this.outputController.displayErrorPopup(response.message, this.xhttp.status);
+                }
+            }
+        }
+    }
+
     /**
      * Retrieves the list of favorite recipes from the API and displays it
      * for the user to view.
      */
     getFavorites() {
         // check if session has expired or not
-        // this.checkSession();
+        this.checkSession();
+        this.xhttp.open(methodGet, this.baseUrl + userListEndpoint, true);
+        this.xhttp.withCredentials = true;
+        this.xhttp.send();
+        this.xhttp.onreadystatechange = () => { 
+            if (this.xhttp.readyState === 4) {
+                const response = JSON.parse(this.xhttp.responseText);
+                if (this.xhttp.status === 200) {
+                    this.outputController.displayFavorites(response)
+                } else {
+                    this.outputController.displayErrorPopup(messages.error, this.xhttp.status);
+                }
+            }
+        }
 
         // Testing dummy data
-        const ingredient1 = ["2 slices whole grain bread", "1 slice avocado", "1 medium tomato, sliced", "2 slices cooked bacon", "2 eggs", "salt and pepper to taste", "olive oil spray"];
-        const ingredient2 = ["2 slices whole grain bread", "1 slice avocado", "1 medium tomato, sliced"];
-        const method1 = ["toast the bread slices in a toaster or under the broiler until golden brown.", "lightly spray a frying pan with olive oil spray and heat over medium heat.", "add the sliced avocado, tomato, and cooked bacon to the pan.", "season with salt and pepper, and cook for 3-4 minutes, or until the avocado is soft.", "add the eggs to the pan and scramble until fully cooked.", "remove from heat and cover the pan with a lid.", "serve immediately."];
-        const method2 = ["toast the bread slices in a toaster or under the broiler until golden brown.", "toast the bread slices in a toaster or under the broiler until golden brown.", "toast the bread slices in a toaster or under the broiler until golden brown.", "toast the bread slices in a toaster or under the broiler until golden brown.", "toast the bread slices in a toaster or under the broiler until golden brown.", "toast the bread slices in a toaster or under the broiler until golden brown."]
-        const method3 = ["toast the bread slices in a toaster or under the broiler until golden brown.", "lightly spray a frying pan with olive oil spray and heat over medium heat.", "add the sliced avocado, tomato, and cooked bacon to the pan.", "season with salt and pepper, and cook for 3-4 minutes, or until the avocado is soft.", "add the eggs to the pan and scramble until fully cooked.", "remove from heat and cover the pan with a lid.", "serve immediately.", "toast the bread slices in a toaster or under the broiler until golden brown.", "lightly spray a frying pan with olive oil spray and heat over medium heat.", "add the sliced avocado, tomato, and cooked bacon to the pan.", "season with salt and pepper, and cook for 3-4 minutes, or until the avocado is soft.", "add the eggs to the pan and scramble until fully cooked.", "remove from heat and cover the pan with a lid."];
-        const dummy = [
-            {"title": "Recipe 1", "ingredients": ingredient1, "methods": method1},
-            {"title": "Recipe 2", "ingredients": ingredient2, "methods": method2},
-            {"title": "Recipe 3", "ingredients": ingredient1, "methods": method3}
-        ];
-        this.outputController.displayFavorites(dummy)
+        // const ingredient1 = ["2 slices whole grain bread", "1 slice avocado", "1 medium tomato, sliced", "2 slices cooked bacon", "2 eggs", "salt and pepper to taste", "olive oil spray"];
+        // const ingredient2 = ["2 slices whole grain bread", "1 slice avocado", "1 medium tomato, sliced"];
+        // const method1 = ["toast the bread slices in a toaster or under the broiler until golden brown.", "lightly spray a frying pan with olive oil spray and heat over medium heat.", "add the sliced avocado, tomato, and cooked bacon to the pan.", "season with salt and pepper, and cook for 3-4 minutes, or until the avocado is soft.", "add the eggs to the pan and scramble until fully cooked.", "remove from heat and cover the pan with a lid.", "serve immediately."];
+        // const method2 = ["toast the bread slices in a toaster or under the broiler until golden brown.", "toast the bread slices in a toaster or under the broiler until golden brown.", "toast the bread slices in a toaster or under the broiler until golden brown.", "toast the bread slices in a toaster or under the broiler until golden brown.", "toast the bread slices in a toaster or under the broiler until golden brown.", "toast the bread slices in a toaster or under the broiler until golden brown."]
+        // const method3 = ["toast the bread slices in a toaster or under the broiler until golden brown.", "lightly spray a frying pan with olive oil spray and heat over medium heat.", "add the sliced avocado, tomato, and cooked bacon to the pan.", "season with salt and pepper, and cook for 3-4 minutes, or until the avocado is soft.", "add the eggs to the pan and scramble until fully cooked.", "remove from heat and cover the pan with a lid.", "serve immediately.", "toast the bread slices in a toaster or under the broiler until golden brown.", "lightly spray a frying pan with olive oil spray and heat over medium heat.", "add the sliced avocado, tomato, and cooked bacon to the pan.", "season with salt and pepper, and cook for 3-4 minutes, or until the avocado is soft.", "add the eggs to the pan and scramble until fully cooked.", "remove from heat and cover the pan with a lid."];
+        // const dummy = [
+        //     {"title": "Recipe 1", "ingredients": ingredient1, "methods": method1},
+        //     {"title": "Recipe 2", "ingredients": ingredient2, "methods": method2},
+        //     {"title": "Recipe 3", "ingredients": ingredient1, "methods": method3}
+        // ];
+        // this.outputController.displayFavorites(dummy)
+    }
+
+    addToFavorites(recipe) {
+        // check if session has expired or not
+        this.checkSession();
+        this.xhttp.open(methodPost, this.baseUrl + favEndpoint, true);
+        this.xhttp.withCredentials = true;
+        this.xhttp.setRequestHeader(contentType, appJson);
+        const requestData = JSON.stringify({ recipe: recipe });
+        this.xhttp.send(requestData);   
+        this.xhttp.onreadystatechange = () => { 
+            if (this.xhttp.readyState === 4) {
+                const response = JSON.parse(this.xhttp.responseText);
+                if (this.xhttp.status === 200) {
+                    this.outputController.displayErrorPopup(response.message);
+                } else {
+                    this.outputController.displayErrorPopup(response.message, this.xhttp.status);
+                }
+            }
+        }
+    }
+
+    delteUser(id) {
+        // check if session has expired or not
+        this.checkSession();
+        this.xhttp.open(methodDelete, this.baseUrl + deleteFavEndpoint + id, true);
+        this.xhttp.withCredentials = true;
+        this.xhttp.send();   
+        this.xhttp.onreadystatechange = () => { 
+            if (this.xhttp.readyState === 4) {
+                const response = JSON.parse(this.xhttp.responseText);
+                if (this.xhttp.status === 200) {
+                    this.outputController.displayErrorPopup(response.message);
+                } else {
+                    this.outputController.displayErrorPopup(response.message, this.xhttp.status);
+                }
+            }
+        }
     }
 }
 
