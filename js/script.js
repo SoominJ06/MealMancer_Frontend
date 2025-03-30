@@ -357,7 +357,6 @@ class RecipeAPI {
         this.xhttp.onreadystatechange = () => { 
             if (this.xhttp.readyState === 4) {
                 const response = JSON.parse(this.xhttp.responseText);
-                console.log(response);
                 if (this.xhttp.status === 200) {
                     // Clear session
                     this.session.clearSession();
@@ -377,15 +376,30 @@ class RecipeAPI {
     getUserList() {
         // check if session has expired or not
         // this.checkSession();
-        
-        // Testing DataTable
-        let dummy = [
-            {"id": 0, "name" : "Test1", "dob": "2000-01-01"}, 
-            {"id": 1, "name" : "Test2", "dob": "2000-02-02"}, 
-            {"id": 2, "name" : "Test3", "dob": "2000-03-03"}, 
-        ];
+        this.xhttp.open(methodGet, this.baseUrl + "v1/users", true);
+        this.xhttp.withCredentials = true;
+        this.xhttp.send();   
+        this.xhttp.onreadystatechange = () => { 
+            if (this.xhttp.readyState === 4) {
+                const response = JSON.parse(this.xhttp.responseText);
+                console.log(response);
+                if (this.xhttp.status === 200) {
+                    this.outputController.displayUserList(response);
+                } else {
+                    // this.outputController.displayErrorPopup(messages.error);
+                    console.log("something went wrong")
+                }
+            }
+        }
 
-        this.outputController.displayUserList(dummy);
+        // Testing DataTable
+        // let dummy = [
+        //     {"id": 0, "name" : "Test1", "dob": "2000-01-01"}, 
+        //     {"id": 1, "name" : "Test2", "dob": "2000-02-02"}, 
+        //     {"id": 2, "name" : "Test3", "dob": "2000-03-03"}, 
+        // ];
+
+        // this.outputController.displayUserList(dummy);
     }
 
     /**
