@@ -29,7 +29,7 @@ const loginPage = "login.html";
 const signupPage = "signup.html";
 const cookingPage = "cookingConjuration.html";
 const favPage = "favorites.html";
-const userListPage = "userList.html";
+const infoPage = "info.html";
 
 // ContentIDs
 const errorPopup = "errorPopupWrap";
@@ -929,7 +929,7 @@ class NavBar {
         this.session = new SessionController();
         this.userRole = this.session.getUserRole();
         this.itemNavs = [favPage, cookingPage];
-        this.adminNavs = [userListPage, favPage, cookingPage];
+        this.adminNavs = [infoPage, favPage, cookingPage];
     }
 
     /**
