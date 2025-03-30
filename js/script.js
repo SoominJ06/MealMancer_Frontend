@@ -371,6 +371,7 @@ class RecipeAPI {
     }
 
     getApiStats() {
+        console.log("inside getApiStats")
         // check if session has expired or not
         this.checkSession();
         this.xhttp.open(methodGet, this.baseUrl + "apiStats", true);
@@ -380,6 +381,7 @@ class RecipeAPI {
             if (this.xhttp.readyState === 4) {
                 const response = JSON.parse(this.xhttp.responseText);
                 console.log(response);
+                console.log("inside xhttp req")
                 if (this.xhttp.status === 200) {
                     this.outputController.displayApiStats(response);
                 } else {
@@ -596,6 +598,7 @@ class OutputController {
     }
 
     displayApiStats(stats) {
+        console.log("inside displayApiStats")
         const tableOutput = document.getElementById("apiStats");
     
         // Check if there are users to display
@@ -1200,19 +1203,16 @@ class UI {
             alert(messages.notAdmin)
             return;
         }
-        document.getElementById("apiTitle").innerHTML = messages.apiTitle;
-        this.btnController.xhr.getApiStats();
-        document.getElementById("userListTitle").innerHTML = messages.userListTitle;
-        this.btnController.xhr.getUserList();
-        this.btnController.initUserListBtns();
-        // this.initApiStats();
-        // this.initUserList();
+        console.log("inside initInfoPage")
+        this.initApiStats();
+        this.initUserList();
     }
 
     /**
      * Initializes the info page with the title and the api stats from the API.
      */
     initApiStats() {
+        console.log("inside initApiStats")
         document.getElementById("apiTitle").innerHTML = messages.apiTitle;
         this.btnController.xhr.getApiStats();
     }
