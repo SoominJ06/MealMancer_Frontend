@@ -364,7 +364,7 @@ class RecipeAPI {
                     window.location.href = indexPage;
                     alert(messages.loggedOut);
                 } else {
-                    this.outputController.displayErrorPopup(response.message);
+                    this.outputController.displayErrorPopup(response.message, this.xhttp.status);
                 }
             }
         }
@@ -501,8 +501,7 @@ class OutputController {
      */
     displayErrorPopup(errorDetails, status) {
         document.getElementById(closeErrorPopup).innerHTML = messages.ok;
-        document.getElementById(errorStatus).innerHTML = status ? status : emptyString;
-        document.getElementById(errorMsg).innerHTML = messages.errorTitle;
+        document.getElementById(errorMsg).innerHTML = status ? messages.errorTitle.replace("%ERROR_CODE%", status + " ") : messages.errorTitle.replace("%ERROR_CODE%", emptyString);
         document.getElementById(errorDesc).innerHTML = errorDetails
         document.getElementById(errorPopup).style.opacity = one;
         document.getElementById(errorPopup).style.visibility = visibleConst;

@@ -40,7 +40,7 @@ const messages = {
     noUsersFound: "No users were found",
 
     // Error popup
-    errorTitle: "Error",
+    errorTitle: "%ERROR_CODE%Error",
     error: "Oops! Something went wrong!",
     emptyInput: "Input is empty",
     recipeInputError: "Please remove numbers or special characters",
