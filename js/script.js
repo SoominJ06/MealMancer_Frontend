@@ -396,6 +396,7 @@ class RecipeAPI {
                     this.outputController.displayErrorPopup(messages.error,  this.xhttp.status);
                 }
             }
+            console.log("readystate changed", this.xhttp.readyState);
         }
 
         // Testing DataTable
