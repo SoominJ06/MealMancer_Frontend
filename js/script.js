@@ -403,44 +403,38 @@ class RecipeAPI {
     }
 
     getApiStats() {
-        console.log("inside getApiStats")
         // check if session has expired or not
-        this.checkSession();
-        console.log("checked session")
-        this.xhttp.open(methodGet, this.baseUrl + apiStatsEndpoint, true);
-        console.log("xhttp opened")
-        this.xhttp.withCredentials = true;
-        console.log("credentials set")
-        this.xhttp.send();
-        console.log("xhttp sent")
-        this.xhttp.onreadystatechange = () => { 
-            console.log("inside onreadystatechange")
-            if (this.xhttp.readyState === 4) {
-                console.log("readystate is 4")
-                const response = JSON.parse(this.xhttp.responseText);
-                console.log("parsing response")
-                console.log(response);
-                console.log("inside xhttp req")
-                if (this.xhttp.status === 200) {
-                    this.outputController.displayApiStats(response);
-                } else {
-                    this.outputController.displayErrorPopup(messages.error,  this.xhttp.status);
-                }
-            }
-            console.log("readystate changed", this.xhttp.readyState);
-        }
-
-        // this.xhttp.onload = () => {
-        //     console.log("inside onload");
-        //     if (this.xhttp.status === 200) {
+        // this.checkSession();
+        // this.xhttp.open(methodGet, this.baseUrl + apiStatsEndpoint, true);
+        // this.xhttp.withCredentials = true;
+        // this.xhttp.send();
+        // this.xhttp.onreadystatechange = () => { 
+        //     if (this.xhttp.readyState === 4) {
         //         const response = JSON.parse(this.xhttp.responseText);
         //         console.log(response);
-        //         this.outputController.displayApiStats(response);
-        //     } else {
-        //         this.outputController.displayErrorPopup(messages.error, this.xhttp.status);
+        //         if (this.xhttp.status === 200) {
+        //             this.outputController.displayApiStats(response);
+        //         } else {
+        //             this.outputController.displayErrorPopup(messages.error,  this.xhttp.status);
+        //         }
         //     }
-        // };
-        
+        // }
+
+        this.checkSession();
+        let xhttp = new XMLHttpRequest();  // Use a new XMLHttpRequest instance
+        xhttp.open(methodGet, this.baseUrl + apiStatsEndpoint, true);
+        xhttp.withCredentials = true;
+        xhttp.send();
+        xhttp.onload = () => {  // Use onload safely now
+            console.log("inside onload - getApiStats");
+            if (xhttp.status === 200) {
+                const response = JSON.parse(xhttp.responseText);
+                console.log(response);
+                this.outputController.displayApiStats(response);
+            } else {
+                this.outputController.displayErrorPopup(messages.error, xhttp.status);
+            }
+        };       
 
         // Testing DataTable
         // let dummy = [
@@ -1424,12 +1418,8 @@ class UI {
             alert(messages.notAdmin)
             return;
         }
-        
-        fetch(
-            this.initApiStats()
-        ).then(
-            this.initUserList()
-        )
+        this.initApiStats();
+        this.initUserList();
     }
 
     /**
