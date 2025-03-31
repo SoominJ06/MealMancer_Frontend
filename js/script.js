@@ -567,6 +567,7 @@ class RecipeAPI {
         this.xhttp.onreadystatechange = () => { 
             if (this.xhttp.readyState === 4) {
                 const response = JSON.parse(this.xhttp.responseText);
+                console.log("response ", response)
                 if (this.xhttp.status === 200) {
                     // location.reload();
                     this.outputController.displaySuccessPopup(response.message);
@@ -1079,6 +1080,7 @@ class ButtonController {
     initDeleteFavBtns() {
         document.querySelectorAll(".deleteFavBtn").forEach(btn => {
             btn.addEventListener(clickConst, () => {
+                console.log("geting fav id for delete", btn.dataset.favid)
                 this.xhr.delteFavorite(btn.dataset.favid);
             })
         });
