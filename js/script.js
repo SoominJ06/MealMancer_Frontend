@@ -61,7 +61,8 @@ const deleteUserBtn = "deleteUserBtn";
 const modalToggled = "modalToggled";
 const editUserModal = "editUserModal";
 const deleteUserModal = "deleteUserModal";
-const cancelBtns = ".cancelBtn;"
+const cancelEditBtn = "cancelEditButton";
+const cancelDeleteBtn = "cancelDeleteButton";
 const confirmDeleteButton = "confirmDeleteButton";
 const updateButton = "updateButton";
 const editTokensInput = "editTokens";
@@ -1054,34 +1055,30 @@ class ButtonController {
                 this.initDeleteUser(userId);
             }
         });
-
-        this.xhr.outputController.displayEditUserModal();
-        this.xhr.outputController.displayDeleteUserModal();
-        this.initCancelBtn();
     }
 
     initEditUser(userId) {
+        this.xhr.outputController.displayEditUserModal();
         document.getElementById(updateButton).addEventListener(clickConst, () => {
             this.xhr.updateUserToken(userId, document.getElementById(editTokensInput).value);
+        });
+        document.getElementById(cancelEditBtn).addEventListener(clickConst, () => {
+            document.getElementById(editUserModal).classList.toggle(modalToggled);
         });
         document.getElementById(editUserModal).classList.toggle(modalToggled);
         this.xhr.outputController.formatPadding(editScrollTop, editScrollBottom);
     }
 
     initDeleteUser(userId) {
+        this.xhr.outputController.displayDeleteUserModal();
         document.getElementById(confirmDeleteButton).addEventListener(clickConst, () => {
             this.xhr.delteUser(userId);
         });
+        document.getElementById(cancelDeleteBtn).addEventListener(clickConst, () => {
+            document.getElementById(deleteUserModal).classList.toggle(modalToggled);
+        })
         document.getElementById(deleteUserModal).classList.toggle(modalToggled);
         this.xhr.outputController.formatPadding(deleteScrollTop, deleteScrollBottom);
-    }
-
-    initCancelBtn() {
-        document.querySelectorAll(cancelBtns).forEach(btn => {
-            btn.addEventListener(clickConst, () => {
-                document.getElementById(btn.parentElement.parentElement.parentElement.parentElement.parentElement.id).classList.toggle(modalToggled);
-            })
-        });
     }
 }
 
