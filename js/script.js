@@ -483,7 +483,6 @@ class RecipeAPI {
             if (this.xhttp.readyState === 4) {
                 const response = JSON.parse(this.xhttp.responseText);
                 if (this.xhttp.status === 200) {
-                    location.reload();
                     this.outputController.displaySuccessPopup(response.message);
                 } else {
                     this.outputController.displayErrorPopup(response.message, this.xhttp.status);
@@ -502,7 +501,6 @@ class RecipeAPI {
             if (this.xhttp.readyState === 4) {
                 const response = JSON.parse(this.xhttp.responseText);
                 if (this.xhttp.status === 200) {
-                    location.reload();
                     this.outputController.displaySuccessPopup(response.message);
                 } else {
                     this.outputController.displayErrorPopup(response.message, this.xhttp.status);
@@ -558,7 +556,7 @@ class RecipeAPI {
             if (this.xhttp.readyState === 4) {
                 const response = JSON.parse(this.xhttp.responseText);
                 if (this.xhttp.status === 200) {
-                    location.reload();
+                    // location.reload();
                     this.outputController.displaySuccessPopup(response.message);
                 } else {
                     this.outputController.displayErrorPopup(response.message, this.xhttp.status);
@@ -577,7 +575,7 @@ class RecipeAPI {
             if (this.xhttp.readyState === 4) {
                 const response = JSON.parse(this.xhttp.responseText);
                 if (this.xhttp.status === 200) {
-                    location.reload();
+                    // location.reload();
                     this.outputController.displaySuccessPopup(response.message);
                 } else {
                     this.outputController.displayErrorPopup(response.message, this.xhttp.status);
@@ -670,7 +668,7 @@ class OutputController {
         document.getElementById(errorPopup).style.zIndex = 99;
         document.getElementById(closeErrorPopup).addEventListener(clickConst, () => {
             this.hideErrorPopup();
-        })
+        });
     }
 
     /**
@@ -695,7 +693,8 @@ class OutputController {
         document.getElementById("sucessPopupWrap").style.zIndex = 99;
         document.getElementById("closeSuccessPopupBtn").addEventListener(clickConst, () => {
             this.hideSuccessPopup();
-        })
+            location.reload();
+        });
     }
 
     /**
