@@ -517,7 +517,7 @@ class RecipeAPI {
                 const response = JSON.parse(this.xhttp.responseText);
                 console.log(response);
                 if (this.xhttp.status === 200) {
-                    this.outputController.displayFavorites(response)
+                    this.outputController.displayFavorites(response.result)
                 } else {
                     this.outputController.displayErrorPopup(messages.error, this.xhttp.status);
                 }
