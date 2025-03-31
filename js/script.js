@@ -415,10 +415,8 @@ class RecipeAPI {
         xhttp.withCredentials = true;
         xhttp.send();
         xhttp.onload = () => {  // Use onload safely now
-            console.log("inside onload - getApiStats");
             if (xhttp.status === 200) {
                 const response = JSON.parse(xhttp.responseText);
-                console.log(response);
                 this.outputController.displayApiStats(response);
             } else {
                 this.outputController.displayErrorPopup(messages.error, xhttp.status);
@@ -490,7 +488,6 @@ class RecipeAPI {
         // check if session has expired or not
         this.checkSession();
         this.xhttp.open(methodDelete, this.baseUrl + updateUserEndpoint + id, true);
-        console.log("deleteuser endpoint ", this.baseUrl + updateUserEndpoint + id);
         this.xhttp.withCredentials = true;
         this.xhttp.send();   
         this.xhttp.onreadystatechange = () => { 
@@ -518,6 +515,7 @@ class RecipeAPI {
         this.xhttp.onreadystatechange = () => { 
             if (this.xhttp.readyState === 4) {
                 const response = JSON.parse(this.xhttp.responseText);
+                console.log(response);
                 if (this.xhttp.status === 200) {
                     this.outputController.displayFavorites(response)
                 } else {
