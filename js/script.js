@@ -73,7 +73,7 @@ const deleteScrollBottom = "deleteScrollBottom";
 const outputWrap = "outputWrap";
 const favoritesWrap = "favoritesWrap";
 const favoriteBg = "favoriteBg";
-const favorites = "favorites";
+const favoritesConst = "favorites";
 const favorite = "favorite";
 const loginBtn = "loginBtn";
 const logoutBtn = "logoutBtn";
@@ -896,7 +896,7 @@ class OutputController {
      * @returns the favorites in a div format
      */
     displayFavorites(favorites) {
-        const favoritesContainer = document.getElementById(favorites);
+        const favoritesContainer = document.getElementById(favoritesConst);
     
         favoritesContainer.innerHTML = emptyString;
     
