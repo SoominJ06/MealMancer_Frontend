@@ -895,7 +895,7 @@ class OutputController {
      * @returns the favorites in a div format
      */
     displayFavorites(favorites) {
-        const favoritesContainer = document.getElementById(favEndpoint);
+        const favoritesContainer = document.getElementById(favorite);
     
         favoritesContainer.innerHTML = emptyString;
     
