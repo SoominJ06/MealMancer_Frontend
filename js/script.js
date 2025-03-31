@@ -515,7 +515,6 @@ class RecipeAPI {
         this.xhttp.onreadystatechange = () => { 
             if (this.xhttp.readyState === 4) {
                 const response = JSON.parse(this.xhttp.responseText);
-                console.log(response);
                 if (this.xhttp.status === 200) {
                     this.outputController.displayFavorites(response)
                 } else {
@@ -894,7 +893,6 @@ class OutputController {
      * @returns the favorites in a div format
      */
     displayFavorites(favorites) {
-        console.log(favorites);
         const favoritesContainer = document.getElementById(favoritesConst);
     
         favoritesContainer.innerHTML = emptyString;
