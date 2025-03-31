@@ -13,7 +13,7 @@ const backendUrl = "https://meal-mancer-api-q3zh9.ondigitalocean.app/v1/";
 const loginEndpoint = "login";
 const logoutEndpoint = "logout";
 const signupEndpoint = "signup";
-const favEndpoint = "favorites";
+const favEndpoint = "favourites";
 const apiStatsEndpoint = "apiStats";
 const userListEndpoint = "users";
 const infoPageEndpoint = "info"
@@ -618,15 +618,6 @@ class InputValidator {
         return !/^[A-Za-z, ]+$/.test(value);
     }
 
-    /**
-     * Removes all whitespace from the value
-     * @param {*} value 
-     * @returns the value without any whitespace
-     */
-    removeWhitespace(value) {
-        return value.replace(/\s+/g, emptyString); // Removes all spaces
-    }
-
 }
 
 /**
@@ -1037,7 +1028,7 @@ class ButtonController {
             if (tokensLeft <= 0) {
                 this.xhr.outputController.displayErrorPopup(messages.tokenEmpty);
             }
-            this.xhr.getRecipe(this.inputValidator.removeWhitespace(input));
+            this.xhr.getRecipe(input.trim());
         });
     }
 
