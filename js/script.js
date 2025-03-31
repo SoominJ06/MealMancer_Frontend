@@ -832,7 +832,7 @@ class OutputController {
 
     displayDeleteUserModal() {
         document.getElementById("deleteUserModalLabel").innerHTML = messages.deleteUserModalLabel;
-        // document.getElementById("deleteUserConfirm").innerHTML = messages.deleteUserConfirm.replace("%USER%", document.getElementById(""));
+        document.getElementById("deleteUserConfirm").innerHTML = messages.deleteUserConfirm.replace("%USER%", document.getElementById(""));
         document.getElementById("deleteUserConfirm").innerHTML = messages.deleteUserConfirm;
         document.getElementById("cancelDeleteButton").innerHTML = messages.cancelBtn;
         document.getElementById("confirmDeleteButton").innerHTML = messages.deleteBtn;
@@ -1064,9 +1064,9 @@ class ButtonController {
             this.xhr.updateUserToken(userId, document.getElementById(editTokensInput).value);
         });
         document.getElementById(cancelEditBtn).addEventListener(clickConst, () => {
-            document.getElementById(editUserModal).classList.toggle(modalToggled);
+            document.getElementById(editUserModal).classList.remove(modalToggled);
         });
-        document.getElementById(editUserModal).classList.toggle(modalToggled);
+        document.getElementById(editUserModal).classList.add(modalToggled);
         this.xhr.outputController.formatPadding(editScrollTop, editScrollBottom);
     }
 
@@ -1076,9 +1076,9 @@ class ButtonController {
             this.xhr.delteUser(userId);
         });
         document.getElementById(cancelDeleteBtn).addEventListener(clickConst, () => {
-            document.getElementById(deleteUserModal).classList.toggle(modalToggled);
+            document.getElementById(deleteUserModal).classList.remove(modalToggled);
         })
-        document.getElementById(deleteUserModal).classList.toggle(modalToggled);
+        document.getElementById(deleteUserModal).classList.add(modalToggled);
         this.xhr.outputController.formatPadding(deleteScrollTop, deleteScrollBottom);
     }
 }
