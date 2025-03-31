@@ -269,6 +269,7 @@ input:focus {
     /* Hide popup when page is first initialized */
     visibility: hidden;
     opacity: 0; 
+    z-index: -99;
     /* Controlling the transition properties */
     -webkit-transition: opacity 0.4s;
     -moz-transition: opacity 0.4s;

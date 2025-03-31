@@ -662,6 +662,7 @@ class OutputController {
         document.getElementById(errorDesc).innerHTML = errorDetails
         document.getElementById(errorPopup).style.opacity = one;
         document.getElementById(errorPopup).style.visibility = visibleConst;
+        document.getElementById(errorPopup).style.zIndex = 99;
         document.getElementById(closeErrorPopup).addEventListener(clickConst, () => {
             this.hideErrorPopup();
         })

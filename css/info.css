@@ -112,7 +112,7 @@
 
 .modalToggled {
     display: flex;
-    z-index: 99;
+    z-index: 98;
 }
 
 .modal {
