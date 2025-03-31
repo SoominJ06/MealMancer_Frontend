@@ -483,6 +483,7 @@ class RecipeAPI {
             if (this.xhttp.readyState === 4) {
                 const response = JSON.parse(this.xhttp.responseText);
                 if (this.xhttp.status === 200) {
+                    location.reload();
                     this.outputController.displaySuccessPopup(response.message);
                 } else {
                     this.outputController.displayErrorPopup(response.message, this.xhttp.status);
@@ -501,6 +502,7 @@ class RecipeAPI {
             if (this.xhttp.readyState === 4) {
                 const response = JSON.parse(this.xhttp.responseText);
                 if (this.xhttp.status === 200) {
+                    location.reload();
                     this.outputController.displaySuccessPopup(response.message);
                 } else {
                     this.outputController.displayErrorPopup(response.message, this.xhttp.status);
@@ -556,6 +558,7 @@ class RecipeAPI {
             if (this.xhttp.readyState === 4) {
                 const response = JSON.parse(this.xhttp.responseText);
                 if (this.xhttp.status === 200) {
+                    location.reload();
                     this.outputController.displaySuccessPopup(response.message);
                 } else {
                     this.outputController.displayErrorPopup(response.message, this.xhttp.status);
@@ -564,7 +567,7 @@ class RecipeAPI {
         }
     }
 
-    delteUser(id) {
+    delteFavorite(id) {
         // check if session has expired or not
         this.checkSession();
         this.xhttp.open(methodDelete, this.baseUrl + deleteFavEndpoint + id, true);
@@ -574,6 +577,7 @@ class RecipeAPI {
             if (this.xhttp.readyState === 4) {
                 const response = JSON.parse(this.xhttp.responseText);
                 if (this.xhttp.status === 200) {
+                    location.reload();
                     this.outputController.displaySuccessPopup(response.message);
                 } else {
                     this.outputController.displayErrorPopup(response.message, this.xhttp.status);
@@ -1102,17 +1106,6 @@ class ButtonController {
         });
     }
 
-    // initEditUser(userId) {
-    //     this.xhr.outputController.displayEditUserModal();
-    //     document.getElementById(updateButton).addEventListener(clickConst, () => {
-    //         this.xhr.updateUserToken(userId, document.getElementById(editTokensInput).value);
-    //     });
-    //     document.getElementById(cancelEditBtn).addEventListener(clickConst, () => {
-    //         document.getElementById(editUserModal).classList.remove(modalToggled);
-    //     });
-    //     document.getElementById(editUserModal).classList.add(modalToggled);
-    //     this.xhr.outputController.formatPadding(editScrollTop, editScrollBottom);
-    // }
     initEditUser(userId) {
         this.xhr.outputController.displayEditUserModal(userId);
     
