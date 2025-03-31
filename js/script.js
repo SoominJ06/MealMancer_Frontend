@@ -413,22 +413,33 @@ class RecipeAPI {
         console.log("credentials set")
         this.xhttp.send();
         console.log("xhttp sent")
-        this.xhttp.onreadystatechange = () => { 
-            console.log("inside onreadystatechange")
-            if (this.xhttp.readyState === 4) {
-                console.log("readystate is 4")
+        // this.xhttp.onreadystatechange = () => { 
+        //     console.log("inside onreadystatechange")
+        //     if (this.xhttp.readyState === 4) {
+        //         console.log("readystate is 4")
+        //         const response = JSON.parse(this.xhttp.responseText);
+        //         console.log("parsing response")
+        //         console.log(response);
+        //         console.log("inside xhttp req")
+        //         if (this.xhttp.status === 200) {
+        //             this.outputController.displayApiStats(response);
+        //         } else {
+        //             this.outputController.displayErrorPopup(messages.error,  this.xhttp.status);
+        //         }
+        //     }
+        //     console.log("readystate changed", this.xhttp.readyState);
+        // }
+        this.xhttp.onload = () => {
+            console.log("inside onload");
+            if (this.xhttp.status === 200) {
                 const response = JSON.parse(this.xhttp.responseText);
-                console.log("parsing response")
                 console.log(response);
-                console.log("inside xhttp req")
-                if (this.xhttp.status === 200) {
-                    this.outputController.displayApiStats(response);
-                } else {
-                    this.outputController.displayErrorPopup(messages.error,  this.xhttp.status);
-                }
+                this.outputController.displayApiStats(response);
+            } else {
+                this.outputController.displayErrorPopup(messages.error, this.xhttp.status);
             }
-            console.log("readystate changed", this.xhttp.readyState);
-        }
+        };
+        
 
         // Testing DataTable
         // let dummy = [
