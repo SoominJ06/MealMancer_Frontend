@@ -1055,11 +1055,12 @@ class ButtonController {
             }
         });
 
+        this.xhr.outputController.displayEditUserModal();
+        this.xhr.outputController.displayDeleteUserModal();
         this.initCancelBtn();
     }
 
     initEditUser(userId) {
-        this.xhr.outputController.displayEditUserModal();
         document.getElementById(updateButton).addEventListener(clickConst, () => {
             this.xhr.updateUserToken(userId, document.getElementById(editTokensInput).value);
         });
@@ -1068,7 +1069,6 @@ class ButtonController {
     }
 
     initDeleteUser(userId) {
-        this.xhr.outputController.displayDeleteUserModal();
         document.getElementById(confirmDeleteButton).addEventListener(clickConst, () => {
             this.xhr.delteUser(userId);
         });
