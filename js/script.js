@@ -537,13 +537,13 @@ class RecipeAPI {
         // this.outputController.displayFavorites(dummy)
     }
 
-    addToFavorites(recipe) {
+    addToFavorites(title, ingredients, instructions) {
         // check if session has expired or not
         this.checkSession();
         this.xhttp.open(methodPost, this.baseUrl + favEndpoint, true);
         this.xhttp.withCredentials = true;
         this.xhttp.setRequestHeader(contentType, appJson);
-        const requestData = JSON.stringify({ recipe: recipe });
+        const requestData = JSON.stringify({ recipe: {title: title, ingredients: ingredients, directions: instructions} });
         this.xhttp.send(requestData);   
         this.xhttp.onreadystatechange = () => { 
             if (this.xhttp.readyState === 4) {
@@ -728,6 +728,10 @@ class OutputController {
         });
 
         document.getElementById(addToFav).style.display = blockConst;
+
+        // initialize add to fav button
+        const buttonController = new ButtonController();
+        buttonController.initFavBtn(title, ingredients, instructions);
 
         this.formatPadding(scrollTopConst, scrollBottomConst);
     }
@@ -1036,10 +1040,10 @@ class ButtonController {
     /**
      * Initializes the favorite button event listener.
      */
-    initFavBtn() {
+    initFavBtn(title, ingredients, instructions) {
         document.getElementById(addToFav).addEventListener(clickConst, (e) => {
             e.preventDefault();
-            // Add to fav list
+            this.xhr.addToFavorites(title, ingredients, instructions);
         });
     }
 
