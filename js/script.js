@@ -160,7 +160,9 @@ const favoritesTemplate = `<div class="favoriteBg"><div class="scrollTop" id="sc
                                     <div class="instructions divide">
                                         <div class="desc headerFont">%INSTRUCTIONS_TITLE%</div>
                                         <ul id="instructionList">%INSTRUCTION_LIST%</ul>
-                                    </div></div></div><div class="scrollBottom" id="scrollBottom%BID%"></div></div>`;
+                                    </div>
+                                    <button id="deleteFromFav" class="hoverable btnFont deleteFavBtn" data-favid="%FAV_ID%"></button>
+                                    </div></div><div class="scrollBottom" id="scrollBottom%BID%"></div></div>`;
 
 // Event Listeners
 const DOMContentLoadConst = "DOMContentLoaded";
@@ -371,7 +373,7 @@ class RecipeAPI {
                 const response = JSON.parse(this.xhttp.responseText);
                 if (this.xhttp.status === 200) {
                     this.session.setUserInfo(response.role, response.tokens, response.httpRequests, response.expiresAt );
-                    window.location.href = indexPage
+                    window.location.href = indexPage;
                 } else {
                     this.outputController.displayErrorPopup(response.message, this.xhttp.status);
                 }
@@ -932,6 +934,7 @@ class OutputController {
                 .replace("%INGREDIENT_LIST%", ingredientList)
                 .replace("%INSTRUCTIONS_TITLE%", messages.instructionsTitle)
                 .replace("%INSTRUCTION_LIST%", methodList)
+                .replace("%FAV_ID%", recipeID)
                 .replace("%TID%", recipeID).replace("%BID%", recipeID);
 
             // Append updated `content`
@@ -948,6 +951,7 @@ class OutputController {
         // Use ButtonController to initialize navigation
         const buttonController = new ButtonController();
         buttonController.initFavNavigation(document.querySelector(prevConst), document.querySelector(nextConst), favorites.length, this.displayNextFav);
+        buttonController.initDeleteFavBtns();
     }
 
     /**
@@ -1081,6 +1085,14 @@ class ButtonController {
             nextBtn.style.display = blockConst;
             prevBtn.style.display = blockConst;
         }
+    }
+
+    initDeleteFavBtns() {
+        document.querySelectorAll(".deleteFavBtn").forEach(btn => {
+            btn.addEventListener(clickConst, () => {
+                this.xhr.delteFavorite(btn.dataset.favid);
+            })
+        });
     }
 
     initUserListBtns() {
@@ -1324,12 +1336,23 @@ class UI {
         this.checkSession(); 
     }
 
+    initUserApiInfo() {
+        if (this.loggedIn) {
+            let apiInfo = messages.apiInfo;
+            apiInfo = apiInfo.replace("%TOKENS%", this.session.getUserTokens());
+            apiInfo = apiInfo.replace("%TOTAL_API_CALLS%", this.session.getTotalAPI());
+            document.getElementById(tokensLeftConst).innerHTML = apiInfo;
+        } else {
+            document.getElementById(tokensLeftConst).innerHTML = "";
+        }
+    }
+
     /**
      * Initializes the index page based on the user role
      * @returns the index page based on the user role
      */
     initIndex() {
-        document.getElementById(tokensLeftConst).innerHTML = this.loggedIn ? messages.apiInfo.replace("%TOKENS%", this.session.getUserTokens()).replace("%TOTAL_API_CALLS%", this.session.getTotalAPI()) : "";
+        this.initUserApiInfo();
         if (this.userRole === adminConst) {
             document.getElementById(titleConst).innerHTML = messages.adminIndexTitle;
             document.getElementById(descConst).innerHTML = emptyString;
@@ -1385,7 +1408,7 @@ class UI {
         document.getElementById(ingredientInput).placeholder = messages.ingredientPlaceholder;
         document.getElementById(conjureBtn).innerHTML = messages.castSpell;
         document.getElementById(addToFav).innerHTML = messages.addToFavBtn;
-        this.btnController.initConjureBtn(this.session.getUserTokens);
+        this.btnController.initConjureBtn(this.session.getUserTokens());
         this.btnController.initFavBtn();
     }
 
