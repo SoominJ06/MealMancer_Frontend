@@ -262,7 +262,7 @@ input:focus {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    position: absolute;
+    position: fixed;
     top: 30%;
     right: 50%;
     transform: translate(50%); 

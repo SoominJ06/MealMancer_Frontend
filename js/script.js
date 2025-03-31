@@ -131,8 +131,8 @@ const tableRowTemplate = `<tr>%CELL_CONTENTS%</tr>`;
 const tableCellTemplate = `<td>%CELL%</td>`;
 const tableEndConst = `</tbody></table>`;
 const tableButtonsTemplate = `<div class="userListBtnWrap">
-                                <button id="editUser%ID%" class="editUserBtn headerFont hoverable" data-userid="%ID%">Edit</button>
-                                <button id="deleteUser%ID%" class="deleteUserBtn headerFont hoverable" data-userid="%ID%">Delete</button>
+                                <button id="editUser%ID%" class="editUserBtn headerFont" data-userid="%ID%">Edit</button>
+                                <button id="deleteUser%ID%" class="deleteUserBtn headerFont" data-userid="%ID%">Delete</button>
                             </div>`;
 const initButtonTemplate = `<div class="logo titleFont hoverable">
                                 <a href="index.html">
@@ -404,24 +404,10 @@ class RecipeAPI {
 
     getApiStats() {
         // check if session has expired or not
-        // this.checkSession();
-        // this.xhttp.open(methodGet, this.baseUrl + apiStatsEndpoint, true);
-        // this.xhttp.withCredentials = true;
-        // this.xhttp.send();
-        // this.xhttp.onreadystatechange = () => { 
-        //     if (this.xhttp.readyState === 4) {
-        //         const response = JSON.parse(this.xhttp.responseText);
-        //         console.log(response);
-        //         if (this.xhttp.status === 200) {
-        //             this.outputController.displayApiStats(response);
-        //         } else {
-        //             this.outputController.displayErrorPopup(messages.error,  this.xhttp.status);
-        //         }
-        //     }
-        // }
-
         this.checkSession();
-        let xhttp = new XMLHttpRequest();  // Use a new XMLHttpRequest instance
+
+        // Using a new XMLHttpRequest instance
+        let xhttp = new XMLHttpRequest();  
         xhttp.open(methodGet, this.baseUrl + apiStatsEndpoint, true);
         xhttp.withCredentials = true;
         xhttp.send();
@@ -501,6 +487,7 @@ class RecipeAPI {
         // check if session has expired or not
         this.checkSession();
         this.xhttp.open(methodDelete, this.baseUrl + updateUserEndpoint + id, true);
+        console.log("deleteuser endpoint ", this.baseUrl + updateUserEndpoint + id);
         this.xhttp.withCredentials = true;
         this.xhttp.send();   
         this.xhttp.onreadystatechange = () => { 
