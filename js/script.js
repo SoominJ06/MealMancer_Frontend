@@ -1398,7 +1398,6 @@ class UI {
         document.getElementById(conjureBtn).innerHTML = messages.castSpell;
         document.getElementById(addToFav).innerHTML = messages.addToFavBtn;
         this.btnController.initConjureBtn(this.session.getUserTokens());
-        this.btnController.initFavBtn();
     }
 
     /**
