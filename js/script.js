@@ -823,19 +823,37 @@ class OutputController {
         $(hashtagUserList).DataTable();
     }   
     
-    displayEditUserModal() {
+    displayEditUserModal(userId) {
         document.getElementById("editUserModalLabel").innerHTML = messages.editUserToken;
         document.getElementById("editTokensLabel").innerHTML = messages.editTokensLabel;
         document.getElementById("cancelEditButton").innerHTML = messages.cancelBtn;
         document.getElementById("updateButton").innerHTML = messages.updateBtn;
+
+        // Find the row associated with this userId
+        const row = document.querySelector(`[data-userid="${userId}"]`).closest("tr");
+    
+        // Extract the token amount from the appropriate column
+        const tokenColumnIndex = 1; // Adjust index based on table structure
+        const tokenValue = row.cells[tokenColumnIndex].textContent.trim();
+    
+        // Set the extracted token value in the input field
+        document.getElementById(editTokensInput).value = tokenValue;
     }
 
-    displayDeleteUserModal() {
+    displayDeleteUserModal(userId) {
         document.getElementById("deleteUserModalLabel").innerHTML = messages.deleteUserModalLabel;
-        // document.getElementById("deleteUserConfirm").innerHTML = messages.deleteUserConfirm.replace("%USER%", document.getElementById(""));
-        document.getElementById("deleteUserConfirm").innerHTML = messages.deleteUserConfirm;
         document.getElementById("cancelDeleteButton").innerHTML = messages.cancelBtn;
         document.getElementById("confirmDeleteButton").innerHTML = messages.deleteBtn;
+
+        // Find the row associated with this userId
+        const row = document.querySelector(`[data-userid="${userId}"]`).closest("tr");
+    
+        // Extract the token amount from the appropriate column
+        const emailColumnIndex = 0; // Adjust index based on table structure
+        const emailAddress = row.cells[emailColumnIndex].textContent.trim();
+    
+        // Set the extracted token value in the input field
+        document.getElementById("deleteUserConfirm").innerHTML = messages.deleteUserConfirm.replace("%USER%", emailAddress);
     }
 
     /**
@@ -1070,17 +1088,7 @@ class ButtonController {
     //     this.xhr.outputController.formatPadding(editScrollTop, editScrollBottom);
     // }
     initEditUser(userId) {
-        this.xhr.outputController.displayEditUserModal();
-    
-        // Find the row associated with this userId
-        const row = document.querySelector(`[data-userid="${userId}"]`).closest("tr");
-    
-        // Extract the token amount from the appropriate column
-        const tokenColumnIndex = 2; // Adjust index based on table structure
-        const tokenValue = row.cells[tokenColumnIndex].textContent.trim();
-    
-        // Set the extracted token value in the input field
-        document.getElementById(editTokensInput).value = tokenValue;
+        this.xhr.outputController.displayEditUserModal(userId);
     
         // Attach event listeners for update and cancel buttons
         document.getElementById(updateButton).addEventListener(clickConst, () => {
@@ -1096,13 +1104,17 @@ class ButtonController {
     }    
 
     initDeleteUser(userId) {
-        this.xhr.outputController.displayDeleteUserModal();
+        this.xhr.outputController.displayDeleteUserModal(userId);
+
+        // Attach event listeners for delete and cancel buttons
         document.getElementById(confirmDeleteButton).addEventListener(clickConst, () => {
             this.xhr.delteUser(userId);
         });
         document.getElementById(cancelDeleteBtn).addEventListener(clickConst, () => {
             document.getElementById(deleteUserModal).classList.remove(modalToggled);
         })
+
+        // Show the delete user modal
         document.getElementById(deleteUserModal).classList.add(modalToggled);
         this.xhr.outputController.formatPadding(deleteScrollTop, deleteScrollBottom);
     }
