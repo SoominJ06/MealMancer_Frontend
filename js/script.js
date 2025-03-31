@@ -808,7 +808,7 @@ class OutputController {
             });
     
             // Insert "Edit" and "Delete" buttons with user_id embedded in the ID
-            const actionButtons = tableButtonsTemplate.replace(idItem, row.user_id);
+            const actionButtons = tableButtonsTemplate.replaceAll(idItem, row.user_id);
             rowContent += tableCellTemplate.replace(cellItem, actionButtons);
     
             table += tableRowTemplate.replace(cellContents, rowContent);
