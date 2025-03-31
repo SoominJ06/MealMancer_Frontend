@@ -517,7 +517,7 @@ class RecipeAPI {
                 const response = JSON.parse(this.xhttp.responseText);
                 console.log(response);
                 if (this.xhttp.status === 200) {
-                    this.outputController.displayFavorites(response.result)
+                    this.outputController.displayFavorites(response)
                 } else {
                     this.outputController.displayErrorPopup(messages.error, this.xhttp.status);
                 }
@@ -899,7 +899,7 @@ class OutputController {
     
         favoritesContainer.innerHTML = emptyString;
     
-        if (favorites.length === 0 || favorites === null) {
+        if (!favorites || favorites.length === 0 || favorites === null) {
             favoritesContainer.innerHTML = messages.noFavsFound;
             return;
         }
