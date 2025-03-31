@@ -673,9 +673,9 @@ class OutputController {
      * Hides the success popup
      */
     hideSuccessPopup() {
-        document.getElementById("successPopup").style.opacity = zero;
-        document.getElementById("successPopup").style.visibility = hiddenConst;
-        document.getElementById("successPopup").style.zIndex = -99;
+        document.getElementById("sucessPopupWrap").style.opacity = zero;
+        document.getElementById("sucessPopupWrap").style.visibility = hiddenConst;
+        document.getElementById("sucessPopupWrap").style.zIndex = -99;
     }
 
     /**
@@ -686,9 +686,9 @@ class OutputController {
         document.getElementById("closeSuccessPopupBtn").innerHTML = messages.ok;
         document.getElementById("successMsg").innerHTML = messages.successTitle;
         document.getElementById("successDesc").innerHTML = successDetails;
-        document.getElementById("successPopup").style.opacity = one;
-        document.getElementById("successPopup").style.visibility = visibleConst;
-        document.getElementById("successPopup").style.zIndex = 99;
+        document.getElementById("sucessPopupWrap").style.opacity = one;
+        document.getElementById("sucessPopupWrap").style.visibility = visibleConst;
+        document.getElementById("sucessPopupWrap").style.zIndex = 99;
         document.getElementById("closeSuccessPopupBtn").addEventListener(clickConst, () => {
             this.hideSuccessPopup();
         })
