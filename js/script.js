@@ -35,7 +35,7 @@ const indexPage = "index.html";
 const loginPage = "login.html";
 const signupPage = "signup.html";
 const cookingPage = "cookingConjuration.html";
-const favPage = "favorites.html";
+const favPage = "favourites.html";
 const infoPage = "info.html";
 
 // ContentIDs
