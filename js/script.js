@@ -949,7 +949,7 @@ class OutputController {
      */
     displayNextFav(index) {
         const offset = -index * (document.getElementById(favoritesWrap).clientWidth); // Calculate the offset
-        document.getElementById(favEndpoint).style.transform = translateStyleConst.replace(offsetConst, offset);
+        document.getElementById(favoritesConst).style.transform = translateStyleConst.replace(offsetConst, offset);
     }
 }
 
