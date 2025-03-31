@@ -162,7 +162,7 @@ const favoritesTemplate = `<div class="favoriteBg"><div class="scrollTop" id="sc
                                         <div class="desc headerFont">%INSTRUCTIONS_TITLE%</div>
                                         <ul id="instructionList">%INSTRUCTION_LIST%</ul>
                                     </div>
-                                    <button id="deleteFromFav" class="hoverable btnFont deleteFavBtn" data-favid="%FAV_ID%"></button>
+                                    <button id="deleteFromFav" class="hoverable btnFont deleteFavBtn" data-favid="%FAV_ID%">%DELETE_BTN%</button>
                                     </div></div><div class="scrollBottom" id="scrollBottom%BID%"></div></div>`;
 
 // Event Listeners
@@ -923,7 +923,7 @@ class OutputController {
                 .replace("%INGREDIENT_LIST%", ingredientList)
                 .replace("%INSTRUCTIONS_TITLE%", messages.instructionsTitle)
                 .replace("%INSTRUCTION_LIST%", methodList)
-                .replace("%FAV_ID%", recipeID)
+                .replace("%FAV_ID%", recipeID).replace("%DELETE_BTN%", messages.deleteFromFav)
                 .replace("%TID%", recipeID).replace("%BID%", recipeID);
 
             // Append updated `content`

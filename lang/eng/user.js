@@ -34,6 +34,7 @@ const messages = {
     // favorites
     favTitle: "Favorite Recipes",
     noFavsFound: "There are no favorite recipes",
+    deleteFromFav: "Delete from Favorites",
 
     // info page
     apiTitle: "API Status",
