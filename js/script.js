@@ -483,7 +483,7 @@ class RecipeAPI {
             if (this.xhttp.readyState === 4) {
                 const response = JSON.parse(this.xhttp.responseText);
                 if (this.xhttp.status === 200) {
-                    this.outputController.displayErrorPopup(response.message);
+                    this.outputController.displaySuccessPopup(response.message);
                 } else {
                     this.outputController.displayErrorPopup(response.message, this.xhttp.status);
                 }
@@ -501,7 +501,7 @@ class RecipeAPI {
             if (this.xhttp.readyState === 4) {
                 const response = JSON.parse(this.xhttp.responseText);
                 if (this.xhttp.status === 200) {
-                    this.outputController.displayErrorPopup(response.message);
+                    this.outputController.displaySuccessPopup(response.message);
                 } else {
                     this.outputController.displayErrorPopup(response.message, this.xhttp.status);
                 }
@@ -556,7 +556,7 @@ class RecipeAPI {
             if (this.xhttp.readyState === 4) {
                 const response = JSON.parse(this.xhttp.responseText);
                 if (this.xhttp.status === 200) {
-                    this.outputController.displayErrorPopup(response.message);
+                    this.outputController.displaySuccessPopup(response.message);
                 } else {
                     this.outputController.displayErrorPopup(response.message, this.xhttp.status);
                 }
@@ -574,7 +574,7 @@ class RecipeAPI {
             if (this.xhttp.readyState === 4) {
                 const response = JSON.parse(this.xhttp.responseText);
                 if (this.xhttp.status === 200) {
-                    this.outputController.displayErrorPopup(response.message);
+                    this.outputController.displaySuccessPopup(response.message);
                 } else {
                     this.outputController.displayErrorPopup(response.message, this.xhttp.status);
                 }
@@ -650,6 +650,7 @@ class OutputController {
     hideErrorPopup() {
         document.getElementById(errorPopup).style.opacity = zero;
         document.getElementById(errorPopup).style.visibility = hiddenConst;
+        document.getElementById(errorPopup).style.zIndex = -99;
     }
 
     /**
@@ -665,6 +666,31 @@ class OutputController {
         document.getElementById(errorPopup).style.zIndex = 99;
         document.getElementById(closeErrorPopup).addEventListener(clickConst, () => {
             this.hideErrorPopup();
+        })
+    }
+
+    /**
+     * Hides the success popup
+     */
+    hideSuccessPopup() {
+        document.getElementById("successPopup").style.opacity = zero;
+        document.getElementById("successPopup").style.visibility = hiddenConst;
+        document.getElementById("successPopup").style.zIndex = -99;
+    }
+
+    /**
+     * Displays the success popup with the error message
+     * @param {*} errorDetails 
+     */
+    displaySuccessPopup(successDetails) {
+        document.getElementById("closeSuccessPopupBtn").innerHTML = messages.ok;
+        document.getElementById("successMsg").innerHTML = messages.successTitle;
+        document.getElementById("successDesc").innerHTML = successDetails;
+        document.getElementById("successPopup").style.opacity = one;
+        document.getElementById("successPopup").style.visibility = visibleConst;
+        document.getElementById("successPopup").style.zIndex = 99;
+        document.getElementById("closeSuccessPopupBtn").addEventListener(clickConst, () => {
+            this.hideSuccessPopup();
         })
     }
 

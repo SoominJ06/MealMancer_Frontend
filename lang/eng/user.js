@@ -50,7 +50,8 @@ const messages = {
     deleteBtn: "Delete",
     cancelBtn: "Cancel",
 
-    // Error popup
+    // popups
+    successTitle: "Cast Successful!",
     errorTitle: "%ERROR_CODE%Error",
     error: "Oops! Something went wrong!",
     emptyInput: "Input is empty",

@@ -250,7 +250,8 @@ input:focus {
 }
 
 /* Styling error popup field */
-#errorPopupWrap {
+#errorPopupWrap,
+#sucessPopupWrap {
     max-width: 650px;
     width: 85%;
     padding: 20px;
@@ -287,12 +288,14 @@ input:focus {
     gap: 20px;
 }
 
-#errorMsg {
+#errorMsg,
+#successMsg {
     font-size: 40px;
     font-weight: 500;
 }
 
-#errorDesc {
+#errorDesc,
+#successDesc {
     font-size: 25px;
 }
 
@@ -306,7 +309,18 @@ input:focus {
     cursor: none;
 }
 
-#closeErrorPopupBtn:hover {
+#closeSuccessPopupBtn {
+    padding: 10px 40px;
+    background-color: #62c29a;
+    border: 0;
+    font-family: "Martel", serif;
+    font-size: 20px;
+    transition-duration: 0.3s;
+    cursor: none;
+}
+
+#closeErrorPopupBtn:hover,
+#closeSuccessPopupBtn:hover {
     box-shadow: inset 3px 3px 10px rgba(0, 0, 0, 0.4);
     transform: scale(0.99);
 }
