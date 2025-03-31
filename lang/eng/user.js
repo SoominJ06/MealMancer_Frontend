@@ -41,6 +41,15 @@ const messages = {
     userListTitle: "Users",
     noUsersFound: "No users were found",
 
+    // info modal popups
+    editUserToken: "Edit User Tokens",
+    editTokensLabel: "Tokens: ",
+    updateBtn: "Update",
+    deleteUserModalLabel: "Confirm Deletion",
+    deleteUserConfirm: "Are you sure you want to delete %USER%?",
+    deleteBtn: "Delete",
+    cancelBtn: "Cancel",
+
     // Error popup
     errorTitle: "%ERROR_CODE%Error",
     error: "Oops! Something went wrong!",

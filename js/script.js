@@ -819,7 +819,22 @@ class OutputController {
     
         // Convert the table into a DataTable
         $(hashtagUserList).DataTable();
-    }    
+    }   
+    
+    displayEditUserModal() {
+        document.getElementById("editUserModalLabel").innerHTML = messages.editUserToken;
+        document.getElementById("editTokensLabel").innerHTML = messages.editTokensLabel;
+        document.getElementById("cancelEditButton").innerHTML = messages.cancelBtn;
+        document.getElementById("updateButton").innerHTML = messages.updateBtn;
+    }
+
+    displayDeleteUserModal() {
+        document.getElementById("deleteUserModalLabel").innerHTML = messages.deleteUserModalLabel;
+        // document.getElementById("deleteUserConfirm").innerHTML = messages.deleteUserConfirm.replace("%USER%", document.getElementById(""));
+        document.getElementById("deleteUserConfirm").innerHTML = messages.deleteUserConfirm;
+        document.getElementById("cancelDeleteButton").innerHTML = messages.cancelBtn;
+        document.getElementById("confirmDeleteButton").innerHTML = messages.deleteBtn;
+    }
 
     /**
      * Formats the padding of the output based on the offset width of each scroll
