@@ -902,8 +902,6 @@ class OutputController {
             favoritesContainer.innerHTML = messages.noFavsFound;
             return;
         }
-    
-        let recipeID = 0;
 
         favorites.forEach(recipe => {
             let content = favoritesTemplate;
@@ -924,16 +922,14 @@ class OutputController {
                 .replace("%INGREDIENT_LIST%", ingredientList)
                 .replace("%INSTRUCTIONS_TITLE%", messages.instructionsTitle)
                 .replace("%INSTRUCTION_LIST%", methodList)
-                .replace("%FAV_ID%", recipeID).replace("%DELETE_BTN%", messages.deleteFromFav)
-                .replace("%TID%", recipeID).replace("%BID%", recipeID);
+                .replace("%FAV_ID%", recipe.recipeId).replace("%DELETE_BTN%", messages.deleteFromFav)
+                .replace("%TID%", recipe.recipeId).replace("%BID%", recipe.recipeId);
 
             // Append updated `content`
             favoritesContainer.innerHTML += content;
 
             // Adjust scroll top & bottom dynamically
-            this.formatPadding(scrollTopConst+recipeID, scrollBottomConst+recipeID);
-
-            recipeID++;
+            this.formatPadding(scrollTopConst+recipe.recipeId, scrollBottomConst+recipe.recipeId);
         });
     
         favoritesContainer.style.width = `${favorites.length * 100}%`;
