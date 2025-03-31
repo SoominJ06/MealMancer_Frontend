@@ -832,7 +832,7 @@ class OutputController {
 
     displayDeleteUserModal() {
         document.getElementById("deleteUserModalLabel").innerHTML = messages.deleteUserModalLabel;
-        document.getElementById("deleteUserConfirm").innerHTML = messages.deleteUserConfirm.replace("%USER%", document.getElementById(""));
+        // document.getElementById("deleteUserConfirm").innerHTML = messages.deleteUserConfirm.replace("%USER%", document.getElementById(""));
         document.getElementById("deleteUserConfirm").innerHTML = messages.deleteUserConfirm;
         document.getElementById("cancelDeleteButton").innerHTML = messages.cancelBtn;
         document.getElementById("confirmDeleteButton").innerHTML = messages.deleteBtn;
@@ -1058,17 +1058,42 @@ class ButtonController {
         });
     }
 
+    // initEditUser(userId) {
+    //     this.xhr.outputController.displayEditUserModal();
+    //     document.getElementById(updateButton).addEventListener(clickConst, () => {
+    //         this.xhr.updateUserToken(userId, document.getElementById(editTokensInput).value);
+    //     });
+    //     document.getElementById(cancelEditBtn).addEventListener(clickConst, () => {
+    //         document.getElementById(editUserModal).classList.remove(modalToggled);
+    //     });
+    //     document.getElementById(editUserModal).classList.add(modalToggled);
+    //     this.xhr.outputController.formatPadding(editScrollTop, editScrollBottom);
+    // }
     initEditUser(userId) {
         this.xhr.outputController.displayEditUserModal();
+    
+        // Find the row associated with this userId
+        const row = document.querySelector(`[data-userid="${userId}"]`).closest("tr");
+    
+        // Extract the token amount from the appropriate column
+        const tokenColumnIndex = 2; // Adjust index based on table structure
+        const tokenValue = row.cells[tokenColumnIndex].textContent.trim();
+    
+        // Set the extracted token value in the input field
+        document.getElementById(editTokensInput).value = tokenValue;
+    
+        // Attach event listeners for update and cancel buttons
         document.getElementById(updateButton).addEventListener(clickConst, () => {
             this.xhr.updateUserToken(userId, document.getElementById(editTokensInput).value);
         });
         document.getElementById(cancelEditBtn).addEventListener(clickConst, () => {
             document.getElementById(editUserModal).classList.remove(modalToggled);
         });
+    
+        // Show the edit user modal
         document.getElementById(editUserModal).classList.add(modalToggled);
         this.xhr.outputController.formatPadding(editScrollTop, editScrollBottom);
-    }
+    }    
 
     initDeleteUser(userId) {
         this.xhr.outputController.displayDeleteUserModal();
