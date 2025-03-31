@@ -58,6 +58,17 @@ const userList = "userList";
 const actionItems = "actions";
 const editUserBtn = "editUserBtn";
 const deleteUserBtn = "deleteUserBtn";
+const modalToggled = "modalToggled";
+const editUserModal = "editUserModal";
+const deleteUserModal = "deleteUserModal";
+const cancelBtns = ".cancelBtn;"
+const confirmDeleteButton = "confirmDeleteButton";
+const updateButton = "updateButton";
+const editTokensInput = "editTokens";
+const editScrollTop = "editScrollTop";
+const editScrollBottom = "editScrollBottom";
+const deleteScrollTop = "deleteScrollTop";
+const deleteScrollBottom = "deleteScrollBottom";
 const outputWrap = "outputWrap";
 const favoritesWrap = "favoritesWrap";
 const favoriteBg = "favoriteBg";
@@ -811,9 +822,9 @@ class OutputController {
     }    
 
     /**
-     * Formats the padding of the output based on the content and container
-     * @param {*} container 
-     * @param {*} content 
+     * Formats the padding of the output based on the offset width of each scroll
+     * @param {*} topScroll 
+     * @param {*} bottomScroll 
      */
     formatPadding(topScroll, bottomScroll) {
         const top = document.getElementById(topScroll);
@@ -1020,22 +1031,40 @@ class ButtonController {
 
             if (target.classList.contains(editUserBtn)) {
                 const userId = target.dataset.userid; // Fetch user_id from data attribute
-                this.editUser(userId);
+                this.initEditUser(userId);
             }
 
             if (target.classList.contains(deleteUserBtn)) {
                 const userId = target.dataset.userid;
-                this.deleteUser(userId);
+                this.initDeleteUser(userId);
             }
         });
+
+        this.initCancelBtn();
     }
 
-    editUser(userId) {
-        // Load edit User page? tbd
+    initEditUser(userId) {
+        document.getElementById(updateButton).addEventListener(clickConst, () => {
+            this.xhr.updateUserToken(userId, document.getElementById(editTokensInput).value);
+        });
+        document.getElementById(editUserModal).classList.toggle(modalToggled);
+        this.xhr.outputController.formatPadding(editScrollTop, editScrollBottom);
     }
 
-    deleteUser(userId) {
-        // Fetch this.xhr.deleteUser();
+    initDeleteUser(userId) {
+        document.getElementById(confirmDeleteButton).addEventListener(clickConst, () => {
+            this.xhr.delteUser(userId);
+        });
+        document.getElementById(deleteUserModal).classList.toggle(modalToggled);
+        this.xhr.outputController.formatPadding(deleteScrollTop, deleteScrollBottom);
+    }
+
+    initCancelBtn() {
+        document.querySelectorAll(cancelBtns).forEach(btn => {
+            btn.addEventListener(clickConst, () => {
+                document.getElementById(btn.parentElement.parentElement.parentElement.parentElement.parentElement.id).classList.toggle(modalToggled);
+            })
+        });
     }
 }
 

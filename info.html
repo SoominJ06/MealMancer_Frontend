@@ -27,6 +27,49 @@
             </div>
         </div>
 
+        <!-- Edit User Modal -->
+        <div class="modalWrap" id="editUserModal">
+            <div class="scrollWrap">
+                <div class="scrollTop" id="editScrollTop"></div>
+                    <div class="scrollMiddle">
+                        <div class="modal">
+                            <div class="headerFont semi-bold modalTitle" id="inviteUserModalLabel">Edit User Tokens</div>
+                            <form id="inviteUserForm" class="modalForm">
+                                <div class="inputWrap">
+                                    <label for="editTokens">Tokens:</label>
+                                    <input type="number" id="editTokens" required>
+                                </div>
+                            </form>
+                            <div class="modalBtnWrap">
+                                <button class="hoverable btnFont cancelBtn" id="cancelEditButton">Cancel</button>
+                                <button type="submit" class="hoverable btnFont" id="updateButton">Update</button>
+                            </div>
+                        </div>
+                    </div>
+                <div class="scrollBottom" id="editScrollBottom"></div>
+            </div>
+        </div>
+
+        <!-- Delete User Modal -->
+        <div class="modalWrap" id="deleteUserModal">
+            <div class="scrollWrap">
+                <div class="scrollTop" id="deleteScrollTop"></div>
+                    <div class="scrollMiddle">
+                        <div class="modal">
+                            <div class="headerFont semi-bold modalTitle" id="inviteUserModalLabel">Confirm Deletion</div>
+                            <div class="modalForm">
+                                <p>Are you sure you want to delete <strong id="deleteUserEmail"></strong>?</p>
+                            </div>
+                            <div class="modalBtnWrap">
+                                <button class="hoverable btnFont cancelBtn" id="cancelDeleteButton">Cancel</button>
+                                <button class="hoverable btnFont" id="confirmDeleteButton">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                <div class="scrollBottom" id="deleteScrollBottom"></div>
+            </div>
+        </div>
+
         <!-- Error popup -->
         <div id="errorPopupWrap">
             <div id="errNumOfReqs"></div>
