@@ -509,7 +509,7 @@ class RecipeAPI {
     getFavorites() {
         // check if session has expired or not
         this.checkSession();
-        this.xhttp.open(methodGet, this.baseUrl + userListEndpoint, true);
+        this.xhttp.open(methodGet, this.baseUrl + favEndpoint, true);
         this.xhttp.withCredentials = true;
         this.xhttp.send();
         this.xhttp.onreadystatechange = () => { 
