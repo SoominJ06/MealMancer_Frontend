@@ -915,7 +915,7 @@ class OutputController {
             });
 
             let methodList = emptyString;
-            recipe.methods.forEach(method => {
+            recipe.directions.forEach(method => {
                 methodList += listTemplate.replace(recipeItem, method);
             });
 
