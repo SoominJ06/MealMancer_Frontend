@@ -8,7 +8,7 @@ const messages = {
     indexDesc: "Tell the Meal Mancer what ingredients you have and it will conjure a recipe for you!",
     startCooking: "CONJURE RECIPE →",
     goToUserList: "See API Info →",
-    apiInfo: "You have %TOKENS% tokens left, has called a total of %TOTAL_API_CALLS% API calls",
+    apiInfo: "You have %TOKENS% tokens left, and have called a total of %TOTAL_API_CALLS% API calls",
 
     // cookingConjuration
     castTitle: "Start Conjuring Recipe",

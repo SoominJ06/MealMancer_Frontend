@@ -417,6 +417,7 @@ class RecipeAPI {
                 const response = JSON.parse(this.xhttp.responseText);
                 if (this.xhttp.status === 200) {
                     this.session.setUserInfo(this.session.getUserRole(), response.tokens, response.httpRequests, this.session.getExpireTime());
+                    this.outputController.displayUserApiInfo();
                 } else {
                     this.outputController.displayErrorPopup(messages.error, this.xhttp.status);
                 }
@@ -646,6 +647,13 @@ class OutputController {
      * Constructor to initialize the OutputController object
      */
     constructor() {}
+
+    displayUserApiInfo() {
+        let apiInfo = messages.apiInfo;
+        apiInfo = apiInfo.replace("%TOKENS%", this.session.getUserTokens());
+        apiInfo = apiInfo.replace("%TOTAL_API_CALLS%", this.session.getTotalAPI());
+        document.getElementById(tokensLeftConst).innerHTML = apiInfo;
+    }
 
     /**
      * Hides the error popup
@@ -1340,11 +1348,7 @@ class UI {
 
     initUserApiInfo() {
         if (this.loggedIn) {
-            let apiInfo = messages.apiInfo;
             this.btnController.xhr.getIndexApiInfo(); // fetching api info
-            apiInfo = apiInfo.replace("%TOKENS%", this.session.getUserTokens());
-            apiInfo = apiInfo.replace("%TOTAL_API_CALLS%", this.session.getTotalAPI());
-            document.getElementById(tokensLeftConst).innerHTML = apiInfo;
         } else {
             document.getElementById(tokensLeftConst).innerHTML = "";
         }
