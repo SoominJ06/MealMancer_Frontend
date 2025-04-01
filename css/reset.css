@@ -242,7 +242,8 @@ input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active,
 input:-internal-autofill-selected {
-  transition: background-color 5000s ease-in-out 0s; 
+    background-image: initial !important;
+    transition: background-color 5000s ease-in-out 0s; 
 }
 
 /* Diabling outline when input field is focused */
