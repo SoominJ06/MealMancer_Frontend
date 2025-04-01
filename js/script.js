@@ -21,6 +21,7 @@ const cookingEndpoint = "cooking";
 const generateEndpoint = "generate/?ingredients=";
 const updateUserEndpoint = "users?user="
 const deleteFavEndpoint = "favourites?recipe=";
+const indexApiInfoEndpoint = "userConsumption";
 
 // API request 
 const methodPost = "POST";
@@ -400,6 +401,24 @@ class RecipeAPI {
                     alert(messages.loggedOut);
                 } else {
                     this.outputController.displayErrorPopup(response.message, this.xhttp.status);
+                }
+            }
+        }
+    }
+
+    getIndexApiInfo() {
+        // check if session has expired or not
+        this.checkSession();
+        this.xhttp.open(methodGet, this.baseUrl + indexApiInfoEndpoint, true);
+        this.xhttp.withCredentials = true;
+        this.xhttp.send();
+        this.xhttp.onreadystatechange = () => { 
+            if (this.xhttp.readyState === 4) {
+                const response = JSON.parse(this.xhttp.responseText);
+                if (this.xhttp.status === 200) {
+                    this.session.setUserInfo(this.session.getUserRole(), response.tokens, response.httpRequests, this.session.getExpireTime());
+                } else {
+                    this.outputController.displayErrorPopup(messages.error, this.xhttp.status);
                 }
             }
         }
@@ -1322,6 +1341,7 @@ class UI {
     initUserApiInfo() {
         if (this.loggedIn) {
             let apiInfo = messages.apiInfo;
+            this.btnController.xhr.getIndexApiInfo(); // fetching api info
             apiInfo = apiInfo.replace("%TOKENS%", this.session.getUserTokens());
             apiInfo = apiInfo.replace("%TOTAL_API_CALLS%", this.session.getTotalAPI());
             document.getElementById(tokensLeftConst).innerHTML = apiInfo;
