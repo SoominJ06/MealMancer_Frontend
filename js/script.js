@@ -22,6 +22,8 @@ const generateEndpoint = "generate/?ingredients=";
 const updateUserEndpoint = "users?user="
 const deleteFavEndpoint = "favourites?recipe=";
 const indexApiInfoEndpoint = "userConsumption";
+const idconst = "id";
+const userIdconst = "user_id";
 
 // API request 
 const methodPost = "POST";
@@ -100,6 +102,16 @@ const hoverableConst = ".hoverable";
 const scrollTopConst = "scrollTop";
 const scrollBottomConst = "scrollBottom";
 const tokensLeftConst = "tokensLeft";
+const sucessPopupWrap = "sucessPopupWrap";
+const successMsg = "successMsg";
+const successDesc = "successDesc";
+const closeSuccessPopupBtn = "closeSuccessPopupBtn";
+const editUserModalLabel = "editUserModalLabel";
+const editTokensLabel = "editTokensLabel";
+const updateBtn = "updateButton";
+const deleteUserModalLabel = "deleteUserModalLabel";
+const cancelDeleteButton = "cancelDeleteButton";
+const deleteFavBtn = ".deleteFavBtn";
 
 // Styling
 const emptyString = "";
@@ -123,8 +135,10 @@ const idItem = "%ID%";
 const cellContents = "%CELL_CONTENTS%";
 const offsetConst = "%OFFSET%"
 const errorCodeConst = "%ERROR_CODE%";
+const getUserSelector = (id) => `[data-userid="${id}"]`;
 
-// HTML evelents
+// HTML elements
+const trConst = "tr";
 const listTemplate = `<li>%ITEM%</li>`;
 const tableHeadBuild = `<table><thead><tr>`;
 const tableHeadTemplate = `<th>%ITEM%</th>`;
@@ -406,12 +420,16 @@ class RecipeAPI {
         }
     }
 
+    /**
+     * Retrieves the API information for the user and displays it in the index page.
+     */
     getIndexApiInfo() {
         // check if session has expired or not
         this.checkSession();
         this.xhttp.open(methodGet, this.baseUrl + indexApiInfoEndpoint, true);
         this.xhttp.withCredentials = true;
         this.xhttp.send();
+        // Get the API information for the user
         this.xhttp.onreadystatechange = () => { 
             if (this.xhttp.readyState === 4) {
                 const response = JSON.parse(this.xhttp.responseText);
@@ -425,6 +443,9 @@ class RecipeAPI {
         }
     }
 
+    /**
+     * Retrieves the API statistics for the admin and displays it in the info page.
+     */
     getApiStats() {
         // check if session has expired or not
         this.checkSession();
@@ -484,6 +505,11 @@ class RecipeAPI {
         // this.outputController.displayUserList(dummy);
     }
 
+    /**
+     * Updates the user token count based on the user id and the amount
+     * @param {*} id 
+     * @param int amount 
+     */
     updateUserToken(id, amount) {
         // check if session has expired or not
         this.checkSession();
@@ -504,6 +530,10 @@ class RecipeAPI {
         }
     }
 
+    /**
+     * Deletes the user based on the user id
+     * @param {*} id 
+     */
     delteUser(id) {
         // check if session has expired or not
         this.checkSession();
@@ -557,6 +587,13 @@ class RecipeAPI {
         // this.outputController.displayFavorites(dummy)
     }
 
+    /**
+     * Adds a recipe to the favorites list based on the title, ingredients, and instructions,
+     * and displays a success message if it works and an error message if it does not.
+     * @param {*} title 
+     * @param {*} ingredients 
+     * @param {*} instructions 
+     */
     addToFavorites(title, ingredients, instructions) {
         // check if session has expired or not
         this.checkSession();
@@ -577,6 +614,10 @@ class RecipeAPI {
         }
     }
 
+    /**
+     * Deletes a recipe from the favorites list based on the recipe id
+     * @param {*} id 
+     */
     delteFavorite(id) {
         // check if session has expired or not
         this.checkSession();
@@ -648,6 +689,11 @@ class OutputController {
      */
     constructor() {}
 
+    /**
+     * Determines the visibility of the error popup and the recipe output
+     * @param {*} tokens 
+     * @param {*} totalApi 
+     */
     displayUserApiInfo(tokens, totalApi) {
         let apiInfo = messages.apiInfo;
         apiInfo = apiInfo.replace("%TOKENS%", tokens);
@@ -684,9 +730,9 @@ class OutputController {
      * Hides the success popup
      */
     hideSuccessPopup() {
-        document.getElementById("sucessPopupWrap").style.opacity = zero;
-        document.getElementById("sucessPopupWrap").style.visibility = hiddenConst;
-        document.getElementById("sucessPopupWrap").style.zIndex = -99;
+        document.getElementById(sucessPopupWrap).style.opacity = zero;
+        document.getElementById(sucessPopupWrap).style.visibility = hiddenConst;
+        document.getElementById(sucessPopupWrap).style.zIndex = -99;
     }
 
     /**
@@ -694,13 +740,13 @@ class OutputController {
      * @param {*} errorDetails 
      */
     displaySuccessPopup(successDetails) {
-        document.getElementById("closeSuccessPopupBtn").innerHTML = messages.ok;
-        document.getElementById("successMsg").innerHTML = messages.successTitle;
-        document.getElementById("successDesc").innerHTML = successDetails;
-        document.getElementById("sucessPopupWrap").style.opacity = one;
-        document.getElementById("sucessPopupWrap").style.visibility = visibleConst;
-        document.getElementById("sucessPopupWrap").style.zIndex = 99;
-        document.getElementById("closeSuccessPopupBtn").addEventListener(clickConst, () => {
+        document.getElementById(closeSuccessPopupBtn).innerHTML = messages.ok;
+        document.getElementById(successMsg).innerHTML = messages.successTitle;
+        document.getElementById(successDesc).innerHTML = successDetails;
+        document.getElementById(sucessPopupWrap).style.opacity = one;
+        document.getElementById(sucessPopupWrap).style.visibility = visibleConst;
+        document.getElementById(sucessPopupWrap).style.zIndex = 99;
+        document.getElementById(closeSuccessPopupBtn).addEventListener(clickConst, () => {
             this.hideSuccessPopup();
             location.reload();
         });
@@ -768,6 +814,11 @@ class OutputController {
         document.getElementById(loaderConst).style.display = noneConst;
     }
 
+    /**
+     * Displays the user list in a table format for admin to view
+     * @param {*} stats 
+     * @returns 
+     */
     displayApiStats(stats) {
         const tableOutput = document.getElementById(apiStatsList);
     
@@ -779,7 +830,7 @@ class OutputController {
         }
         
         // Extract column names dynamically, but exclude "id"
-        const columnNames = Object.keys(stats[0]).filter(column => column !== "id");
+        const columnNames = Object.keys(stats[0]).filter(column => column !== idconst);
     
         let table = tableHeadBuild;
     
@@ -827,7 +878,7 @@ class OutputController {
         }
         
         // Extract column names dynamically, but exclude "user_id"
-        const columnNames = Object.keys(users[0]).filter(column => column !== "user_id");
+        const columnNames = Object.keys(users[0]).filter(column => column !== userIdconst);
     
         let table = tableHeadBuild;
     
@@ -865,14 +916,18 @@ class OutputController {
         $(hashtagUserList).DataTable();
     }   
     
+    /**
+     * Displays the edit user modal with the user id and token amount
+     * @param {*} userId 
+     */
     displayEditUserModal(userId) {
-        document.getElementById("editUserModalLabel").innerHTML = messages.editUserToken;
-        document.getElementById("editTokensLabel").innerHTML = messages.editTokensLabel;
-        document.getElementById("cancelEditButton").innerHTML = messages.cancelBtn;
-        document.getElementById("updateButton").innerHTML = messages.updateBtn;
+        document.getElementById(editUserModalLabel).innerHTML = messages.editUserToken;
+        document.getElementById(editTokensLabel).innerHTML = messages.editTokensLabel;
+        document.getElementById(cancelEditBtn).innerHTML = messages.cancelBtn;
+        document.getElementById(updateBtn).innerHTML = messages.updateBtn;
 
         // Find the row associated with this userId
-        const row = document.querySelector(`[data-userid="${userId}"]`).closest("tr");
+        const row = document.querySelector(getUserSelector(userId)).closest(trConst);
     
         // Extract the token amount from the appropriate column
         const tokenColumnIndex = 1; // Adjust index based on table structure
@@ -882,20 +937,24 @@ class OutputController {
         document.getElementById(editTokensInput).value = tokenValue;
     }
 
+    /**
+     * Displays the delete user modal with the user id and email address
+     * @param {*} userId 
+     */
     displayDeleteUserModal(userId) {
-        document.getElementById("deleteUserModalLabel").innerHTML = messages.deleteUserModalLabel;
-        document.getElementById("cancelDeleteButton").innerHTML = messages.cancelBtn;
-        document.getElementById("confirmDeleteButton").innerHTML = messages.deleteBtn;
+        document.getElementById(deleteUserModalLabel).innerHTML = messages.deleteUserModalLabel;
+        document.getElementById(cancelDeleteButton).innerHTML = messages.cancelBtn;
+        document.getElementById(confirmDeleteButton).innerHTML = messages.deleteBtn;
 
         // Find the row associated with this userId
-        const row = document.querySelector(`[data-userid="${userId}"]`).closest("tr");
+        const row = document.querySelector(getUserSelector(userId)).closest(trConst);
     
         // Extract the token amount from the appropriate column
         const emailColumnIndex = 0; // Adjust index based on table structure
         const emailAddress = row.cells[emailColumnIndex].textContent.trim();
     
         // Set the extracted token value in the input field
-        document.getElementById("deleteUserConfirm").innerHTML = messages.deleteUserConfirm.replace("%USER%", emailAddress);
+        document.getElementById(deleteUserConfirm).innerHTML = messages.deleteUserConfirm.replace("%USER%", emailAddress);
     }
 
     /**
@@ -927,6 +986,7 @@ class OutputController {
             return;
         }
 
+        // Iterate through the favorites and display them
         favorites.forEach(recipe => {
             let content = favoritesTemplate;
 
@@ -1072,6 +1132,7 @@ class ButtonController {
     initFavNavigation(prevBtn, nextBtn, favoritesLength, displayNextFav) {
         let index = 0;
     
+        // Controls the click event for the next button, including handling looping
         nextBtn.addEventListener(clickConst, () => {
             if (index < favoritesLength - 1) {
                 index++;
@@ -1081,6 +1142,7 @@ class ButtonController {
             displayNextFav(index);
         });
     
+        // Controls the click event for the previous button, including handling looping
         prevBtn.addEventListener(clickConst, () => {
             if (index > 0) {
                 index--;
@@ -1097,14 +1159,21 @@ class ButtonController {
         }
     }
 
+    /**
+     * Initializes the delete favorite button event listener.
+     */
     initDeleteFavBtns() {
-        document.querySelectorAll(".deleteFavBtn").forEach(btn => {
+        document.querySelectorAll(deleteFavBtn).forEach(btn => {
             btn.addEventListener(clickConst, () => {
                 this.xhr.delteFavorite(btn.dataset.favid);
             })
         });
     }
 
+    /**
+     * Initializes the user list buttons for edit and delete actions
+     * and attaches event listeners to them.
+     */
     initUserListBtns() {
         const tableOutput = document.getElementById(userList);
 
@@ -1124,6 +1193,11 @@ class ButtonController {
         });
     }
 
+    /**
+     * Initializes the edit user modal with the user id and token amount
+     * and attaches event listeners to the update and cancel buttons.
+     * @param {*} userId 
+     */
     initEditUser(userId) {
         this.xhr.outputController.displayEditUserModal(userId);
     
@@ -1140,6 +1214,11 @@ class ButtonController {
         this.xhr.outputController.formatPadding(editScrollTop, editScrollBottom);
     }    
 
+    /**
+     * Initializes the delete user modal with the user id and email address
+     * and attaches event listeners to the delete and cancel buttons.
+     * @param {*} userId 
+     */
     initDeleteUser(userId) {
         this.xhr.outputController.displayDeleteUserModal(userId);
 
@@ -1346,6 +1425,9 @@ class UI {
         this.checkSession(); 
     }
 
+    /**
+     * Initializes the user API info with the tokens left and total API calls
+     */
     initUserApiInfo() {
         if (this.loggedIn) {
             this.btnController.xhr.getIndexApiInfo(); // fetching api info
@@ -1431,6 +1513,11 @@ class UI {
         this.btnController.xhr.getFavorites();
     }
 
+    /**
+     * Initializes the info page with the title and the api stats from the API.
+     * Redirects to index if not admin and displays error message.
+     * @returns the info page for the admin role
+     */
     initInfoPage() {
         // Redirect to index if not admin and display error message
         if (this.userRole !== adminConst) {
