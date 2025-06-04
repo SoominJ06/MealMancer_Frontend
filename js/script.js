@@ -315,7 +315,7 @@ class RecipeAPI {
         setTimeout(() => {
             this.outputController.hideLoadingIcon();
             this.outputController.displayRecipe(title, ingredient, method)
-        }, 1000)
+        }, 2000)
 
         // check if session has expired or not
         // this.checkSession();
@@ -379,22 +379,26 @@ class RecipeAPI {
      * @param string pw 
      */
     signup(email, pw) {
-        this.xhttp.open(methodPost, this.baseUrl + signupEndpoint, true);
-        this.xhttp.withCredentials = true;
-        this.xhttp.setRequestHeader(contentType, appJson);
-        const requestData = JSON.stringify({ email: email, password: pw });
-        this.xhttp.send(requestData);   
-        this.xhttp.onreadystatechange = () => { 
-            if (this.xhttp.readyState === 4) {
-                const response = JSON.parse(this.xhttp.responseText);
-                if (this.xhttp.status === 200) {
-                    this.session.setUserInfo(response.role, response.tokens, response.httpRequests, response.expiresAt );
-                    window.location.href = indexPage;
-                } else {
-                    this.outputController.displayErrorPopup(response.message, this.xhttp.status);
-                }
-            }
-        }
+        // this.xhttp.open(methodPost, this.baseUrl + signupEndpoint, true);
+        // this.xhttp.withCredentials = true;
+        // this.xhttp.setRequestHeader(contentType, appJson);
+        // const requestData = JSON.stringify({ email: email, password: pw });
+        // this.xhttp.send(requestData);   
+        // this.xhttp.onreadystatechange = () => { 
+        //     if (this.xhttp.readyState === 4) {
+        //         const response = JSON.parse(this.xhttp.responseText);
+        //         if (this.xhttp.status === 200) {
+        //             this.session.setUserInfo(response.role, response.tokens, response.httpRequests, response.expiresAt );
+        //             window.location.href = indexPage;
+        //         } else {
+        //             this.outputController.displayErrorPopup(response.message, this.xhttp.status);
+        //         }
+        //     }
+        // }
+
+        // For testing admin
+        this.session.setUserInfo("admin", 20, 40, "2026-03-19T10:33:18.885Z");
+        window.location.href = "index.html";
     }
 
     /**
@@ -402,22 +406,26 @@ class RecipeAPI {
      * redirecting to the index page.
      */
     logout() {
-        this.xhttp.open(methodPost, this.baseUrl + logoutEndpoint, true);
-        this.xhttp.withCredentials = true;
-        this.xhttp.send();   
-        this.xhttp.onreadystatechange = () => { 
-            if (this.xhttp.readyState === 4) {
-                const response = JSON.parse(this.xhttp.responseText);
-                if (this.xhttp.status === 200) {
-                    // Clear session
-                    this.session.clearSession();
-                    window.location.href = indexPage;
-                    alert(messages.loggedOut);
-                } else {
-                    this.outputController.displayErrorPopup(response.message, this.xhttp.status);
-                }
-            }
-        }
+        // this.xhttp.open(methodPost, this.baseUrl + logoutEndpoint, true);
+        // this.xhttp.withCredentials = true;
+        // this.xhttp.send();   
+        // this.xhttp.onreadystatechange = () => { 
+        //     if (this.xhttp.readyState === 4) {
+        //         const response = JSON.parse(this.xhttp.responseText);
+        //         if (this.xhttp.status === 200) {
+        //             // Clear session
+        //             this.session.clearSession();
+        //             window.location.href = indexPage;
+        //             alert(messages.loggedOut);
+        //         } else {
+        //             this.outputController.displayErrorPopup(response.message, this.xhttp.status);
+        //         }
+        //     }
+        // }
+
+        // Clear session
+        this.session.clearSession();
+        window.location.href = indexPage;
     }
 
     /**
