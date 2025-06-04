@@ -306,40 +306,40 @@ class RecipeAPI {
      */
     getRecipe(ingredients) {
         // testing with dummy data
-        // this.outputController.displayLoadingIcon();
-
-        // const title = "avocado and tomato breakfast toast";
-        // const ingredient = ["2 slices whole grain bread", "1 slice avocado", "1 medium tomato, sliced", "2 slices cooked bacon", "2 eggs", "salt and pepper to taste", "olive oil spray"];
-        // const method = ["toast the bread slices in a toaster or under the broiler until golden brown.", "lightly spray a frying pan with olive oil spray and heat over medium heat.", "add the sliced avocado, tomato, and cooked bacon to the pan.", "season with salt and pepper, and cook for 3-4 minutes, or until the avocado is soft.", "add the eggs to the pan and scramble until fully cooked.", "remove from heat and cover the pan with a lid.", "serve immediately."];
-        
-        // setTimeout(() => {
-        //     this.outputController.hideLoadingIcon();
-        //     this.outputController.displayRecipe(title, ingredient, method)
-        // }, 500)
-
-        // check if session has expired or not
-        this.checkSession();
-
-        // Show loading spinner
         this.outputController.displayLoadingIcon();
 
-        // Actual fetch
-        this.xhttp.open(methodGet, this.baseUrl + generateEndpoint + ingredients, true);
-        this.xhttp.withCredentials = true; // for Cookies
-        this.xhttp.send();
-        this.xhttp.onreadystatechange = () => {
-            if (this.xhttp.readyState === 4) {
-                const response = JSON.parse(this.xhttp.responseText);
-                if (this.xhttp.status === 200) {
-                    this.session.reduceToken();
-                    this.outputController.displayRecipe(response.title, response.ingredients, response.directions)
-                } else {
-                    this.outputController.displayErrorPopup(messages.error, this.xhttp.status);
-                }
-                // Hide loading icon
-                this.outputController.hideLoadingIcon(); 
-            }
-        }
+        const title = "avocado and tomato breakfast toast";
+        const ingredient = ["2 slices whole grain bread", "1 slice avocado", "1 medium tomato, sliced", "2 slices cooked bacon", "2 eggs", "salt and pepper to taste", "olive oil spray"];
+        const method = ["toast the bread slices in a toaster or under the broiler until golden brown.", "lightly spray a frying pan with olive oil spray and heat over medium heat.", "add the sliced avocado, tomato, and cooked bacon to the pan.", "season with salt and pepper, and cook for 3-4 minutes, or until the avocado is soft.", "add the eggs to the pan and scramble until fully cooked.", "remove from heat and cover the pan with a lid.", "serve immediately."];
+        
+        setTimeout(() => {
+            this.outputController.hideLoadingIcon();
+            this.outputController.displayRecipe(title, ingredient, method)
+        }, 1000)
+
+        // check if session has expired or not
+        // this.checkSession();
+
+        // // Show loading spinner
+        // this.outputController.displayLoadingIcon();
+
+        // // Actual fetch
+        // this.xhttp.open(methodGet, this.baseUrl + generateEndpoint + ingredients, true);
+        // this.xhttp.withCredentials = true; // for Cookies
+        // this.xhttp.send();
+        // this.xhttp.onreadystatechange = () => {
+        //     if (this.xhttp.readyState === 4) {
+        //         const response = JSON.parse(this.xhttp.responseText);
+        //         if (this.xhttp.status === 200) {
+        //             this.session.reduceToken();
+        //             this.outputController.displayRecipe(response.title, response.ingredients, response.directions)
+        //         } else {
+        //             this.outputController.displayErrorPopup(messages.error, this.xhttp.status);
+        //         }
+        //         // Hide loading icon
+        //         this.outputController.hideLoadingIcon(); 
+        //     }
+        // }
     }
 
     /**
@@ -349,27 +349,27 @@ class RecipeAPI {
      * @param string pw 
      */
     login(email, pw) {
-        this.xhttp.open(methodPost, this.baseUrl + loginEndpoint, true);
-        this.xhttp.withCredentials = true;
-        this.xhttp.setRequestHeader(contentType, appJson);
-        const requestData = JSON.stringify({ email: email, password: pw });
-        this.xhttp.send(requestData);   
-        this.xhttp.onreadystatechange = () => { 
-            if (this.xhttp.readyState === 4) {
-                const response = JSON.parse(this.xhttp.responseText);
-                if (this.xhttp.status === 200) {
-                    // Store user info in session storage
-                    this.session.setUserInfo(response.role, response.tokens, response.httpRequests, response.expiresAt );
-                    window.location.href = indexPage;
-                } else {
-                    this.outputController.displayErrorPopup(response.message, this.xhttp.status);
-                }
-            }
-        }
+        // this.xhttp.open(methodPost, this.baseUrl + loginEndpoint, true);
+        // this.xhttp.withCredentials = true;
+        // this.xhttp.setRequestHeader(contentType, appJson);
+        // const requestData = JSON.stringify({ email: email, password: pw });
+        // this.xhttp.send(requestData);   
+        // this.xhttp.onreadystatechange = () => { 
+        //     if (this.xhttp.readyState === 4) {
+        //         const response = JSON.parse(this.xhttp.responseText);
+        //         if (this.xhttp.status === 200) {
+        //             // Store user info in session storage
+        //             this.session.setUserInfo(response.role, response.tokens, response.httpRequests, response.expiresAt );
+        //             window.location.href = indexPage;
+        //         } else {
+        //             this.outputController.displayErrorPopup(response.message, this.xhttp.status);
+        //         }
+        //     }
+        // }
         
         // For testing admin
-        // this.session.setUserInfo("admin", 20, 40, "2026-03-19T10:33:18.885Z");
-        // window.location.href = "index.html";
+        this.session.setUserInfo("admin", 20, 40, "2026-03-19T10:33:18.885Z");
+        window.location.href = "index.html";
     }
 
     /**
@@ -425,22 +425,25 @@ class RecipeAPI {
      */
     getIndexApiInfo() {
         // check if session has expired or not
-        this.checkSession();
-        this.xhttp.open(methodGet, this.baseUrl + indexApiInfoEndpoint, true);
-        this.xhttp.withCredentials = true;
-        this.xhttp.send();
-        // Get the API information for the user
-        this.xhttp.onreadystatechange = () => { 
-            if (this.xhttp.readyState === 4) {
-                const response = JSON.parse(this.xhttp.responseText);
-                if (this.xhttp.status === 200) {
-                    this.session.setUserInfo(this.session.getUserRole(), response.tokens, response.httpRequests, this.session.getExpireTime());
-                    this.outputController.displayUserApiInfo(response.tokens, response.httpRequests);
-                } else {
-                    this.outputController.displayErrorPopup(messages.error, this.xhttp.status);
-                }
-            }
-        }
+        // this.checkSession();
+        // this.xhttp.open(methodGet, this.baseUrl + indexApiInfoEndpoint, true);
+        // this.xhttp.withCredentials = true;
+        // this.xhttp.send();
+        // // Get the API information for the user
+        // this.xhttp.onreadystatechange = () => { 
+        //     if (this.xhttp.readyState === 4) {
+        //         const response = JSON.parse(this.xhttp.responseText);
+        //         if (this.xhttp.status === 200) {
+        //             this.session.setUserInfo(this.session.getUserRole(), response.tokens, response.httpRequests, this.session.getExpireTime());
+        //             this.outputController.displayUserApiInfo(response.tokens, response.httpRequests);
+        //         } else {
+        //             this.outputController.displayErrorPopup(messages.error, this.xhttp.status);
+        //         }
+        //     }
+        // }
+
+        // Displaying dummy data
+        this.outputController.displayUserApiInfo(20, 5);
     }
 
     /**
@@ -448,30 +451,30 @@ class RecipeAPI {
      */
     getApiStats() {
         // check if session has expired or not
-        this.checkSession();
+        // this.checkSession();
 
-        // Using a new XMLHttpRequest instance
-        let xhttp = new XMLHttpRequest();  
-        xhttp.open(methodGet, this.baseUrl + apiStatsEndpoint, true);
-        xhttp.withCredentials = true;
-        xhttp.send();
-        xhttp.onload = () => {  // Use onload safely now
-            if (xhttp.status === 200) {
-                const response = JSON.parse(xhttp.responseText);
-                this.outputController.displayApiStats(response);
-            } else {
-                this.outputController.displayErrorPopup(messages.error, xhttp.status);
-            }
-        };       
+        // // Using a new XMLHttpRequest instance
+        // let xhttp = new XMLHttpRequest();  
+        // xhttp.open(methodGet, this.baseUrl + apiStatsEndpoint, true);
+        // xhttp.withCredentials = true;
+        // xhttp.send();
+        // xhttp.onload = () => {  // Use onload safely now
+        //     if (xhttp.status === 200) {
+        //         const response = JSON.parse(xhttp.responseText);
+        //         this.outputController.displayApiStats(response);
+        //     } else {
+        //         this.outputController.displayErrorPopup(messages.error, xhttp.status);
+        //     }
+        // }; 
 
         // Testing DataTable
-        // let dummy = [
-        //     {"id":1,"method":"GET","endpoint":"/API/v1/login","requests":0},
-        //     {"id":1,"method":"GET","endpoint":"/API/v1/login","requests":0},
-        //     {"id":1,"method":"GET","endpoint":"/API/v1/login","requests":0},
-        // ];
+        let dummy = [
+            {"id":1,"method":"GET","endpoint":"/API/v1/login","requests":0},
+            {"id":1,"method":"GET","endpoint":"/API/v1/login","requests":0},
+            {"id":1,"method":"GET","endpoint":"/API/v1/login","requests":0},
+        ];
           
-        // this.outputController.displayApiStats(dummy);
+        this.outputController.displayApiStats(dummy);
     }
 
     /**
@@ -480,29 +483,29 @@ class RecipeAPI {
      */
     getUserList() {
         // check if session has expired or not
-        this.checkSession();
-        this.xhttp.open(methodGet, this.baseUrl + userListEndpoint, true);
-        this.xhttp.withCredentials = true;
-        this.xhttp.send();
-        this.xhttp.onreadystatechange = () => { 
-            if (this.xhttp.readyState === 4) {
-                const response = JSON.parse(this.xhttp.responseText);
-                if (this.xhttp.status === 200) {
-                    this.outputController.displayUserList(response);
-                } else {
-                    this.outputController.displayErrorPopup(messages.error, this.xhttp.status);
-                }
-            }
-        }
+        // this.checkSession();
+        // this.xhttp.open(methodGet, this.baseUrl + userListEndpoint, true);
+        // this.xhttp.withCredentials = true;
+        // this.xhttp.send();
+        // this.xhttp.onreadystatechange = () => { 
+        //     if (this.xhttp.readyState === 4) {
+        //         const response = JSON.parse(this.xhttp.responseText);
+        //         if (this.xhttp.status === 200) {
+        //             this.outputController.displayUserList(response);
+        //         } else {
+        //             this.outputController.displayErrorPopup(messages.error, this.xhttp.status);
+        //         }
+        //     }
+        // }
 
         // Testing DataTable
-        // let dummy = [
-        //     {"user_id": 1, "email": "example1@gmail.com", "tokens": 20, "httpRequests": 0 }, 
-        //     {"user_id": 2, "email": "example1@gmail.com", "tokens": 20, "httpRequests": 0 }, 
-        //     {"user_id": 3, "email": "example1@gmail.com", "tokens": 20, "httpRequests": 0 }, 
-        // ];
+        let dummy = [
+            {"user_id": 1, "email": "example1@gmail.com", "tokens": 20, "httpRequests": 0 }, 
+            {"user_id": 2, "email": "example1@gmail.com", "tokens": 20, "httpRequests": 0 }, 
+            {"user_id": 3, "email": "example1@gmail.com", "tokens": 20, "httpRequests": 0 }, 
+        ];
           
-        // this.outputController.displayUserList(dummy);
+        this.outputController.displayUserList(dummy);
     }
 
     /**
@@ -558,33 +561,33 @@ class RecipeAPI {
      */
     getFavorites() {
         // check if session has expired or not
-        this.checkSession();
-        this.xhttp.open(methodGet, this.baseUrl + favEndpoint, true);
-        this.xhttp.withCredentials = true;
-        this.xhttp.send();
-        this.xhttp.onreadystatechange = () => { 
-            if (this.xhttp.readyState === 4) {
-                const response = JSON.parse(this.xhttp.responseText);
-                if (this.xhttp.status === 200) {
-                    this.outputController.displayFavorites(response)
-                } else {
-                    this.outputController.displayErrorPopup(messages.error, this.xhttp.status);
-                }
-            }
-        }
+        // this.checkSession();
+        // this.xhttp.open(methodGet, this.baseUrl + favEndpoint, true);
+        // this.xhttp.withCredentials = true;
+        // this.xhttp.send();
+        // this.xhttp.onreadystatechange = () => { 
+        //     if (this.xhttp.readyState === 4) {
+        //         const response = JSON.parse(this.xhttp.responseText);
+        //         if (this.xhttp.status === 200) {
+        //             this.outputController.displayFavorites(response)
+        //         } else {
+        //             this.outputController.displayErrorPopup(messages.error, this.xhttp.status);
+        //         }
+        //     }
+        // }
 
         // Testing dummy data
-        // const ingredient1 = ["2 slices whole grain bread", "1 slice avocado", "1 medium tomato, sliced", "2 slices cooked bacon", "2 eggs", "salt and pepper to taste", "olive oil spray"];
-        // const ingredient2 = ["2 slices whole grain bread", "1 slice avocado", "1 medium tomato, sliced"];
-        // const method1 = ["toast the bread slices in a toaster or under the broiler until golden brown.", "lightly spray a frying pan with olive oil spray and heat over medium heat.", "add the sliced avocado, tomato, and cooked bacon to the pan.", "season with salt and pepper, and cook for 3-4 minutes, or until the avocado is soft.", "add the eggs to the pan and scramble until fully cooked.", "remove from heat and cover the pan with a lid.", "serve immediately."];
-        // const method2 = ["toast the bread slices in a toaster or under the broiler until golden brown.", "toast the bread slices in a toaster or under the broiler until golden brown.", "toast the bread slices in a toaster or under the broiler until golden brown.", "toast the bread slices in a toaster or under the broiler until golden brown.", "toast the bread slices in a toaster or under the broiler until golden brown.", "toast the bread slices in a toaster or under the broiler until golden brown."]
-        // const method3 = ["toast the bread slices in a toaster or under the broiler until golden brown.", "lightly spray a frying pan with olive oil spray and heat over medium heat.", "add the sliced avocado, tomato, and cooked bacon to the pan.", "season with salt and pepper, and cook for 3-4 minutes, or until the avocado is soft.", "add the eggs to the pan and scramble until fully cooked.", "remove from heat and cover the pan with a lid.", "serve immediately.", "toast the bread slices in a toaster or under the broiler until golden brown.", "lightly spray a frying pan with olive oil spray and heat over medium heat.", "add the sliced avocado, tomato, and cooked bacon to the pan.", "season with salt and pepper, and cook for 3-4 minutes, or until the avocado is soft.", "add the eggs to the pan and scramble until fully cooked.", "remove from heat and cover the pan with a lid."];
-        // const dummy = [
-        //     {"title": "Recipe 1", "ingredients": ingredient1, "methods": method1},
-        //     {"title": "Recipe 2", "ingredients": ingredient2, "methods": method2},
-        //     {"title": "Recipe 3", "ingredients": ingredient1, "methods": method3}
-        // ];
-        // this.outputController.displayFavorites(dummy)
+        const ingredient1 = ["2 slices whole grain bread", "1 slice avocado", "1 medium tomato, sliced", "2 slices cooked bacon", "2 eggs", "salt and pepper to taste", "olive oil spray"];
+        const ingredient2 = ["2 slices whole grain bread", "1 slice avocado", "1 medium tomato, sliced"];
+        const method1 = ["toast the bread slices in a toaster or under the broiler until golden brown.", "lightly spray a frying pan with olive oil spray and heat over medium heat.", "add the sliced avocado, tomato, and cooked bacon to the pan.", "season with salt and pepper, and cook for 3-4 minutes, or until the avocado is soft.", "add the eggs to the pan and scramble until fully cooked.", "remove from heat and cover the pan with a lid.", "serve immediately."];
+        const method2 = ["toast the bread slices in a toaster or under the broiler until golden brown.", "toast the bread slices in a toaster or under the broiler until golden brown.", "toast the bread slices in a toaster or under the broiler until golden brown.", "toast the bread slices in a toaster or under the broiler until golden brown.", "toast the bread slices in a toaster or under the broiler until golden brown.", "toast the bread slices in a toaster or under the broiler until golden brown."]
+        const method3 = ["toast the bread slices in a toaster or under the broiler until golden brown.", "lightly spray a frying pan with olive oil spray and heat over medium heat.", "add the sliced avocado, tomato, and cooked bacon to the pan.", "season with salt and pepper, and cook for 3-4 minutes, or until the avocado is soft.", "add the eggs to the pan and scramble until fully cooked.", "remove from heat and cover the pan with a lid.", "serve immediately.", "toast the bread slices in a toaster or under the broiler until golden brown.", "lightly spray a frying pan with olive oil spray and heat over medium heat.", "add the sliced avocado, tomato, and cooked bacon to the pan.", "season with salt and pepper, and cook for 3-4 minutes, or until the avocado is soft.", "add the eggs to the pan and scramble until fully cooked.", "remove from heat and cover the pan with a lid."];
+        const dummy = [
+            {"title": "Recipe 1", "ingredients": ingredient1, "directions": method1},
+            {"title": "Recipe 2", "ingredients": ingredient2, "directions": method2},
+            {"title": "Recipe 3", "ingredients": ingredient1, "directions": method3}
+        ];
+        this.outputController.displayFavorites(dummy)
     }
 
     /**
@@ -986,6 +989,8 @@ class OutputController {
             return;
         }
 
+        let dummyID = 0;
+
         // Iterate through the favorites and display them
         favorites.forEach(recipe => {
             let content = favoritesTemplate;
@@ -1007,13 +1012,17 @@ class OutputController {
                 .replace("%INSTRUCTIONS_TITLE%", messages.instructionsTitle)
                 .replace("%INSTRUCTION_LIST%", methodList)
                 .replace("%FAV_ID%", recipe.recipeId).replace("%DELETE_BTN%", messages.deleteFromFav)
-                .replace("%TID%", recipe.recipeId).replace("%BID%", recipe.recipeId);
+                // .replace("%TID%", recipe.recipeId).replace("%BID%", recipe.recipeId);
+                .replace("%TID%", dummyID).replace("%BID%", dummyID);
 
             // Append updated `content`
             favoritesContainer.innerHTML += content;
 
             // Adjust scroll top & bottom dynamically
-            this.formatPadding(scrollTopConst+recipe.recipeId, scrollBottomConst+recipe.recipeId);
+            // this.formatPadding(scrollTopConst+recipe.recipeId, scrollBottomConst+recipe.recipeId);
+            this.formatPadding(scrollTopConst+dummyID, scrollBottomConst+dummyID);
+
+            dummyID++;
         });
     
         favoritesContainer.style.width = `${favorites.length * 100}%`;
